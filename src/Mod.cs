@@ -5,14 +5,12 @@ using Nep3ArchipelagoClient.Configuration;
 using Nep3ArchipelagoClient.MemoryInterface;
 using Nep3ArchipelagoClient.src;
 using Nep3ArchipelagoClient.src.Hooks;
-
-
-
-
-
-#if DEBUG
 using System.Diagnostics;
-#endif
+
+
+
+
+
 
 namespace Nep3ArchipelagoClient;
 

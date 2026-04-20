@@ -68,7 +68,8 @@ namespace Nep3ArchipelagoClient.src.Hooks
         public static unsafe int OnGetGatherSpot(int eax,int edx)
         {
             Console.WriteLine($"Dungeon ID = {eax}, Gather Flag ID = {edx}");
-            Mod.APClient.SendLocation(edx+1);
+            long GatherspotID = (eax * 10) + edx+1;
+            Mod.APClient.SendLocation(GatherspotID);
             return eax;
         }
 

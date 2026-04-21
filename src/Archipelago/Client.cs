@@ -1,5 +1,6 @@
 ﻿using Archipelago.MultiClient.Net;
 using Archipelago.MultiClient.Net.Enums;
+using Nep3ArchipelagoClient.src.Hooks;
 
 namespace Nep3ArchipelagoClient.Archipelago
 {
@@ -45,6 +46,39 @@ namespace Nep3ArchipelagoClient.Archipelago
             return true;
         }
 
+        public void GetItemName(long id,ref byte[] output)
+        {
+            for (int i = 0; i< output.Length; i++)
+            {
+                output[i] = 0;
+            }
+
+            if (IsConnected)
+            {
+                var result = Session.Locations.ScoutLocationsAsync(id).Result;
+                if (!result.ContainsKey(id))
+                {
+                    "Location not Found"u8.ToArray().CopyTo(output, 0);
+                    return;
+                }
+                var itemName = result[id].ItemName;
+                int idx = 0;
+                if (String.IsNullOrEmpty(itemName))
+                    "No Itemname Found"u8.ToArray().CopyTo(output, 0);
+                else
+                    foreach (char c in itemName)
+                    {
+                        if (!(idx < output.Length)) break;
+                        output[idx] = ((byte)c);
+                        idx++;
+                    }
+            }
+            else
+            {
+                "Not Connected"u8.ToArray().CopyTo(output, 0);
+            }
+        }
+
         public bool SendLocation(long id)
         {
             if (IsConnected)
@@ -54,14 +88,15 @@ namespace Nep3ArchipelagoClient.Archipelago
             }
             return false;
         }
-
+        public static bool collectedFirstItem = false;
         public void update()
         {
-            if (IsConnected)
+            if (IsConnected && collectedFirstItem)
             {
                 if (CurrentItemNR < Session.Items.AllItemsReceived.Count)
                 {
-
+                    ItemCollection._addItemFunction.GetWrapper()((uint)Session.Items.AllItemsReceived[(int)CurrentItemNR].ItemId,1,(char)1);
+                    CurrentItemNR++;
                 }
             }
         }

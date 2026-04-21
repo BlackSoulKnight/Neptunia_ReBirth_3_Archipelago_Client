@@ -64,7 +64,7 @@ public class Mod : ModBase // <= Do not Remove.
 
 #if DEBUG
         // Attaches debugger in debug mode; ignored in release.
-        //Debugger.Launch();
+        Debugger.Launch();
 #endif
 
         ModuleBase = (UIntPtr)Process.GetCurrentProcess().MainModule!.BaseAddress;
@@ -91,10 +91,8 @@ public class Mod : ModBase // <= Do not Remove.
         Inventory inv = new(save);
         while(true)
         {
-            Thread.Sleep(100000);
-            //save.test();
-
-            Console.WriteLine(inv.CurrentInventoryCount);
+            Thread.Sleep(100);
+            APClient.update();
         }
     }
 

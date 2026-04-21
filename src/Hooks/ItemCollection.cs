@@ -1,4 +1,5 @@
 ﻿using Nep3ArchipelagoClient;
+using Nep3ArchipelagoClient.Archipelago;
 using Reloaded.Hooks;
 using Reloaded.Hooks.Definitions;
 using Reloaded.Hooks.Definitions.Enums;
@@ -20,6 +21,8 @@ namespace Nep3ArchipelagoClient.src.Hooks
         public static IReverseWrapper<ChangeText> _onTextRead;
         public static IReverseWrapper<GetGatherSpot> _onGatherSpot;
         public static IReverseWrapper<CollectGatherSpot> _onCollectionGatherSpot;
+        public static IReverseWrapper<GetDungeonTresureId> _onGetDungeonTresureId;
+
 
 
         public static IFunction<AddItemToInventory> _addItemFunction;
@@ -61,6 +64,12 @@ namespace Nep3ArchipelagoClient.src.Hooks
             };
             _asmHooks.Add(hooks.CreateAsmHook(collectGatherSpot, (int)(Mod.ModuleBase + 0x20C59B), AsmHookBehaviour.DoNotExecuteOriginal).Activate());
 
+            string[] getTreasureId = {
+                "use32",
+                $"{hooks.Utilities.GetAbsoluteCallMnemonics(OnGetDungeonTresureId, out _onGetDungeonTresureId)}",
+            };
+            _asmHooks.Add(hooks.CreateAsmHook(getTreasureId, (int)(Mod.ModuleBase + 0xB8D1D), AsmHookBehaviour.ExecuteFirst).Activate());
+
         }
         //get dungeon and spot id to send it to the ap server
         [Function(new[] { FunctionAttribute.Register.eax,FunctionAttribute.Register.edx }, FunctionAttribute.Register.eax, FunctionAttribute.StackCleanup.Callee)]
@@ -70,6 +79,8 @@ namespace Nep3ArchipelagoClient.src.Hooks
             Console.WriteLine($"Dungeon ID = {eax}, Gather Flag ID = {edx}");
             long GatherspotID = (eax * 10) + edx+1;
             Mod.APClient.SendLocation(GatherspotID);
+            Mod.APClient.GetItemName(GatherspotID, ref ReplacementText);
+            DoReplaceText = true;
             return eax;
         }
 
@@ -81,6 +92,7 @@ namespace Nep3ArchipelagoClient.src.Hooks
         public static unsafe int OnCollectGatherSpot(uint eax,uint edx)
         {
             Console.WriteLine($"item id:{eax} quantity:{edx}");
+            Client.collectedFirstItem = true;
             if (!IsAPItem)
                 //non randomized item
                 if(true)
@@ -102,7 +114,22 @@ namespace Nep3ArchipelagoClient.src.Hooks
             if (DoReplaceText)
                 fixed (byte* p = ReplacementText)
                     stringPointer = (int)p;
+            DoReplaceText = false;
             return stringPointer;
+        }
+
+        public static int DungeonTreasureId = 0;
+        [Function(new[] { FunctionAttribute.Register.eax, FunctionAttribute.Register.ecx }, FunctionAttribute.Register.eax, FunctionAttribute.StackCleanup.Callee)]
+        public delegate int GetDungeonTresureId(int eax,int dungeonTreasureID);
+        public static unsafe int OnGetDungeonTresureId(int eax,int ecx)
+        {
+            Console.WriteLine($"Dungeon Tresure ID:{ecx}");
+            DungeonTreasureId = 1_000_000+ecx;
+            DoReplaceText = true; 
+            Mod.APClient.SendLocation(DungeonTreasureId);
+            Mod.APClient.GetItemName(DungeonTreasureId, ref ReplacementText);
+
+            return eax;
         }
 
 

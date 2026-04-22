@@ -6,8 +6,10 @@ using Reloaded.Hooks.Definitions.Enums;
 using Reloaded.Hooks.Definitions.Structs;
 using Reloaded.Hooks.Definitions.X86;
 using Reloaded.Memory;
+using System.Diagnostics.Metrics;
 using System.Runtime.CompilerServices;
 using System.Runtime.Intrinsics.Arm;
+using System.Text;
 
 namespace Nep3ArchipelagoClient.src.Hooks
 {
@@ -22,8 +24,15 @@ namespace Nep3ArchipelagoClient.src.Hooks
         public static IReverseWrapper<GetGatherSpot> _onGatherSpot;
         public static IReverseWrapper<CollectGatherSpot> _onCollectionGatherSpot;
         public static IReverseWrapper<GetDungeonTresureId> _onGetDungeonTresureId;
+        public static IReverseWrapper<GetEnemyDropString> _onGetEnemyDropString;
 
-
+        public static void ClearReplacementText()
+        {
+            for (int i = 0; i < ReplacementText.Length; i++)
+            {
+                ReplacementText[i] = 0;
+            }
+        }
 
         public static IFunction<AddItemToInventory> _addItemFunction;
         public static void SetUpFunctionHooks(IReloadedHooks hooks)
@@ -70,6 +79,26 @@ namespace Nep3ArchipelagoClient.src.Hooks
             };
             _asmHooks.Add(hooks.CreateAsmHook(getTreasureId, (int)(Mod.ModuleBase + 0xB8D1D), AsmHookBehaviour.ExecuteFirst).Activate());
 
+            string[] enemyDrop = {
+                "use32",
+                $"{hooks.Utilities.GetAbsoluteCallMnemonics(OnGetEnemyDropString, out _onGetEnemyDropString)}",
+            };
+            _asmHooks.Add(hooks.CreateAsmHook(enemyDrop, (int)(Mod.ModuleBase + 0x174602), AsmHookBehaviour.ExecuteFirst).Activate());
+
+        }
+        //enemy Drops
+        public static int counter = 0;
+        [Function(new[] { FunctionAttribute.Register.eax }, FunctionAttribute.Register.eax, FunctionAttribute.StackCleanup.Callee)]
+        public delegate int GetEnemyDropString(int dungeonID);
+        public static unsafe int OnGetEnemyDropString(int eax)
+        {
+            Console.WriteLine($"Item number {counter}");
+            ClearReplacementText();
+            ReadOnlySpan<byte> text = Encoding.UTF8.GetBytes($"Item {counter}");
+            text.ToArray().CopyTo(ReplacementText, 0);
+            counter++;
+            DoReplaceText = true;
+            return eax;
         }
         //get dungeon and spot id to send it to the ap server
         [Function(new[] { FunctionAttribute.Register.eax,FunctionAttribute.Register.edx }, FunctionAttribute.Register.eax, FunctionAttribute.StackCleanup.Callee)]

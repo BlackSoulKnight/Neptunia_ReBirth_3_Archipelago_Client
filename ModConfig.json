@@ -3,7 +3,7 @@
   "ModName": "Neptunia 3 Archipelago Client",
   "ModAuthor": "BlackSoulKnight",
   "ModVersion": "0.0.1",
-  "ModDescription": "Description",
+  "ModDescription": "Client Mod for Archipelago",
   "ModDll": "Nep3ArchipelagoClient.dll",
   "ModIcon": "Preview.png",
   "ModR2RManagedDll32": "x86/Nep3ArchipelagoClient.dll",

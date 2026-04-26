@@ -23,6 +23,10 @@ namespace Nep3ArchipelagoClient
         {
             return memory.Read<int>(SaveGamePointer + 0xC7CC);
         }
+        public int CurrentDungeon()
+        {
+            return memory.Read<int>(SaveGamePointer - 0x1EA8FA);
+        }
 
         public void test()
         {

@@ -84,15 +84,24 @@ public class Mod : ModBase // <= Do not Remove.
         t.Start();
     }
 
+    public static SaveGame SaveGame;
     static void MainLoop()
     {
-        
-        SaveGame save = new(ModuleBase);
-        Inventory inv = new(save);
+        bool test = true;
+        SaveGame = new(ModuleBase);
+        Inventory inv = new(SaveGame);
         while(true)
         {
             Thread.Sleep(100);
             APClient.update();
+            SaveGame.SetupAllNations();
+            if(!SaveGame.DoOnceAfterChapter1Start && test)
+            {
+                Thread.Sleep(1_000);
+                test = false;
+                for (int i = 1; i < 68; i++)
+                    SaveGame.AddDungeon((byte)i);
+            }
         }
     }
 

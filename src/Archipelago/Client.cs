@@ -89,13 +89,18 @@ namespace Nep3ArchipelagoClient.Archipelago
             return false;
         }
         public static bool collectedFirstItem = false;
+        private static long DungeonBaseID = 2_000_000;
         public void update()
         {
             if (IsConnected && collectedFirstItem)
             {
                 if (CurrentItemNR < Session.Items.AllItemsReceived.Count)
                 {
-                    ItemCollection._addItemFunction.GetWrapper()((uint)Session.Items.AllItemsReceived[(int)CurrentItemNR].ItemId,1,(char)1);
+                    var itemId = Session.Items.AllItemsReceived[(int)CurrentItemNR].ItemId;
+                    if (itemId > DungeonBaseID && itemId < DungeonBaseID + 1_000_000)
+                        Mod.SaveGame.AddDungeon((byte)(itemId - DungeonBaseID));
+                    else
+                        ItemCollection._addItemFunction.GetWrapper()((uint)itemId, 1, (char)1);
                     CurrentItemNR++;
                 }
             }

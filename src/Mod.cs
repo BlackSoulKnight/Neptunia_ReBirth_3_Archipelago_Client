@@ -84,7 +84,7 @@ public class Mod : ModBase // <= Do not Remove.
         t.Start();
     }
 
-    public static SaveGame SaveGame;
+    internal static SaveGame SaveGame;
     static void MainLoop()
     {
         bool test = true;
@@ -100,7 +100,9 @@ public class Mod : ModBase // <= Do not Remove.
                 Thread.Sleep(1_000);
                 test = false;
                 for (int i = 1; i < 68; i++)
-                    SaveGame.AddDungeon((byte)i);
+                {
+                    //SaveGame.AddDungeon((byte)i);
+                }
             }
         }
     }

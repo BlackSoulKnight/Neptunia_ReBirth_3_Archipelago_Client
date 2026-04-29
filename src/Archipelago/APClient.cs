@@ -1,5 +1,6 @@
 ﻿using Archipelago.MultiClient.Net;
 using Archipelago.MultiClient.Net.Enums;
+using Archipelago.MultiClient.Net.Models;
 using Nep3ArchipelagoClient.src.Hooks;
 
 namespace Nep3ArchipelagoClient.Archipelago
@@ -14,7 +15,7 @@ namespace Nep3ArchipelagoClient.Archipelago
         public bool IsConnected => Session != null && Session.Socket.Connected;
         private long PlayerID = 0;
         private long CurrentItemNR = 0;
-
+        private Dictionary<long, ScoutedItemInfo> ItemAtLocation = new();
         public bool ConnectToServer(string destination,int port,string user, string password = "")
         {
             if (Session != null && Session.Socket.Connected)
@@ -46,7 +47,14 @@ namespace Nep3ArchipelagoClient.Archipelago
                 return false;
             }
             LoginSuccessful success = (LoginSuccessful)loginResult;
+            InitalizeItemNameLookup();
             return true;
+        }
+
+        private async void InitalizeItemNameLookup()
+        {
+            long[] locations = Session.Locations.AllLocations.ToArray();
+            ItemAtLocation = new(await Session.Locations.ScoutLocationsAsync(locations));
         }
 
         public void GetItemName(long id,ref byte[] output)
@@ -55,16 +63,14 @@ namespace Nep3ArchipelagoClient.Archipelago
             {
                 output[i] = 0;
             }
-
             if (IsConnected)
             {
-                var result = Session.Locations.ScoutLocationsAsync(id).Result;
-                if (!result.ContainsKey(id))
+                if (!ItemAtLocation.ContainsKey(id))
                 {
                     "Location not Found"u8.ToArray().CopyTo(output, 0);
                     return;
                 }
-                var itemName = result[id].ItemName;
+                var itemName = ItemAtLocation[id].ItemName;
                 int idx = 0;
                 if (String.IsNullOrEmpty(itemName))
                     "No Itemname Found"u8.ToArray().CopyTo(output, 0);

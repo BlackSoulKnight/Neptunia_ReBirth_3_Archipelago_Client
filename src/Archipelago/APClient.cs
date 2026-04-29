@@ -4,8 +4,11 @@ using Nep3ArchipelagoClient.src.Hooks;
 
 namespace Nep3ArchipelagoClient.Archipelago
 {
-    public class Client
+    public class APClient
     {
+        public const long TreasureBaseID = 1_000_000;
+        public const long DungeonBaseID = 2_000_000;
+        public const long EnemyBaseID = 3_000_000;
         private ArchipelagoSession? Session;
         private LoginResult? loginResult = null;
         public bool IsConnected => Session != null && Session.Socket.Connected;
@@ -89,7 +92,6 @@ namespace Nep3ArchipelagoClient.Archipelago
             return false;
         }
         public static bool collectedFirstItem = false;
-        private static long DungeonBaseID = 2_000_000;
         public void update()
         {
             if (IsConnected && collectedFirstItem)

@@ -25,6 +25,7 @@ namespace Nep3ArchipelagoClient.src.Hooks
         public static IReverseWrapper<CollectGatherSpot> _onCollectionGatherSpot;
         public static IReverseWrapper<GetDungeonTresureId> _onGetDungeonTresureId;
         public static IReverseWrapper<GetEnemyDropString> _onGetEnemyDropString;
+        public static IReverseWrapper<OnNewEnemyKilled> _onNewEnemyKilled;
 
         public static void ClearReplacementText()
         {
@@ -75,15 +76,33 @@ namespace Nep3ArchipelagoClient.src.Hooks
 
             string[] getTreasureId = {
                 "use32",
+                "pushad",
+                "pushfd",
                 $"{hooks.Utilities.GetAbsoluteCallMnemonics(OnGetDungeonTresureId, out _onGetDungeonTresureId)}",
+                "popfd",
+                "popad",
             };
             _asmHooks.Add(hooks.CreateAsmHook(getTreasureId, (int)(Mod.ModuleBase + 0xB8D1D), AsmHookBehaviour.ExecuteFirst).Activate());
 
             string[] enemyDrop = {
                 "use32",
+                "pushad",
+                "pushfd",
                 $"{hooks.Utilities.GetAbsoluteCallMnemonics(OnGetEnemyDropString, out _onGetEnemyDropString)}",
+                "popfd",
+                "popad",
             };
             _asmHooks.Add(hooks.CreateAsmHook(enemyDrop, (int)(Mod.ModuleBase + 0x174602), AsmHookBehaviour.ExecuteFirst).Activate());
+
+            string[] enemyKilled = {
+                "use32",
+                "pushad",
+                "pushfd",
+                $"{hooks.Utilities.GetAbsoluteCallMnemonics(SendNewEnemyKilleCheck, out _onNewEnemyKilled)}",
+                "popfd",
+                "popad",
+            };
+            _asmHooks.Add(hooks.CreateAsmHook(enemyKilled, (int)(Mod.ModuleBase + 0xC0280), AsmHookBehaviour.ExecuteFirst).Activate());
 
         }
         //enemy Drops
@@ -121,7 +140,7 @@ namespace Nep3ArchipelagoClient.src.Hooks
         public static unsafe int OnCollectGatherSpot(uint eax,uint edx)
         {
             Console.WriteLine($"item id:{eax} quantity:{edx}");
-            Client.collectedFirstItem = true;
+            APClient.collectedFirstItem = true;
             if (!IsAPItem)
                 //non randomized item
                 if(true)
@@ -147,13 +166,12 @@ namespace Nep3ArchipelagoClient.src.Hooks
             return stringPointer;
         }
 
-        public static int DungeonTreasureId = 0;
         [Function(new[] { FunctionAttribute.Register.eax, FunctionAttribute.Register.ecx }, FunctionAttribute.Register.eax, FunctionAttribute.StackCleanup.Callee)]
         public delegate int GetDungeonTresureId(int eax,int dungeonTreasureID);
         public static unsafe int OnGetDungeonTresureId(int eax,int ecx)
         {
             Console.WriteLine($"Dungeon Tresure ID:{ecx}");
-            DungeonTreasureId = 1_000_000+ecx;
+            var DungeonTreasureId = APClient.DungeonBaseID+ecx;
             DoReplaceText = true; 
             Mod.APClient.SendLocation(DungeonTreasureId);
             Mod.APClient.GetItemName(DungeonTreasureId, ref ReplacementText);
@@ -161,6 +179,16 @@ namespace Nep3ArchipelagoClient.src.Hooks
             return eax;
         }
 
+        [Function(new[] { FunctionAttribute.Register.eax, FunctionAttribute.Register.esi }, FunctionAttribute.Register.eax, FunctionAttribute.StackCleanup.Callee)]
+        public delegate int OnNewEnemyKilled(int eax, int enemyID);
+        public static int SendNewEnemyKilleCheck(int eax, int esi)
+        {
+            var enemyId = esi & 0xFF;
+            var EnemyId = APClient.EnemyBaseID + enemyId;
+            Console.WriteLine($"Killed new enemy with the ID:{enemyId}");
+            Mod.APClient.SendLocation(EnemyId);
+            return eax;
+        }
 
     }
 }

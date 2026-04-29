@@ -51,7 +51,7 @@ public class Mod : ModBase // <= Do not Remove.
     private readonly IModConfig _modConfig;
 
     public static UIntPtr ModuleBase = 0x400000;
-    public static Archipelago.Client APClient = new();
+    public static Archipelago.APClient APClient = new();
 
     public Mod(ModContext context)
     {

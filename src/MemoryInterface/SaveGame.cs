@@ -33,7 +33,7 @@ namespace Nep3ArchipelagoClient
         public bool DoOnceAfterChapter1Start = true;
         public void SetupAllNations()
         {
-            if (DoOnceAfterChapter1Start && (memory.Read<byte>(SaveGamePointer + 0x928) & 1<<5) > 0)
+            if (DoOnceAfterChapter1Start && (memory.Read<byte>(SaveGamePointer + 0x91E) & 1<<7) > 0)
             {
                 var worldMapThing = memory.Read<byte>(SaveGamePointer + 0xE04);
                 worldMapThing |= 1 << 4;
@@ -50,6 +50,7 @@ namespace Nep3ArchipelagoClient
                     memory.Write<byte>(item + 2, nationIdx);
                     nationIdx++;
                 }
+                AddDungeon(1);
             }
         }
 

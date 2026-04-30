@@ -26,6 +26,8 @@ namespace Nep3ArchipelagoClient.src.Hooks
         public static IReverseWrapper<GetDungeonTresureId> _onGetDungeonTresureId;
         public static IReverseWrapper<GetEnemyDropString> _onGetEnemyDropString;
         public static IReverseWrapper<OnNewEnemyKilled> _onNewEnemyKilled;
+        public static IFunction<AddItemToInventory> _addItemFunction;
+        public static IFunction<AddNewCharater> _addNewCharacter;
 
         public static void ClearReplacementText()
         {
@@ -35,13 +37,13 @@ namespace Nep3ArchipelagoClient.src.Hooks
             }
         }
 
-        public static IFunction<AddItemToInventory> _addItemFunction;
         public static void SetUpFunctionHooks(IReloadedHooks hooks)
         {
             if (hooks == null) return;
             // Game functions
             //_addItemFunction = new Function<AddItemToInventory>((nuint)(Mod.ModuleBase + 0x0bdb90), hooks);
             _addItemFunction = hooks.CreateFunction<AddItemToInventory>((int)(Mod.ModuleBase + 0x0bdb90));
+            _addNewCharacter = hooks.CreateFunction<AddNewCharater>((int)(Mod.ModuleBase + 0xBADA0));
             Console.WriteLine("Test function location {0:X}", _addItemFunction.Address);
             //replacements
             string[] loadText =
@@ -104,6 +106,12 @@ namespace Nep3ArchipelagoClient.src.Hooks
             };
             _asmHooks.Add(hooks.CreateAsmHook(enemyKilled, (int)(Mod.ModuleBase + 0xC0280), AsmHookBehaviour.ExecuteFirst).Activate());
 
+            string[] removeDungeonCreation = {
+                "use32",
+                "ret",
+            };
+            _asmHooks.Add(hooks.CreateAsmHook(removeDungeonCreation, (int)(Mod.ModuleBase + 0xC2BD0), AsmHookBehaviour.DoNotExecuteOriginal).Activate());
+
         }
         //enemy Drops
         public static int counter = 0;
@@ -134,6 +142,8 @@ namespace Nep3ArchipelagoClient.src.Hooks
 
         [Function(CallingConventions.Stdcall)]
         public delegate int AddItemToInventory(uint itemID,uint qunatity,char dunno);
+        [Function(CallingConventions.Stdcall)]
+        public delegate int AddNewCharater(uint characterID);
         //determines if an item need to be set in the players inventory
         [Function(new FunctionAttribute.Register[] { FunctionAttribute.Register.eax,FunctionAttribute.Register.edx }, FunctionAttribute.Register.eax, FunctionAttribute.StackCleanup.Callee)]
         public delegate int CollectGatherSpot(uint item,uint quantity);
@@ -189,6 +199,5 @@ namespace Nep3ArchipelagoClient.src.Hooks
             Mod.APClient.SendLocation(EnemyId);
             return eax;
         }
-
     }
 }

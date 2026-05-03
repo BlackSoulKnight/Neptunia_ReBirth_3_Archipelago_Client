@@ -1,4 +1,5 @@
-﻿using Reloaded.Memory;
+﻿using Nep3ArchipelagoClient.src.Hooks;
+using Reloaded.Memory;
 
 
 namespace Nep3ArchipelagoClient.MemoryInterface
@@ -52,21 +53,7 @@ namespace Nep3ArchipelagoClient.MemoryInterface
 
         public void AddItem(short itemID,byte amount)
         {
-            if(FindItem(itemID,out int pos))
-            {
-                byte currentAmount = GetItemCountAtSlot(pos);
-                amount = (byte)Math.Min(99, Math.Max(currentAmount + amount, 0));
-                Memory.Instance.Write<short>(ItemPosition(pos)+ItemCountOffsetPointer, amount);
-            }
-            else
-            {
-                if (amount > 99)
-                    amount = 99;
-                var newpos = ItemPosition(CurrentInventoryCount);
-                Memory.Instance.Write<short>(newpos,itemID);
-                Memory.Instance.Write<short>(newpos+ItemCountOffsetPointer,amount);
-                Memory.Instance.Write<short>(InventorySizePointer, (short)(CurrentInventoryCount+1));
-            }
+            ItemCollection._addItemFunction.GetWrapper()((uint)itemID, amount, (char)1);
         }
     }
 }

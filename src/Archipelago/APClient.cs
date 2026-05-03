@@ -2,6 +2,8 @@
 using Archipelago.MultiClient.Net.Enums;
 using Archipelago.MultiClient.Net.Models;
 using Nep3ArchipelagoClient.src.Hooks;
+using Nep3ArchipelagoClient.src.Neptunia_3_Data;
+using Nep3ArchipelagoClient.src.Neptunia_3_Data.ProgressiveGear;
 
 namespace Nep3ArchipelagoClient.Archipelago
 {
@@ -13,7 +15,7 @@ namespace Nep3ArchipelagoClient.Archipelago
         //items
         public const long DungeonBaseID = 2_000_000;
         const long ChracterBaseID = 3_000_000;
-        const long ProgressiveGear = 3_500_000;
+        const long ProgressiveGearID = 3_500_000;
         private ArchipelagoSession? Session;
         private LoginResult? loginResult = null;
         public bool IsConnected => Session != null && Session.Socket.Connected;
@@ -111,10 +113,10 @@ namespace Nep3ArchipelagoClient.Archipelago
                     var itemId = Session.Items.AllItemsReceived[currentItemNr].ItemId;
                     if (itemId > DungeonBaseID && itemId < DungeonBaseID + 1_000_000)
                         Mod.SaveGame.AddDungeon((byte)(itemId - DungeonBaseID));
-                    else if (itemId > ChracterBaseID && itemId < ProgressiveGear)
+                    else if (itemId > ChracterBaseID && itemId < ProgressiveGearID)
                         ItemCollection._addNewCharacter.GetWrapper()((uint)(itemId - ChracterBaseID));
-                    else if (itemId > ProgressiveGear)
-                        Console.WriteLine("Add all the gear items to the Player inventory");
+                    else if (itemId > ProgressiveGearID)
+                        ProgressiveGear.ProgressiveGears[(CharacterId)(itemId - ProgressiveGearID)].IncreaseGearTier();
                     else
                         ItemCollection._addItemFunction.GetWrapper()((uint)itemId, 1, (char)1);
                     Mod.SaveGame.IncrementCurrentApItemCount();

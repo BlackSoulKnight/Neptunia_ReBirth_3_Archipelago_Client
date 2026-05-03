@@ -85,16 +85,17 @@ public class Mod : ModBase // <= Do not Remove.
     }
 
     internal static SaveGame SaveGame;
+    internal static Inventory Inventory;
     static void MainLoop()
     {
         bool test = true;
         SaveGame = new(ModuleBase);
-        Inventory inv = new(SaveGame);
+        Inventory = new(SaveGame);
         while(true)
         {
             Thread.Sleep(100);
             APClient.update();
-            SaveGame.SetupAllNations();
+            SaveGame.SetupSaveFile();
             if(!SaveGame.DoOnceAfterChapter1Start && test)
             {
                 Thread.Sleep(1_000);

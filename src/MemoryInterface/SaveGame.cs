@@ -1,5 +1,6 @@
 ﻿using Nep3ArchipelagoClient.src.Hooks;
 using Nep3ArchipelagoClient.src.Neptunia_3_Data;
+using Nep3ArchipelagoClient.src.Neptunia_3_Data.ProgressiveGear;
 using Reloaded.Memory;
 using System;
 using System.Collections.Generic;
@@ -31,29 +32,41 @@ namespace Nep3ArchipelagoClient
         }
 
         public bool DoOnceAfterChapter1Start = true;
-        public void SetupAllNations()
+        public void SetupSaveFile()
         {
-            if (DoOnceAfterChapter1Start && (memory.Read<byte>(SaveGamePointer + 0x91E) & 1<<7) > 0)
+            if (DoOnceAfterChapter1Start && (memory.Read<byte>(SaveGamePointer + 0x91E) & 1 << 7) > 0)
             {
-                var worldMapThing = memory.Read<byte>(SaveGamePointer + 0xE04);
-                worldMapThing |= 1 << 4;
-                memory.Write<byte>(SaveGamePointer + 0xE04, worldMapThing);
                 DoOnceAfterChapter1Start = false;
-                memory.Write<byte>(SaveGamePointer + 0xfe44, 9);
-                var firstItemAt = SaveGamePointer + 0xfe48 + 6;
-                var target = SaveGamePointer + 0xfe48 + 6 * 9;
-                byte nationIdx = 1;
-                for (var item = SaveGamePointer + 0xfe48+6; item < target; item += 6)
-                {
-                    memory.Write<byte>(item, 0x0A);
-                    memory.Write<byte>(item + 1, 0x01);
-                    memory.Write<byte>(item + 2, nationIdx);
-                    nationIdx++;
-                }
-                AddDungeon(1);
+                SetupAllNations();
+                InitGear();
             }
         }
-
+        public void SetupAllNations()
+        {
+            var worldMapThing = memory.Read<byte>(SaveGamePointer + 0xE04);
+            worldMapThing |= 1 << 4;
+            memory.Write<byte>(SaveGamePointer + 0xE04, worldMapThing);
+            memory.Write<byte>(SaveGamePointer + 0xfe44, 9);
+            var firstItemAt = SaveGamePointer + 0xfe48 + 6;
+            var target = SaveGamePointer + 0xfe48 + 6 * 9;
+            byte nationIdx = 1;
+            for (var item = SaveGamePointer + 0xfe48+6; item < target; item += 6)
+            {
+                memory.Write<byte>(item, 0x0A);
+                memory.Write<byte>(item + 1, 0x01);
+                memory.Write<byte>(item + 2, nationIdx);
+                nationIdx++;
+            }
+            AddDungeon(1);
+            
+        }
+        public void InitGear()
+        {
+            foreach(var character in ProgressiveGear.ProgressiveGears.Values)
+            {
+                character.UnlockTier(0);
+            }
+        }
         public void AddDungeon(byte dungeonId)
         {
             if (dungeonId == 66) return;

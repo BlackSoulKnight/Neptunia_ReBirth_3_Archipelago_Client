@@ -7,14 +7,17 @@ namespace Nep3ArchipelagoClient.Archipelago
 {
     public class APClient
     {
+        //checks
         public const long TreasureBaseID = 1_000_000;
+        public const long EnemyBaseID = 2_000_000;
+        //items
         public const long DungeonBaseID = 2_000_000;
-        public const long EnemyBaseID = 3_000_000;
+        const long ChracterBaseID = 3_000_000;
+        const long ProgressiveGear = 3_500_000;
         private ArchipelagoSession? Session;
         private LoginResult? loginResult = null;
         public bool IsConnected => Session != null && Session.Socket.Connected;
         private long PlayerID = 0;
-        private long CurrentItemNR = 0;
         private Dictionary<long, ScoutedItemInfo> ItemAtLocation = new();
         public bool ConnectToServer(string destination,int port,string user, string password = "")
         {
@@ -102,14 +105,19 @@ namespace Nep3ArchipelagoClient.Archipelago
         {
             if (IsConnected && collectedFirstItem)
             {
-                if (CurrentItemNR < Session.Items.AllItemsReceived.Count)
+                int currentItemNr = Mod.SaveGame.GetCurrentApItemCount();
+                if (currentItemNr < Session.Items.AllItemsReceived.Count)
                 {
-                    var itemId = Session.Items.AllItemsReceived[(int)CurrentItemNR].ItemId;
+                    var itemId = Session.Items.AllItemsReceived[currentItemNr].ItemId;
                     if (itemId > DungeonBaseID && itemId < DungeonBaseID + 1_000_000)
                         Mod.SaveGame.AddDungeon((byte)(itemId - DungeonBaseID));
+                    else if (itemId > ChracterBaseID && itemId < ProgressiveGear)
+                        ItemCollection._addNewCharacter.GetWrapper()((uint)(itemId - ChracterBaseID));
+                    else if (itemId > ProgressiveGear)
+                        Console.WriteLine("Add all the gear items to the Player inventory");
                     else
                         ItemCollection._addItemFunction.GetWrapper()((uint)itemId, 1, (char)1);
-                    CurrentItemNR++;
+                    Mod.SaveGame.IncrementCurrentApItemCount();
                 }
             }
         }

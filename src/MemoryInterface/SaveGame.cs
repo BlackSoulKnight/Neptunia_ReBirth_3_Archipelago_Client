@@ -10,7 +10,7 @@ namespace Nep3ArchipelagoClient
     internal class SaveGame
     {
         public UIntPtr SaveGamePointer;
-
+        uint DungeonCountOffset = 0x103B0;
         Memory memory = Memory.Instance;
 
         public SaveGame(UIntPtr baseAddress)
@@ -76,6 +76,15 @@ namespace Nep3ArchipelagoClient
             Console.WriteLine($"Inventory size = {memory.Read<int>(SaveGamePointer+0xC7CC)}");
             Console.WriteLine($"Jump Count = {memory.Read<int>(jmpCounter)}");
 
+        }
+        public int GetCurrentApItemCount()
+        {
+            return Memory.Instance.Read<int>(SaveGamePointer + DungeonCountOffset - 16);
+        }
+        public void IncrementCurrentApItemCount()
+        {
+            var value = Memory.Instance.Read<int>(SaveGamePointer + DungeonCountOffset - 16)+1;
+            Memory.Instance.Write<int>(SaveGamePointer + DungeonCountOffset - 16,value);
         }
 
         public static void AddItem(int id,int quantity) => ItemCollection._addItemFunction.GetWrapper()((uint)id, (uint)quantity, (char)1);

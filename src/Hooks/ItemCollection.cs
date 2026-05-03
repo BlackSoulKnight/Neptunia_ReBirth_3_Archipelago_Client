@@ -181,7 +181,7 @@ namespace Nep3ArchipelagoClient.src.Hooks
         public static unsafe int OnGetDungeonTresureId(int eax,int ecx)
         {
             Console.WriteLine($"Dungeon Tresure ID:{ecx}");
-            var DungeonTreasureId = APClient.DungeonBaseID+ecx;
+            long DungeonTreasureId = APClient.TreasureBaseID+ecx;
             DoReplaceText = true; 
             Mod.APClient.SendLocation(DungeonTreasureId);
             Mod.APClient.GetItemName(DungeonTreasureId, ref ReplacementText);

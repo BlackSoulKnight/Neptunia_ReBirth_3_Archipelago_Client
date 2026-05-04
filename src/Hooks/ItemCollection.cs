@@ -193,7 +193,7 @@ namespace Nep3ArchipelagoClient.src.Hooks
         public delegate int OnNewEnemyKilled(int eax, int enemyID);
         public static int SendNewEnemyKilleCheck(int eax, int esi)
         {
-            var enemyId = esi & 0xFF;
+            var enemyId = esi & 0xFFFF;
             var EnemyId = APClient.EnemyBaseID + enemyId;
             Console.WriteLine($"Killed new enemy with the ID:{enemyId}");
             Mod.APClient.SendLocation(EnemyId);

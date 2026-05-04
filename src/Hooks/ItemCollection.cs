@@ -58,20 +58,24 @@ namespace Nep3ArchipelagoClient.src.Hooks
 
             string[] loadGatheringSpot = {
                 "use32",
+                "pushad",
+                "pushfd",
                 "mov edx,[esp+20]",
                 $"{hooks.Utilities.GetAbsoluteCallMnemonics(OnGetGatherSpot, out _onGatherSpot)}",
+                "popfd",
+                "popad",
             };
             _asmHooks.Add(hooks.CreateAsmHook(loadGatheringSpot, (int)(Mod.ModuleBase + 0xC32DE), AsmHookBehaviour.ExecuteFirst).Activate());
 
             string[] collectGatherSpot = {
                 "use32",
-                "push eax",
-                "push edx",
+                "pushad",
+                "pushfd",
                 "mov edx,[ebp-0x228]",
                 "mov eax,[ebp-0x22c]",
                 $"{hooks.Utilities.GetAbsoluteCallMnemonics(OnCollectGatherSpot, out _onCollectionGatherSpot)}",
-                "pop eax",
-                "pop edx",
+                "popfd",
+                "popad",
                 "mov ecx,[ebp-0x04]",
             };
             _asmHooks.Add(hooks.CreateAsmHook(collectGatherSpot, (int)(Mod.ModuleBase + 0x20C59B), AsmHookBehaviour.DoNotExecuteOriginal).Activate());

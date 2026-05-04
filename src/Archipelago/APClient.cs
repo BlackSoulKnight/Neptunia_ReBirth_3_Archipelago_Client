@@ -92,11 +92,18 @@ namespace Nep3ArchipelagoClient.Archipelago
                 "Not Connected"u8.ToArray().CopyTo(output, 0);
             }
         }
-
+        public void CheckIfGoaled(long id)
+        {
+            //currently only Rei kill
+            if (id == EnemyBaseID + 1042)
+                Session.SetGoalAchieved();
+                
+        }
         public bool SendLocation(long id)
         {
             if (IsConnected)
             {
+                CheckIfGoaled(id);
                 Session.Locations.CompleteLocationChecks(id);
                 return true;
             }

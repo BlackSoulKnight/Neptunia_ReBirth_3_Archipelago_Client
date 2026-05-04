@@ -12,7 +12,7 @@ namespace Nep3ArchipelagoClient
     {
         public UIntPtr SaveGamePointer;
         uint DungeonCountOffset = 0x103B0;
-        Memory memory = Memory.Instance;
+        static Memory memory = Memory.Instance;
 
         public SaveGame(UIntPtr baseAddress)
         {
@@ -99,7 +99,26 @@ namespace Nep3ArchipelagoClient
             var value = Memory.Instance.Read<int>(SaveGamePointer + DungeonCountOffset - 16)+1;
             Memory.Instance.Write<int>(SaveGamePointer + DungeonCountOffset - 16,value);
         }
+        public void SetTrueEndFlag()
+        {
+            var reiEvent = memory.Read<byte>(SaveGamePointer + 0x999);
+            reiEvent |= 0xFE;
+            memory.Write<byte>(SaveGamePointer + 0x999, reiEvent);
+        }
+        public static void AddItem(int id, int quantity)
+        {
+            ItemCollection._addItemFunction.GetWrapper()((uint)id, (uint)quantity, (char)1);
 
-        public static void AddItem(int id,int quantity) => ItemCollection._addItemFunction.GetWrapper()((uint)id, (uint)quantity, (char)1);
+            //goal condition
+            bool pudding = Mod.Inventory.FindItem(203, out int _);
+            bool syringe = Mod.Inventory.FindItem(204, out int _);
+            bool notebook = Mod.Inventory.FindItem(205, out int _);
+            bool doll = Mod.Inventory.FindItem(206, out int _);
+            bool drawing = Mod.Inventory.FindItem(210, out int _);
+            if (pudding && syringe && notebook && doll && drawing)
+            {
+                Mod.SaveGame.SetTrueEndFlag();
+            }
+        }
     }
 }

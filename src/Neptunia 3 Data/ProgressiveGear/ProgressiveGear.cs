@@ -25,6 +25,8 @@ namespace Nep3ArchipelagoClient.src.Neptunia_3_Data.ProgressiveGear
             list.Add(CharacterId.blanc, new BlancGear());
             list.Add(CharacterId.noire, new NoireGear());
             list.Add(CharacterId.ram, new RamGear());
+            list.Add(CharacterId.uni, new UniGear());
+            list.Add(CharacterId.vert, new VertGear());
             list.Add(CharacterId.rom, new RomGear());
             list.Add(CharacterId.all, new ArmorGear());
             return list;

@@ -11,7 +11,7 @@ namespace Nep3ArchipelagoClient.src.Neptunia_3_Data.ProgressiveGear
     internal class ProgressiveGear
     {
         protected Dictionary<int, List<short>> GearList = new();
-        protected byte Amount = 1;
+        protected byte Amount = 2;
         static Inventory Inventory => Mod.Inventory;
         public static Dictionary<CharacterId,ProgressiveGear> ProgressiveGears = InitList();
 

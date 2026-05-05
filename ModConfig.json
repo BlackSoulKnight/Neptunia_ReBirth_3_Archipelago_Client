@@ -10,12 +10,47 @@
   "ModR2RManagedDll64": "x64/Nep3ArchipelagoClient.dll",
   "ModNativeDll32": "",
   "ModNativeDll64": "",
+  "Tags": [],
+  "CanUnload": false,
+  "HasExports": false,
   "IsLibrary": false,
   "ReleaseMetadataFileName": "Nep3ArchipelagoClient.ReleaseMetadata.json",
-  "PluginData": {},
+  "IgnoreRegexes": [
+    ".*\\.json"
+  ],
+  "IncludeRegexes": [
+    "\\.deps\\.json",
+    "\\.runtimeconfig\\.json",
+    "ModConfig\\.json"
+  ],
+  "PluginData": {
+    "GitHubDependencies": {
+      "IdToConfigMap": {
+        "reloaded.sharedlib.hooks": {
+          "Config": {
+            "UserName": "Sewer56",
+            "RepositoryName": "Reloaded.SharedLib.Hooks.ReloadedII",
+            "UseReleaseTag": true,
+            "AssetFileName": "reloaded.sharedlib.hooks.zip"
+          },
+          "ReleaseMetadataName": "Sewer56.Update.ReleaseMetadata.json"
+        }
+      }
+    },
+    "GitHubRelease": {
+      "UserName": "BlackSoulKnight",
+      "RepositoryName": "Neptunia_ReBirth_3_Archipelago_Client",
+      "UseReleaseTag": true,
+      "AssetFileName": "Nep3ApClient.zip"
+    }
+  },
   "IsUniversalMod": false,
-  "ModDependencies": [ "reloaded.sharedlib.hooks" ],
+  "ModDependencies": [
+    "reloaded.sharedlib.hooks"
+  ],
   "OptionalDependencies": [],
-  "SupportedAppId": [ "neptuniarebirth3.exe" ],
-  "ProjectUrl": ""
+  "SupportedAppId": [
+    "neptuniarebirth3.exe"
+  ],
+  "ProjectUrl": "https://github.com/BlackSoulKnight/Neptunia_ReBirth_3_Archipelago_Client"
 }

@@ -118,10 +118,9 @@ namespace Nep3ArchipelagoClient.Archipelago
             }
             return false;
         }
-        public static bool collectedFirstItem = false;
         public void update()
         {
-            if (IsConnected && collectedFirstItem)
+            if (IsConnected && !Mod.SaveGame.DoOnceAfterChapter1Start)
             {
                 int currentItemNr = Mod.SaveGame.GetCurrentApItemCount();
                 if (currentItemNr < Session.Items.AllItemsReceived.Count)

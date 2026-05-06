@@ -28,15 +28,6 @@ namespace Nep3ArchipelagoClient.src.Hooks
 
         public static void SetupHooks(IReloadedHooks hooks)
         {
-            string[] enemyDrop = {
-                "use32",
-                "pushad",
-                "pushfd",
-                $"{hooks.Utilities.GetAbsoluteCallMnemonics(OnGetEnemyDropString, out _onGetEnemyDropString)}",
-                "popfd",
-                "popad",
-            };
-            _asmHooks.Add(hooks.CreateAsmHook(enemyDrop, (int)(Mod.ModuleBase + 0x174602), AsmHookBehaviour.ExecuteFirst).Activate());
             string[] enemyKilled = {
                 "use32",
                 "pushad",

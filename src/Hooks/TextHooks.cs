@@ -5,7 +5,6 @@ using Reloaded.Hooks.Definitions.Enums;
 using Reloaded.Hooks.Definitions.X86;
 using Reloaded.Memory;
 using System.Text;
-using static Nep3ArchipelagoClient.src.Hooks.EnemyHooks;
 
 namespace Nep3ArchipelagoClient.src.Hooks
 {
@@ -51,7 +50,7 @@ namespace Nep3ArchipelagoClient.src.Hooks
             ReadOnlySpan<byte> text = Encoding.UTF8.GetBytes($"Item {counter}");
             text.ToArray().CopyTo(ReplacementText, 0);
             counter++;
-            DoReplaceText = true;
+            DoReplaceText = false;
             return eax;
         }
         public static void SetupHooks(IReloadedHooks hooks)
@@ -65,6 +64,15 @@ namespace Nep3ArchipelagoClient.src.Hooks
                 //=
             };
             _asmHooks.Add(hooks.CreateAsmHook(loadText, (int)(Mod.ModuleBase + 0xDEA60), AsmHookBehaviour.ExecuteAfter).Activate());
+            string[] enemyDrop = {
+                "use32",
+                "pushad",
+                "pushfd",
+                $"{hooks.Utilities.GetAbsoluteCallMnemonics(OnGetEnemyDropString, out _onGetEnemyDropString)}",
+                "popfd",
+                "popad",
+            };
+            _asmHooks.Add(hooks.CreateAsmHook(enemyDrop, (int)(Mod.ModuleBase + 0x174602), AsmHookBehaviour.ExecuteFirst).Activate());
 
         }
     }

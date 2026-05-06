@@ -145,7 +145,7 @@ namespace Nep3ArchipelagoClient
             for(nuint i = 0; i<5;i ++)
                 memory.Write<byte>(flagPionter+i, 0xFF);
             if (PlanHooks.ReadPlan(53) == 1)
-                PlanHooks.FrocePlan(53, PlanFlags.Active);
+                PlanHooks.FrocePlan(53, PlanFlags.Build);
         }
     }
 }

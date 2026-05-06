@@ -53,7 +53,7 @@ namespace Nep3ArchipelagoClient.MemoryInterface
 
         public void AddItem(short itemID,byte amount)
         {
-            ItemCollection._addItemFunction.GetWrapper()((uint)itemID, amount, (char)1);
+            ItemCollectionHooks._addItemFunction.GetWrapper()((uint)itemID, amount, (char)1);
         }
     }
 }

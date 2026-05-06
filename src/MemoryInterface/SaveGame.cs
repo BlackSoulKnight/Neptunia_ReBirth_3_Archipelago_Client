@@ -4,7 +4,6 @@ using Nep3ArchipelagoClient.src.Neptunia_3_Data.ProgressiveGear;
 using Reloaded.Memory;
 using System;
 using System.Collections.Generic;
-using static Nep3ArchipelagoClient.src.Hooks;
 
 namespace Nep3ArchipelagoClient
 {
@@ -31,15 +30,18 @@ namespace Nep3ArchipelagoClient
             return memory.Read<int>(SaveGamePointer - 0x1EA8FA);
         }
 
-        public bool DoOnceAfterChapter1Start = true;
+        public bool DoOnceAfterChapter1Start => memory.Read<byte>(SaveGamePointer + DungeonCountOffset - 17) == 0;
         public void SetupSaveFile()
         {
-            if (DoOnceAfterChapter1Start && (memory.Read<byte>(SaveGamePointer + 0x91E) & 1 << 7) > 0)
+            if (DoOnceAfterChapter1Start && (memory.Read<byte>(SaveGamePointer + 0x91C) & 1 << 4) > 0)
             {
-                DoOnceAfterChapter1Start = false;
+                memory.Write<byte>(SaveGamePointer + DungeonCountOffset - 17, 1);
                 SetupAllNations();
                 InitGear();
-                RemovePartyMember((int)CharacterId.nepgear);
+                UnlockStuff();
+                AddPartyMember(Mod.APClient.GetStartingCharacter());
+                RemovePartyMember(CharacterId.nepgear);
+                RemovePartyMember(CharacterId.neptune);
             }
         }
         public void SetupAllNations()
@@ -121,6 +123,9 @@ namespace Nep3ArchipelagoClient
                 Mod.SaveGame.SetTrueEndFlag();
             }
         }
+        public static void AddPartyMember(CharacterId character) => AddPartyMember((int)character);
+        public static void AddPartyMember(int characterID) => CharacterHooks._addNewCharacter.GetWrapper()((uint)characterID);
+
         public static void RemovePartyMember(CharacterId character) => RemovePartyMember((int)character);
         public static void RemovePartyMember(int characterId) => CharacterHooks._removePartyMember.GetWrapper()(characterId);
 
@@ -132,6 +137,13 @@ namespace Nep3ArchipelagoClient
             var currentVal = memory.Read<byte>(characterPoint);
             currentVal &= 0xff - 0x80;
             memory.Write<byte>(characterPoint, currentVal);
+        }
+        public static void UnlockStuff()
+        {
+            var flagPionter = CharacterHooks._findCharacter.GetWrapper()(1); // getNeptune save pointer
+            flagPionter -= 305; // move to the flags
+            for(nuint i = 0; i<5;i ++)
+                memory.Write<byte>(flagPionter+i, 0xFF);
         }
     }
 }

@@ -4,6 +4,7 @@ using Archipelago.MultiClient.Net.Models;
 using Nep3ArchipelagoClient.src.Hooks;
 using Nep3ArchipelagoClient.src.Neptunia_3_Data;
 using Nep3ArchipelagoClient.src.Neptunia_3_Data.ProgressiveGear;
+using Newtonsoft.Json.Linq;
 
 namespace Nep3ArchipelagoClient.Archipelago
 {
@@ -21,6 +22,7 @@ namespace Nep3ArchipelagoClient.Archipelago
         public bool IsConnected => Session != null && Session.Socket.Connected;
         private long PlayerID = 0;
         private Dictionary<long, ScoutedItemInfo> ItemAtLocation = new();
+        internal CharacterId StartingCharacter = CharacterId.neptune;
         public bool ConnectToServer(string destination,int port,string user, string password = "")
         {
             if (Session != null && Session.Socket.Connected)
@@ -53,7 +55,13 @@ namespace Nep3ArchipelagoClient.Archipelago
             }
             LoginSuccessful success = (LoginSuccessful)loginResult;
             InitalizeItemNameLookup();
+            InitSlotData(success.SlotData);
             return true;
+        }
+        private void InitSlotData(Dictionary<string,object> slotData)
+        {
+            if (slotData.ContainsKey("start_character"))
+                StartingCharacter = (CharacterId)(int)(long)slotData["start_character"];
         }
 
         private async void InitalizeItemNameLookup()
@@ -62,6 +70,7 @@ namespace Nep3ArchipelagoClient.Archipelago
             ItemAtLocation = new(await Session.Locations.ScoutLocationsAsync(locations));
         }
 
+        internal CharacterId GetStartingCharacter() => StartingCharacter;
         public void GetItemName(long id,ref byte[] output)
         {
             for (int i = 0; i< output.Length; i++)
@@ -121,7 +130,7 @@ namespace Nep3ArchipelagoClient.Archipelago
                     if (itemId > DungeonBaseID && itemId < DungeonBaseID + 1_000_000)
                         Mod.SaveGame.AddDungeon((byte)(itemId - DungeonBaseID));
                     else if (itemId > ChracterBaseID && itemId < ProgressiveGearID)
-                        ItemCollection._addNewCharacter.GetWrapper()((uint)(itemId - ChracterBaseID));
+                        CharacterHooks._addNewCharacter.GetWrapper()((uint)(itemId - ChracterBaseID));
                     else if (itemId > ProgressiveGearID)
                         ProgressiveGear.ProgressiveGears[(CharacterId)(itemId - ProgressiveGearID)].IncreaseGearTier();
                     else

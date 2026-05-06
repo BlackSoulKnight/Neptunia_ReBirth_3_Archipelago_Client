@@ -10,6 +10,8 @@ namespace Nep3ArchipelagoClient.src.Hooks
 {
     internal class CharacterHooks
     {
+        public static List<IAsmHook> _asmHooks = new();
+
         public static IFunction<AddNewCharater> _addNewCharacter;
         public static IFunction<FindCharacterPointer> _findCharacter;
         public static IFunction<RemovePartyMember> _removePartyMember;
@@ -21,7 +23,7 @@ namespace Nep3ArchipelagoClient.src.Hooks
         [Function(CallingConventions.Stdcall)]
         public delegate nuint RemovePartyMember(int characterID);
 
-        public static void SetUpHooks(IReloadedHooks hooks)
+        public static void SetupHooks(IReloadedHooks hooks)
         {
             _addNewCharacter = hooks.CreateFunction<AddNewCharater>((int)(Mod.ModuleBase + 0xBADA0));
             _findCharacter = hooks.CreateFunction<FindCharacterPointer>((int)(Mod.ModuleBase + 0xBB2D0));

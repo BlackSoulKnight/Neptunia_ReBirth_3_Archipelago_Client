@@ -69,7 +69,7 @@ public class Mod : ModBase // <= Do not Remove.
 
         ModuleBase = (UIntPtr)Process.GetCurrentProcess().MainModule!.BaseAddress;
 
-        ItemCollection.SetUpFunctionHooks(_hooks);
+        Hooks.SetupAllHooks(_hooks);
         // For more information about this template, please see
         // https://reloaded-project.github.io/Reloaded-II/ModTemplate/
 

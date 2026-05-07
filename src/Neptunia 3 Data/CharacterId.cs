@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace Nep3ArchipelagoClient.src.Neptunia_3_Data
 {
-    public enum CharacterId
+    public enum CharacterId:int
     {
         neptune =1,
         plutia = 2,

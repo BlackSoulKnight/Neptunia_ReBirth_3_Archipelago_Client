@@ -42,6 +42,9 @@ namespace Nep3ArchipelagoClient
                 AddPartyMember(Mod.APClient.GetStartingCharacter());
                 RemovePartyMember(CharacterId.nepgear);
                 RemovePartyMember(CharacterId.neptune);
+
+                //debug stuff
+                Test_Unlocks();
             }
         }
         public void SetupAllNations()
@@ -146,6 +149,21 @@ namespace Nep3ArchipelagoClient
                 memory.Write<byte>(flagPionter+i, 0xFF);
             if (PlanHooks.ReadPlan(53) == 1)
                 PlanHooks.FrocePlan(53, PlanFlags.Build);
+        }
+
+        public void Test_Unlocks()
+        {
+            foreach(int character in Enum.GetValues(typeof(CharacterId)))
+            {
+                for(int i  = 0; i<10;i ++)
+                    ProgressiveGear.ProgressiveGears[(CharacterId)character].IncreaseGearTier();
+                if (character == 11)
+                    continue;
+                AddPartyMember(character);
+            }
+            foreach(var dungeon in DungeonToNation.link.Keys)
+                AddDungeon(dungeon);
+            
         }
     }
 }

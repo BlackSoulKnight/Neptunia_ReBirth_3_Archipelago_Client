@@ -20,7 +20,7 @@ namespace Nep3ArchipelagoClient.src.Neptunia_3_Data
     }
     internal static class DungeonToNation
     {
-        private static readonly Dictionary<byte,Nation> link = new Dictionary<byte, Nation>() {
+        internal static readonly Dictionary<byte,Nation> link = new Dictionary<byte, Nation>() {
             {1, Nation.Hyperdimension},{2,Nation.Hyperdimension},{3,Nation.Planeptun},{4,Nation.Planeptun},{5,Nation.Laststation},{6,Nation.Laststation},{8,Nation.Laststation},{9,Nation.Laststation},{11,Nation.Laststation},
             {12,Nation.Lowee},{13,Nation.Lowee},{16,Nation.Lowee},{17,Nation.Laststation},{19,Nation.Leanbox},{20,Nation.Laststation},{21,Nation.Lowee},{22,Nation.Leanbox},{23,Nation.Planeptun},{25,Nation.Lowee},{27,Nation.Lowee},
             {28,Nation.Planeptun},{29,Nation.Laststation},{31,Nation.Edeen},{33,Nation.Edeen},{34,Nation.Hyperdimension},{35,Nation.Planeptun},{36,Nation.Planeptun},{37,Nation.Planeptun},{39,Nation.Laststation},{40,Nation.Laststation},

@@ -40,8 +40,10 @@ namespace Nep3ArchipelagoClient
                 SetupAllNations();
                 InitGear();
                 UnlockStuff();
-                AddPartyMember(Mod.APClient.GetStartingCharacter());
-                RemovePartyMember(CharacterId.nepgear);
+                var startchar = Mod.APClient.GetStartingCharacter();
+                AddPartyMember(startchar);
+                if(startchar != CharacterId.nepgear)
+                    RemovePartyMember(CharacterId.nepgear);
                 RemovePartyMember(CharacterId.neptune);
                 DeleteChap0Flags();
                 //debug stuff
@@ -129,7 +131,14 @@ namespace Nep3ArchipelagoClient
             }
         }
         public static void AddPartyMember(CharacterId character) => AddPartyMember((int)character);
-        public static void AddPartyMember(int characterID) => CharacterHooks._addNewCharacter.GetWrapper()((uint)characterID);
+        public unsafe static void AddPartyMember(int characterID)
+        {
+            CharacterHooks._addNewCharacter.GetWrapper()((uint)characterID);
+            var character = CharacterHooks.GetCharacter((CharacterId)characterID);
+            if (character == null) return;
+            character->Armor = 1;
+            character->Ornament = 1;
+        }
 
         public static void RemovePartyMember(CharacterId character) => RemovePartyMember((int)character);
         public static void RemovePartyMember(int characterId) => CharacterHooks._removePartyMember.GetWrapper()(characterId);

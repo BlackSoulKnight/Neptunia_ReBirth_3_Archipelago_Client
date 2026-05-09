@@ -44,7 +44,7 @@ namespace Nep3ArchipelagoClient
                 RemovePartyMember(CharacterId.neptune);
                 DeleteChap0Flags();
                 //debug stuff
-                Test_Unlocks();
+                //Test_Unlocks();
             }
         }
         public void SetupAllNations()
@@ -149,6 +149,8 @@ namespace Nep3ArchipelagoClient
                 memory.Write<byte>(flagPionter+i, 0xFF);
             if (PlanHooks.ReadPlan(53) == 1)
                 PlanHooks.FrocePlan(53, PlanFlags.Build);
+            PlanHooks.FrocePlan(9, PlanFlags.Active);
+            AddItem(39,1);
         }
         public static void DeleteChap0Flags()
         {

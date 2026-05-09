@@ -14,7 +14,7 @@ namespace Nep3ArchipelagoClient.src.Neptunia_3_Data.ProgressiveGear
         protected byte Amount = 2;
         static Inventory Inventory => Mod.Inventory;
         public static Dictionary<CharacterId,ProgressiveGear> ProgressiveGears = InitList();
-
+        public static HashSet<short> UsedItems;
         static Dictionary<CharacterId, ProgressiveGear> InitList()
         {
             Dictionary<CharacterId, ProgressiveGear> list = new();
@@ -29,6 +29,11 @@ namespace Nep3ArchipelagoClient.src.Neptunia_3_Data.ProgressiveGear
             list.Add(CharacterId.vert, new VertGear());
             list.Add(CharacterId.rom, new RomGear());
             list.Add(CharacterId.all, new ArmorGear());
+            if (UsedItems == null)
+                UsedItems = new();
+            foreach (var character in list)
+                foreach(var item in character.Value.GetAllItems())
+                    UsedItems.Add(item);
             return list;
         }
         public void IncreaseGearTier()
@@ -46,6 +51,15 @@ namespace Nep3ArchipelagoClient.src.Neptunia_3_Data.ProgressiveGear
             if(GearList.ContainsKey(tier))
                 foreach (var item in GearList[tier])
                     Inventory.AddItem(item, Amount);
+        }
+        protected short[] GetAllItems()
+        {
+            List<short> items = new();
+            foreach(var tier in GearList)
+            {
+                items.AddRange(tier.Value);
+            }
+            return items.ToArray();
         }
     }
 }

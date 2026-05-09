@@ -4,6 +4,7 @@ using Nep3ArchipelagoClient.src.Neptunia_3_Data.ProgressiveGear;
 using Reloaded.Memory;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 
 namespace Nep3ArchipelagoClient
 {
@@ -45,6 +46,7 @@ namespace Nep3ArchipelagoClient
                 DeleteChap0Flags();
                 //debug stuff
                 //Test_Unlocks();
+                Test_CharacterStruct();
             }
         }
         public void SetupAllNations()
@@ -164,14 +166,21 @@ namespace Nep3ArchipelagoClient
             foreach(int character in Enum.GetValues(typeof(CharacterId)))
             {
                 for(int i  = 0; i<10;i ++)
-                    ProgressiveGear.ProgressiveGears[(CharacterId)character].IncreaseGearTier();
+                    ProgressiveGear.ProgressiveGears[character].IncreaseGearTier();
                 if (character == 11)
                     continue;
                 AddPartyMember(character);
             }
             foreach(var dungeon in DungeonToNation.link.Keys)
                 AddDungeon(dungeon);
-            
+        }
+        public unsafe void Test_CharacterStruct()
+        {
+            var character = CharacterHooks.GetCharacter(CharacterId.blanc);
+            if (character == null)
+                Console.WriteLine("No Character data");
+            else
+                Console.WriteLine(character->CurrentHP);
         }
     }
 }

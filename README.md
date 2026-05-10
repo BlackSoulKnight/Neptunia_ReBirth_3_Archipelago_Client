@@ -7,6 +7,11 @@ Very early prototype for a client to connect to a Ap server
 + Reloaded-II
 + this mod
 
+## Install 
++ add Nep Re:birth 3 path to Reloaded II
++ click on Nep3 icon
++ drag and drop the 7z file into the launcher
+
 ## Connetion to Ap
 + Open Reloaded-II
 + Find Neptunia 3 Archipelago Client

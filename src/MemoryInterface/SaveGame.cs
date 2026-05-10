@@ -57,6 +57,8 @@ namespace Nep3ArchipelagoClient
             worldMapThing |= 1 << 4;
             memory.Write<byte>(SaveGamePointer + 0xE04, worldMapThing);
             memory.Write<byte>(SaveGamePointer + 0xfe44, 9);
+            memory.Write<byte>(SaveGamePointer + 0x6DC, 1);
+
             var firstItemAt = SaveGamePointer + 0xfe48 + 6;
             var target = SaveGamePointer + 0xfe48 + 6 * 9;
             byte nationIdx = 1;
@@ -136,8 +138,7 @@ namespace Nep3ArchipelagoClient
             CharacterHooks._addNewCharacter.GetWrapper()((uint)characterID);
             var character = CharacterHooks.GetCharacter((CharacterId)characterID);
             if (character == null) return;
-            character->Armor = 1;
-            character->Ornament = 1;
+            character->Armor = 1632;
         }
 
         public static void RemovePartyMember(CharacterId character) => RemovePartyMember((int)character);
@@ -156,12 +157,20 @@ namespace Nep3ArchipelagoClient
         {
             var flagPionter = CharacterHooks._findCharacter.GetWrapper()(1); // getNeptune save pointer
             flagPionter -= 305; // move to the flags
-            for(nuint i = 0; i<5;i ++)
-                memory.Write<byte>(flagPionter+i, 0xFF);
+            for (nuint i = 0; i < 6; i++)
+            {
+                memory.Write<byte>(flagPionter + i, 0xFF);
+                memory.Write<byte>(flagPionter + i + 17, 0xFF);
+            }
             if (PlanHooks.ReadPlan(53) == 1)
                 PlanHooks.FrocePlan(53, PlanFlags.Build);
             PlanHooks.FrocePlan(9, PlanFlags.Active);
-            AddItem(39,1);
+            PlanHooks.FrocePlan(2032,PlanFlags.Found);
+            PlanHooks.EnablePlan(2032);
+            AddItem(241, 1);
+            AddItem(244, 1);
+            AddItem(701, 99);
+            AddItem(729, 99);
         }
         public static void DeleteChap0Flags()
         {

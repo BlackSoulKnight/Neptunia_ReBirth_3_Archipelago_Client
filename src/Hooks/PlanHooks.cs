@@ -21,7 +21,7 @@ namespace Nep3ArchipelagoClient.src.Hooks
         public static IFunction<TooglePlan> _TogglePlan;
 
         [Function(CallingConventions.Stdcall)]
-        public delegate int TooglePlan(int planID, bool enable);
+        public delegate int TooglePlan(int planID, int enable);
 
         [Function(new[] { FunctionAttribute.Register.eax, FunctionAttribute.Register.esi }, FunctionAttribute.Register.eax, FunctionAttribute.StackCleanup.Callee)]
         public delegate int OnPlanChanged(int planID, int enemyID);
@@ -44,12 +44,13 @@ namespace Nep3ArchipelagoClient.src.Hooks
             };
             _asmHooks.Add(hooks.CreateAsmHook(planChanged, (int)(Mod.ModuleBase + 0xBE6E3), AsmHookBehaviour.ExecuteFirst).Activate());
         }
+        public static void EnablePlan(int planID) => _TogglePlan.GetWrapper()(planID,1);
         public static int PrintPlanID(int planID,int active)
         {
             string toggle = "disabled";
             if (active != 0)
                 toggle = "enabled";
-            Console.WriteLine($"Plan ID: {planID} {toggle}");
+            Console.WriteLine($"Plan ID: {planID} {active}");
             return 0;
         }
     }

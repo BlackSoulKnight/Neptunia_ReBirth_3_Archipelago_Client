@@ -27,7 +27,7 @@ namespace Nep3ArchipelagoClient.src.Hooks
             pointer = mem.Read<nuint>(pointer);
             int itemId = mem.Read<int>(pointer + 4);
             if (ProgressiveGear.UsedItems.Contains((short)itemId))
-                return 1;
+                return 0;
             return _sellItem.GetWrapper()(eax);
         }
 

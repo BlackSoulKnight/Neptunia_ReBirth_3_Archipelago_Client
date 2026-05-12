@@ -47,8 +47,11 @@ namespace Nep3ArchipelagoClient
                 RemovePartyMember(CharacterId.neptune);
                 DeleteChap0Flags();
                 //debug stuff
-                //Test_Unlocks();
+#if DEBUG
+                Test_Unlocks();
                 Test_CharacterStruct();
+                Test_End();
+#endif
             }
         }
         public void SetupAllNations()
@@ -113,9 +116,9 @@ namespace Nep3ArchipelagoClient
         }
         public void SetTrueEndFlag()
         {
-            var reiEvent = memory.Read<byte>(SaveGamePointer + 0x999);
-            reiEvent |= 0xFE;
-            memory.Write<byte>(SaveGamePointer + 0x999, reiEvent);
+            var reiEvent = memory.Read<short>(SaveGamePointer + 0x999);
+            reiEvent |= 0x1FE0;
+            memory.Write<short>(SaveGamePointer + 0x999, reiEvent);
         }
         public static void AddItem(int id, int quantity)
         {
@@ -201,6 +204,10 @@ namespace Nep3ArchipelagoClient
                 Console.WriteLine("No Character data");
             else
                 Console.WriteLine(character->CurrentHP);
+        }
+        public void Test_End()
+        {
+            Mod.SaveGame.SetTrueEndFlag();
         }
     }
 }

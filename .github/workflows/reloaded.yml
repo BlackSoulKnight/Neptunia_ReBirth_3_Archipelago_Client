@@ -39,7 +39,6 @@ env:
   RELEASE_TAG: ${{ github.ref_name }}
 
 permissions:  # permissions required for attestation
-  id-token: 'write'
   contents: 'write'  # additionally required for release
 
 jobs:

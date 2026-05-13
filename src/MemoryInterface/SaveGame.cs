@@ -18,7 +18,15 @@ namespace Nep3ArchipelagoClient
         {
             while (SaveGamePointer == 0)
             {
-                SaveGamePointer = Memory.Instance.Read<uint>(Mod.ModuleBase + 0x4F6ED8);
+                switch (Mod.Module.ModuleName) {
+                    case "NeptuniaReBirth2.exe":
+                        SaveGamePointer = Memory.Instance.Read<uint>(Mod.ModuleBase + 0x443310);
+                        break;
+                    case "NeptuniaReBirth3.exe":
+                    default:
+                        SaveGamePointer = Memory.Instance.Read<uint>(Mod.ModuleBase + 0x4F6ED8);
+                        break;
+                }
                 Thread.Sleep(100);
             }
         }

@@ -1,4 +1,5 @@
 ﻿using Nep3ArchipelagoClient.Archipelago;
+using Nep3ArchipelagoClient.src.MemoryInterface;
 using Reloaded.Hooks;
 using Reloaded.Hooks.Definitions;
 using Reloaded.Hooks.Definitions.Enums;
@@ -36,7 +37,8 @@ namespace Nep3ArchipelagoClient.src.Hooks
                 "popfd",
                 "popad",
             };
-            _asmHooks.Add(hooks.CreateAsmHook(enemyKilled, (int)(Mod.ModuleBase + 0xC0280), AsmHookBehaviour.ExecuteFirst).Activate());
+            if(FunctionScanner.FindFunction("Enemy ID", "66 89 31 66 89 41",out var offset))
+                _asmHooks.Add(hooks.CreateAsmHook(enemyKilled, (int)(Mod.ModuleBase + offset), AsmHookBehaviour.ExecuteFirst).Activate());
         }
     }
 }

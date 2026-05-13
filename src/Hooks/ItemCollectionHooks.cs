@@ -1,4 +1,5 @@
 ﻿using Nep3ArchipelagoClient.Archipelago;
+using Nep3ArchipelagoClient.src.MemoryInterface;
 using Reloaded.Hooks.Definitions;
 using Reloaded.Hooks.Definitions.Enums;
 using Reloaded.Hooks.Definitions.X86;
@@ -25,21 +26,41 @@ namespace Nep3ArchipelagoClient.src.Hooks
         {
             if (hooks == null) return;
             // Game functions
-            _addItemFunction = hooks.CreateFunction<AddItemToInventory>((int)(Mod.ModuleBase + 0x0BDB90));
+            nuint offset = 0;
+            if(FunctionScanner.FindFunction("Add Item", "55 8B EC 83 EC 08 57 8B 7D ?? 85 FF 0F 84 ?? ?? ?? ?? F7 C7 00 00 FF FF",out offset))
+                _addItemFunction = hooks.CreateFunction<AddItemToInventory>((int)(Mod.ModuleBase + offset));
 
             Console.WriteLine("Test function location {0:X}", _addItemFunction.Address);
-            string[] loadGatheringSpot = {
+            //string[] loadGatheringSpot = {
+            //    "use32",
+            //    "push edx",
+            //    "mov edx,[esp+24]",
+            //    "pushad",
+            //    "pushfd",
+            //    $"{hooks.Utilities.GetAbsoluteCallMnemonics(OnGetGatherSpot, out _onGatherSpot)}",
+            //    "popfd",
+            //    "popad",
+            //    "pop edx",
+            //};
+            //// this function exit 3 times <.<
+            //_asmHooks.Add(hooks.CreateAsmHook(loadGatheringSpot, (int)(Mod.ModuleBase + 0xC32DE), AsmHookBehaviour.ExecuteFirst).Activate());
+
+            string[] lootGather = {
                 "use32",
-                "push edx",
-                "mov edx,[esp+24]",
                 "pushad",
                 "pushfd",
+                "mov eax,[esp+0x24]",
+                "mov edx,[esp+0x28]",
                 $"{hooks.Utilities.GetAbsoluteCallMnemonics(OnGetGatherSpot, out _onGatherSpot)}",
                 "popfd",
                 "popad",
-                "pop edx",
             };
-            _asmHooks.Add(hooks.CreateAsmHook(loadGatheringSpot, (int)(Mod.ModuleBase + 0xC32DE), AsmHookBehaviour.ExecuteFirst).Activate());
+            if(FunctionScanner.FindFunction("Loot Gather Spot", "55 8B EC FF 75 ?? A1 ?? ?? ?? ?? FF 75 ?? FF 70", out offset))
+                _asmHooks.Add(hooks.CreateAsmHook(lootGather, (int)(Mod.ModuleBase + offset + 17), AsmHookBehaviour.ExecuteFirst).Activate());
+
+
+
+
             string[] collectGatherSpot = {
                 "use32",
                 "pushad",
@@ -51,7 +72,8 @@ namespace Nep3ArchipelagoClient.src.Hooks
                 "popad",
                 "mov ecx,[ebp-0x04]",
             };
-            _asmHooks.Add(hooks.CreateAsmHook(collectGatherSpot, (int)(Mod.ModuleBase + 0x20C59B), AsmHookBehaviour.DoNotExecuteOriginal).Activate());
+            if(FunctionScanner.FindFunction("Collect Treasure", "E8 ?? ?? ?? ?? 8B 4D ?? 83 C4 0C 33 CD B0 01 5B E8",out offset))
+                _asmHooks.Add(hooks.CreateAsmHook(collectGatherSpot, (int)(Mod.ModuleBase + offset), AsmHookBehaviour.DoNotExecuteOriginal).Activate());
             string[] getTreasureId = {
                 "use32",
                 "pushad",
@@ -60,12 +82,15 @@ namespace Nep3ArchipelagoClient.src.Hooks
                 "popfd",
                 "popad",
             };
-            _asmHooks.Add(hooks.CreateAsmHook(getTreasureId, (int)(Mod.ModuleBase + 0xB8D1D), AsmHookBehaviour.ExecuteFirst).Activate());
+            if(FunctionScanner.FindFunction("Collect Treasure", "E8 ?? ?? ?? ?? 83 C4 04 85 C0 74 ?? 50 E8 ?? ?? ?? ?? 83 C4 04 84 C0 74 ?? 6A 01 56",out offset))
+                _asmHooks.Add(hooks.CreateAsmHook(getTreasureId, (int)(Mod.ModuleBase + offset), AsmHookBehaviour.ExecuteFirst).Activate());
+
             string[] removeDungeonCreation = {
                 "use32",
                 "ret",
             };
-            _asmHooks.Add(hooks.CreateAsmHook(removeDungeonCreation, (int)(Mod.ModuleBase + 0xC2BD0), AsmHookBehaviour.DoNotExecuteOriginal).Activate());
+            if(FunctionScanner.FindFunction("Create Dungeon", "55 8B EC 57 8B 7D ?? 85 FF 75 ?? 32 C0 5F 5D C3 A1 ?? ?? ?? ?? 53 8B 98 ?? ?? ?? ?? 83 FB 50 73 ?? 57 E8 ?? ?? ?? ?? 0F B7 C8 83 C4 04 66 85 C9 75",out offset))
+                _asmHooks.Add(hooks.CreateAsmHook(removeDungeonCreation, (int)(Mod.ModuleBase + offset), AsmHookBehaviour.DoNotExecuteOriginal).Activate());
 
 
         }
@@ -76,6 +101,7 @@ namespace Nep3ArchipelagoClient.src.Hooks
         public delegate int GetGatherSpot(int dungeonID,int dungeoFlag);
         public static unsafe int OnGetGatherSpot(int eax,int edx)
         {
+            eax = Memory.Instance.Read<short>((nuint)eax);
             Console.WriteLine($"Dungeon ID = {eax}, Gather Flag ID = {edx}");
             allowOrignalLoot = true;
             if (Mod.APClient.IsConnected)

@@ -1,4 +1,5 @@
 ﻿using Nep3ArchipelagoClient.Archipelago;
+using Nep3ArchipelagoClient.src.MemoryInterface;
 using Reloaded.Hooks;
 using Reloaded.Hooks.Definitions;
 using Reloaded.Hooks.Definitions.Enums;
@@ -31,13 +32,11 @@ namespace Nep3ArchipelagoClient.src.Hooks
         public delegate int ChangeText(int originalText);
         public static unsafe int OnChangeText(int eax)
         {
-            int stringPointer = Memory.Instance.Read<int>((nuint)(eax + 0x08));
-
             if (DoReplaceText)
                 fixed (byte* p = ReplacementText)
-                    stringPointer = (int)p;
+                    return (int)p;
             DoReplaceText = false;
-            return stringPointer;
+            return eax;
         }
 
         public static int counter = 0;
@@ -55,15 +54,35 @@ namespace Nep3ArchipelagoClient.src.Hooks
         }
         public static void SetupHooks(IReloadedHooks hooks)
         {
-            string[] loadText =
-            {
+            nuint offset = 0;
+            //text replacement test
+            string[] testReplacement =
+{
                 "use32",
+                "push ecx",
+                "push edx",
+                "push ebp",
+                "push esi",
+                "push edi",
+                "pushfd",
                 $"{hooks.Utilities.GetAbsoluteCallMnemonics(OnChangeText, out _onTextRead)}",
+                "popfd",
+                "pop edi",
+                "pop esi",
                 "pop ebp",
-                "ret",
+                "pop edx",
+                "pop ecx",
                 //=
-            };
-            _asmHooks.Add(hooks.CreateAsmHook(loadText, (int)(Mod.ModuleBase + 0xDEA60), AsmHookBehaviour.ExecuteAfter).Activate());
+            }; 
+
+            if (FunctionScanner.FindFunction("Item Text 1", "E8 ?? ?? ?? ?? 50 89 45 ?? E8 ?? ?? ?? ?? F3 0F 10 0D",out offset))
+                _asmHooks.Add(hooks.CreateAsmHook(testReplacement, (int)(Mod.ModuleBase + offset), AsmHookBehaviour.ExecuteAfter).Activate());
+            if(FunctionScanner.FindFunction("Item Text 1", "E8 ?? ?? ?? ?? 83 C4 04 50 57 E8 ?? ?? ?? ?? 83 C4 04 50 57 E8 ?? ?? ?? ?? 50", out offset))
+                _asmHooks.Add(hooks.CreateAsmHook(testReplacement, (int)(Mod.ModuleBase + offset), AsmHookBehaviour.ExecuteAfter).Activate());
+            if(FunctionScanner.FindFunction("Gather Item Text", "E8 ?? ?? ?? ?? 8B 1D ?? ?? ?? ?? 50", out offset))
+                _asmHooks.Add(hooks.CreateAsmHook(testReplacement, (int)(Mod.ModuleBase + offset), AsmHookBehaviour.ExecuteAfter).Activate());
+
+
             string[] enemyDrop = {
                 "use32",
                 "pushad",
@@ -72,7 +91,8 @@ namespace Nep3ArchipelagoClient.src.Hooks
                 "popfd",
                 "popad",
             };
-            _asmHooks.Add(hooks.CreateAsmHook(enemyDrop, (int)(Mod.ModuleBase + 0x174602), AsmHookBehaviour.ExecuteFirst).Activate());
+            if(FunctionScanner.FindFunction("Enemy Drop Text", "E8 ?? ?? ?? ?? 8B 85 ?? ?? ?? ?? 46 83 C4 0C 83 C7 08",out offset))
+                _asmHooks.Add(hooks.CreateAsmHook(enemyDrop, (int)(Mod.ModuleBase + offset), AsmHookBehaviour.ExecuteFirst).Activate());
 
         }
     }

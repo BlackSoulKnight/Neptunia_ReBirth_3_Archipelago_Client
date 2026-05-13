@@ -1,4 +1,5 @@
-﻿using Reloaded.Hooks.Definitions;
+﻿using Nep3ArchipelagoClient.src.MemoryInterface;
+using Reloaded.Hooks.Definitions;
 using Reloaded.Hooks.Definitions.Enums;
 using Reloaded.Hooks.Definitions.X86;
 using Reloaded.Memory;
@@ -30,7 +31,9 @@ namespace Nep3ArchipelagoClient.src.Hooks
 
         public static void SetupHooks(IReloadedHooks hooks)
         {
-            _TogglePlan = hooks.CreateFunction<TooglePlan>((int)(Mod.ModuleBase + 0xBE6E0));
+            nuint offset = 0;
+            if(FunctionScanner.FindFunction("Toggle Plan", "55 8B EC 80 7D ?? 00 A1 ?? ?? ?? ?? 53",out offset))
+                _TogglePlan = hooks.CreateFunction<TooglePlan>((int)(Mod.ModuleBase + offset));
 
             string[] planChanged = {
                 "use32",
@@ -42,7 +45,8 @@ namespace Nep3ArchipelagoClient.src.Hooks
                 "popfd",
                 "popad",
             };
-            _asmHooks.Add(hooks.CreateAsmHook(planChanged, (int)(Mod.ModuleBase + 0xBE6E3), AsmHookBehaviour.ExecuteFirst).Activate());
+            if(FunctionScanner.FindFunction("Plan Status Changed", "80 7D ?? 00 A1 ?? ?? ?? ?? 53",out offset))
+                _asmHooks.Add(hooks.CreateAsmHook(planChanged, (int)(Mod.ModuleBase + offset), AsmHookBehaviour.ExecuteFirst).Activate());
         }
         public static void EnablePlan(int planID) => _TogglePlan.GetWrapper()(planID,1);
         public static int PrintPlanID(int planID,int active)

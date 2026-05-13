@@ -1,4 +1,5 @@
 ﻿using Nep3ArchipelagoClient.Archipelago;
+using Nep3ArchipelagoClient.src.MemoryInterface;
 using Nep3ArchipelagoClient.src.Neptunia_3_Data.ProgressiveGear;
 using Reloaded.Hooks;
 using Reloaded.Hooks.Definitions;
@@ -33,9 +34,11 @@ namespace Nep3ArchipelagoClient.src.Hooks
 
         public static void SetupHooks(IReloadedHooks hooks)
         {
-            _sellItem = hooks.CreateFunction<SellItem>((int)(Mod.ModuleBase + 0x1805C0));
+            nuint offset = 0;
+            if(FunctionScanner.FindFunction("Sell Item", "55 8B EC 8B 45 ?? 53 32 DB 85 C0 75 ?? 32 C0 5B 5D C3 56 50 E8 ?? ?? ?? ?? 8B F0 83 C4 04 85 F6 75 ?? 5E 32 C0 5B 5D C3 8B 46",out offset))
+                _sellItem = hooks.CreateFunction<SellItem>((int)(Mod.ModuleBase + offset));
 
-            string[] loadText =
+            string[] soldItem =
             {
                 "use32",
                 "push ecx",
@@ -53,7 +56,8 @@ namespace Nep3ArchipelagoClient.src.Hooks
                 "pop edx",
                 "pop ecx",
             };
-            _asmHooks.Add(hooks.CreateAsmHook(loadText, (int)(Mod.ModuleBase + 0x17E7CC), AsmHookBehaviour.DoNotExecuteOriginal).Activate());
+            if(FunctionScanner.FindFunction("Check Sold Item", "FF 76 ?? E8 ?? ?? ?? ?? 83 C4 04 84 C0 0F 84 ?? ?? ?? ?? 6A 0E",out offset))
+                _asmHooks.Add(hooks.CreateAsmHook(soldItem, (int)(Mod.ModuleBase + offset), AsmHookBehaviour.DoNotExecuteOriginal).Activate());
         }
     }
 }

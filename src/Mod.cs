@@ -51,6 +51,7 @@ public class Mod : ModBase // <= Do not Remove.
     private readonly IModConfig _modConfig;
 
     public static UIntPtr ModuleBase = 0x400000;
+    public static ProcessModule Module = null;
     public static Archipelago.APClient APClient = new();
 
     public Mod(ModContext context)
@@ -66,8 +67,8 @@ public class Mod : ModBase // <= Do not Remove.
         // Attaches debugger in debug mode; ignored in release.
         //Debugger.Launch();
 #endif
-
-        ModuleBase = (UIntPtr)Process.GetCurrentProcess().MainModule!.BaseAddress;
+        Module = Process.GetCurrentProcess().MainModule;
+        ModuleBase = (UIntPtr)Module.BaseAddress;
 
         Hooks.SetupAllHooks(_hooks);
         // For more information about this template, please see
@@ -96,16 +97,7 @@ public class Mod : ModBase // <= Do not Remove.
         {
             Thread.Sleep(100);
             APClient.update();
-            SaveGame.SetupSaveFile();
-            if(!SaveGame.DoOnceAfterChapter1Start && test)
-            {
-                Thread.Sleep(1_000);
-                test = false;
-                for (int i = 1; i < 68; i++)
-                {
-                    //SaveGame.AddDungeon((byte)i);
-                }
-            }
+            //SaveGame.SetupSaveFile();
         }
     }
 

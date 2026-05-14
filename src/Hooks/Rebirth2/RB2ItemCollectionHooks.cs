@@ -35,6 +35,15 @@ namespace Nep3ArchipelagoClient.Hooks.Rebirth2
             };
             if (FunctionScanner.FindFunction("Collect Gather", "E8 ?? ?? ?? ?? 8B B5 ?? ?? ?? ?? 83 C4 10 46", out offset))
                 _asmHooks.Add(hooks.CreateAsmHook(collectGatherSpot, (int)(Mod.ModuleBase + offset), AsmHookBehaviour.DoNotExecuteOriginal).Activate());
+
+
+            string[] removeDungeonCreation = {
+                "use32",
+                "ret",
+            };
+            if (FunctionScanner.FindFunction("Create Dungeon", "55 8B EC 53 8B 5D ?? 85 DB 75 ?? 32 C0 5B 5D C3 A1", out offset))
+                _asmHooks.Add(hooks.CreateAsmHook(removeDungeonCreation, (int)(Mod.ModuleBase + offset), AsmHookBehaviour.DoNotExecuteOriginal).Activate());
+
         }
 
         //determines if an item need to be set in the players inventory

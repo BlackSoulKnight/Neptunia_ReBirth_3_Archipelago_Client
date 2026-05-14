@@ -15,7 +15,7 @@ namespace Nep3ArchipelagoClient
         public RB2SaveGame(UIntPtr baseAddress) : base(baseAddress, 0x443310)
         {
             Inventory = new RB3Inventory(this);
-            APSaveLocation = 0x443310;
+            APSaveLocation = 0x1032c;
             PlanOffset = 0x443310;
 
         }
@@ -25,22 +25,32 @@ namespace Nep3ArchipelagoClient
         }
         public override int CurrentDungeon()
         {
-            return memory.Read<int>(SaveGamePointer - 0x443310);
+            return memory.Read<int>(SaveGamePointer - 0x12B6F4);
         }
 
         public override void SetupSaveFile()
         {
-            if (!IsInit && (memory.Read<byte>(SaveGamePointer + 0x0) & 1 << 4) > 0)
+            if (!IsInit && (memory.Read<byte>(SaveGamePointer + 0x0) & 1 << 4) == 0)
             {
+                Thread.Sleep(20000);
                 //debug stuff
-#if DEBUG
+                memory.Write<byte>(SaveGamePointer + APSaveLocation - 17, 1);
 
-#endif
+#if DEBUG
+                Test_DungeonUnlock();
+                #endif
             }
         }
         public override void AddDungeon(short dungeonId)
         {
-
+            nuint dungeonOffset = 0x10330;
+            nuint dungeonLenghtOffset = 0x1032c;
+            var dungeonListLength = memory.Read<byte>(SaveGamePointer + dungeonLenghtOffset);
+            var writeInto = SaveGamePointer + dungeonOffset + (nuint)(0x203c * dungeonListLength);
+            memory.Write<byte>(writeInto, 0x0F);
+            memory.Write<short>(writeInto + 2, dungeonId);
+            memory.Write<byte>(writeInto + 4, (byte)1);
+            memory.Write<byte>(SaveGamePointer + dungeonLenghtOffset, ++dungeonListLength);
         }
         public unsafe override void AddPartyMember(int characterID)
         {
@@ -69,6 +79,13 @@ namespace Nep3ArchipelagoClient
             if (pudding && syringe && notebook && doll && drawing)
             {
                 
+            }
+        }
+        void Test_DungeonUnlock()
+        {
+            for(short i = 1; i < 37; i++)
+            {
+                AddDungeon(i);
             }
         }
     }

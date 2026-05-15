@@ -96,7 +96,7 @@ namespace Nep3ArchipelagoClient.Archipelago
         public void CheckIfGoaled(long id)
         {
             //currently only Rei kill
-            if (id == EnemyBaseID + 1042)
+            if(Mod.SaveGame.IsGoalAchieved(id))
                 Session.SetGoalAchieved();
                 
         }

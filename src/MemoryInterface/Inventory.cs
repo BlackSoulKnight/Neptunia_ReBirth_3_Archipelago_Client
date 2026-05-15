@@ -50,6 +50,7 @@ namespace Nep3ArchipelagoClient.MemoryInterface
         public void AddItem(short itemID, byte amount)
         {
             ItemCollectionHooks._addItemFunction.GetWrapper()((uint)itemID, amount, (char)1);
+            SaveGame.CheckUnlockGoalCondition();
         }
 
         UIntPtr ItemPosition(int slot)

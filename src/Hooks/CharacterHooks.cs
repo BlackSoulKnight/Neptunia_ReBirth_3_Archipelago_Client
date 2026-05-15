@@ -36,9 +36,9 @@ namespace Nep3ArchipelagoClient.Hooks
                 _removePartyMember = hooks.CreateFunction<RemovePartyMember>((int)(Mod.ModuleBase + offset));
         }
 
-        public static unsafe Character* GetCharacter(CharacterId character)
+        public static unsafe nuint GetCharacter(int character)
         {
-            var chara = (Character*)_findCharacter.GetWrapper()((int)character);
+            var chara = _findCharacter.GetWrapper()((int)character);
             return chara;
         }
     }

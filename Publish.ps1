@@ -163,12 +163,12 @@ param (
 
     ## => User Config <= ## 
     $ProjectPath = "Nep3ArchipelagoClient.csproj",
-    $PackageName = "Nep3ArchipelagoClient",
+    $PackageName = "NepArchipelagoClient",
     $PublishOutputDir = "Publish/ToUpload",
 
     ## => User: Delta Config
     # Pick one and configure settings below.
-    $MetadataFileName = " Nep3ArchipelagoClient.ReleaseMetadata.json",
+    $MetadataFileName = " NepArchipelagoClient.ReleaseMetadata.json",
     $UseGitHubDelta = $True, # GitHub Releases
     $UseGameBananaDelta = $False,
     $UseNuGetDelta = $False,

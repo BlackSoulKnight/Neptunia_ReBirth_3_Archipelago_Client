@@ -1,10 +1,9 @@
-﻿using Nep3ArchipelagoClient.Hooks;
+﻿using Nep3ArchipelagoClient.Archipelago;
+using Nep3ArchipelagoClient.Hooks;
 using Nep3ArchipelagoClient.MemoryInterface;
 using Nep3ArchipelagoClient.Neptunia_3_Data;
 using Nep3ArchipelagoClient.Neptunia_3_Data.ProgressiveGear;
 using Reloaded.Memory;
-
-
 namespace Nep3ArchipelagoClient
 {
     internal class RB3SaveGame:SaveGame
@@ -44,7 +43,8 @@ namespace Nep3ArchipelagoClient
                 DeleteChap0Flags();
                 //debug stuff
 #if DEBUG
-                Test_Unlocks();
+                Test_Characters();
+                //Test_Unlocks();
                 Test_CharacterStruct();
                 Test_End();
 #endif
@@ -110,7 +110,7 @@ namespace Nep3ArchipelagoClient
         public unsafe override void AddPartyMember(int characterID)
         {
             CharacterHooks._addNewCharacter.GetWrapper()((uint)characterID);
-            var character = CharacterHooks.GetCharacter((CharacterId)characterID);
+            var character = (Character*)CharacterHooks.GetCharacter(characterID);
             if (character == null) return;
             character->Armor = 1632;
         }
@@ -153,6 +153,13 @@ namespace Nep3ArchipelagoClient
             memory.Write<byte>(SaveGamePointer + 0x91E, 0);
         }
 
+        public void Test_Characters()
+        {
+            for(int i = 1;i < 25; i++)
+            {
+                AddPartyMember(i);
+            }
+        }
         public void Test_Unlocks()
         {
             foreach(int character in Enum.GetValues(typeof(CharacterId)))
@@ -168,7 +175,7 @@ namespace Nep3ArchipelagoClient
         }
         public unsafe void Test_CharacterStruct()
         {
-            var character = CharacterHooks.GetCharacter(CharacterId.blanc);
+            var character = (Character*)CharacterHooks.GetCharacter((int)CharacterId.blanc);
             if (character == null)
                 Console.WriteLine("No Character data");
             else
@@ -179,9 +186,9 @@ namespace Nep3ArchipelagoClient
             SetTrueEndFlag();
         }
 
-        protected override void GoalCondition()
+        public override void CheckUnlockGoalCondition()
         {
-            bool pudding = Inventory.FindItem(203, out int _);
+            bool pudding = Inventory.FindItem(254, out int _);
             bool syringe = Inventory.FindItem(204, out int _);
             bool notebook = Inventory.FindItem(205, out int _);
             bool doll = Inventory.FindItem(206, out int _);
@@ -191,5 +198,6 @@ namespace Nep3ArchipelagoClient
                 SetTrueEndFlag();
             }
         }
+        public override bool IsGoalAchieved(long APLocation) => APLocation == APClient.EnemyBaseID + 1042;
     }
 }

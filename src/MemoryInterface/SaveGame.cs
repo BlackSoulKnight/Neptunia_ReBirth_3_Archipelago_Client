@@ -11,7 +11,7 @@ namespace Nep3ArchipelagoClient
         public UIntPtr SaveGamePointer = 0;
         protected uint APSaveLocation;
         public nuint PlanOffset;
-
+        protected uint EventFlagOffset;
         Memory memory => Memory.Instance;
 
         protected SaveGame(UIntPtr baseAddress,uint offset)
@@ -27,6 +27,19 @@ namespace Nep3ArchipelagoClient
 
         public bool IsInit => memory.Read<byte>(SaveGamePointer + APSaveLocation - 17) == 1;
 
+        
+        public bool IsEventFlagSet(int EventID) => (memory.Read<byte>(SaveGamePointer + EventFlagOffset+(nuint)(EventID/8)) & 1 << (EventID % 8)) > 0;
+        public void SetEventFlag(int EventID,bool Active)
+        {
+            var FlagRegion = memory.Read<byte>(SaveGamePointer + EventFlagOffset + (nuint)(EventID / 8));
+
+            if (Active)
+                FlagRegion |= (byte)(1 << (EventID % 8));
+            else
+                FlagRegion &= (byte)(0xFF - (1 << (EventID % 8)));
+            memory.Write<byte>(SaveGamePointer + EventFlagOffset + (nuint)(EventID / 8), FlagRegion);
+            CheckUnlockGoalCondition();
+        }
         public abstract void SetupSaveFile();
 
         public abstract void AddDungeon(short dungeonId);
@@ -41,7 +54,8 @@ namespace Nep3ArchipelagoClient
             var value = Memory.Instance.Read<int>(SaveGamePointer + APSaveLocation - 16) + 1;
             Memory.Instance.Write<int>(SaveGamePointer + APSaveLocation - 16, value);
         }
-        protected abstract void GoalCondition();
+        public abstract void CheckUnlockGoalCondition();
+        public abstract bool IsGoalAchieved(long APLocation);
         
         public void AddPartyMember(CharacterId character) => AddPartyMember((int)character);
         public unsafe abstract void AddPartyMember(int characterID);

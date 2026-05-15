@@ -75,6 +75,7 @@ public class Mod : ModBase // <= Do not Remove.
         switch(Module.ModuleName){
             case "NeptuniaReBirth1.exe":
                 Game = NeptuniaGame.Neptunia_ReBirth_1;
+                APClient.Game = "Hyperdimension Neptunia Re;Birth1";
                 break;
             case "NeptuniaReBirth2.exe":
                 Game = NeptuniaGame.Neptunia_ReBirth_2;
@@ -88,7 +89,6 @@ public class Mod : ModBase // <= Do not Remove.
         }
         Console.WriteLine($"Playing: {Game.ToString()}");
         Hooks.Hooks.SetupAllHooks(_hooks);
-        
 
         APClient.ConnectToServer(_configuration.Server, _configuration.Port, _configuration.Player);
 
@@ -101,6 +101,10 @@ public class Mod : ModBase // <= Do not Remove.
     {
         switch (Game)
         {
+            case NeptuniaGame.Neptunia_ReBirth_1:
+                SaveGame = new RB1SaveGame(ModuleBase);
+                Inventory = new RB1Inventory(SaveGame);
+                break;
             case NeptuniaGame.Neptunia_ReBirth_2:
                 SaveGame = new RB2SaveGame(ModuleBase);
                 Inventory = new RB2Inventory(SaveGame);

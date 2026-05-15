@@ -55,10 +55,8 @@ namespace Nep3ArchipelagoClient
         public void AddPartyMember(CharacterId character) => AddPartyMember((int)character);
         public unsafe abstract void AddPartyMember(int characterID);
 
-        public  void RemovePartyMember(CharacterId character) => RemovePartyMember((int)character);
         public abstract void RemovePartyMember(int characterId);
 
-        public void ShowCharacter(CharacterId character) => ShowCharacter((int)character);
         public abstract void ShowCharacter(int characterId);
     }
 }

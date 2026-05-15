@@ -38,9 +38,9 @@ namespace Nep3ArchipelagoClient
                 UnlockStuff();
                 var startchar = Mod.APClient.GetStartingCharacter();
                 AddPartyMember(startchar);
-                if(startchar != CharacterId.nepgear)
-                    RemovePartyMember(CharacterId.nepgear);
-                RemovePartyMember(CharacterId.neptune);
+                if(startchar != (int)CharacterId.nepgear)
+                    RemovePartyMember((int)CharacterId.nepgear);
+                RemovePartyMember((int)CharacterId.neptune);
                 DeleteChap0Flags();
                 //debug stuff
 #if DEBUG

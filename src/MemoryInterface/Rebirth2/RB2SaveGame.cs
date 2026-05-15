@@ -40,12 +40,21 @@ namespace Nep3ArchipelagoClient
                 for (int i = 50; i < 55; i++)
                     SetEventFlag(i, false);
                 UnlockGameFeatures();
+                var startchar = Mod.APClient.GetStartingCharacter();
+                AddPartyMember(startchar);
+                if (startchar != (int)CharacterId.nepgear)
+                    RemovePartyMember((int)CharacterId.nepgear);
+                if(startchar!= (int)CharacterId.IF)
+                    RemovePartyMember((int)CharacterId.IF);
+                if(startchar != (int)CharacterId.compa)
+                    RemovePartyMember((int)CharacterId.compa);
+
 #if DEBUG
                 Test_CharacterUnlock();
                 Test_DungeonUnlock();
                 Test_VGMRun();
                 Test_Goal();
-                #endif
+#endif
             }
         }
         public override void AddDungeon(short dungeonId)

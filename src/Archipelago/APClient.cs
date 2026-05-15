@@ -22,7 +22,7 @@ namespace Nep3ArchipelagoClient.Archipelago
         public bool IsConnected => Session != null && Session.Socket.Connected;
         private long PlayerID = 0;
         private Dictionary<long, ScoutedItemInfo> ItemAtLocation = new();
-        internal CharacterId StartingCharacter = CharacterId.nepgear;
+        internal int StartingCharacter = 1;
         internal HashSet<long> CheckedLocation = new();
         public string Game = "Hyperdimension Neptunia Re;Birth3 V GENERATION";
         public bool ConnectToServer(string destination,int port,string user, string password = "")
@@ -63,7 +63,7 @@ namespace Nep3ArchipelagoClient.Archipelago
         private void InitSlotData(Dictionary<string,object> slotData)
         {
             if (slotData.ContainsKey("start_character"))
-                StartingCharacter = (CharacterId)(int)(long)slotData["start_character"];
+                StartingCharacter = (int)(long)slotData["start_character"];
         }
 
         private async void InitalizeItemNameLookup()
@@ -72,7 +72,7 @@ namespace Nep3ArchipelagoClient.Archipelago
             ItemAtLocation = new(await Session.Locations.ScoutLocationsAsync(locations));
         }
 
-        internal CharacterId GetStartingCharacter() => StartingCharacter;
+        internal int GetStartingCharacter() => StartingCharacter;
         public string GetItemName(long id)
         {
             if (IsConnected)

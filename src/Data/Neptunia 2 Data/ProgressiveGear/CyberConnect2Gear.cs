@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace Nep3ArchipelagoClient.Neptunia_2_Data.ProgressiveGear
 {
-    internal class CyberConnect2Gear : ProgressiveGear
+    internal class CyberConnect2Gear : Neptunia_Data.ProgressiveGear
     {
         public CyberConnect2Gear()
         {

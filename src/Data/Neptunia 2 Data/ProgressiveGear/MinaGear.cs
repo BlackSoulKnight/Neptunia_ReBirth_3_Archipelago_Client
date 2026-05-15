@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace Nep3ArchipelagoClient.Neptunia_2_Data.ProgressiveGear
 {
-    internal class MinaGear : ProgressiveGear
+    internal class MinaGear : Neptunia_Data.ProgressiveGear
     {
         public MinaGear()
         {

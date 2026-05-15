@@ -3,7 +3,7 @@ using Archipelago.MultiClient.Net.Enums;
 using Archipelago.MultiClient.Net.Models;
 using Nep3ArchipelagoClient.Hooks;
 using Nep3ArchipelagoClient.Neptunia_3_Data;
-using Nep3ArchipelagoClient.Neptunia_3_Data.ProgressiveGear;
+using Nep3ArchipelagoClient.Neptunia_Data;
 using Newtonsoft.Json.Linq;
 
 namespace Nep3ArchipelagoClient.Archipelago
@@ -122,7 +122,7 @@ namespace Nep3ArchipelagoClient.Archipelago
                     if (itemId > DungeonBaseID && itemId < DungeonBaseID + 1_000_000)
                         Mod.SaveGame.AddDungeon((short)(itemId - DungeonBaseID));
                     else if (itemId > ChracterBaseID && itemId < ProgressiveGearID)
-                        CharacterHooks._addNewCharacter.GetWrapper()((uint)(itemId - ChracterBaseID));
+                        Mod.SaveGame.AddPartyMember((int)(itemId - ChracterBaseID));
                     else if (itemId > ProgressiveGearID)
                         ProgressiveGear.ProgressiveGears[(int)(itemId - ProgressiveGearID)].IncreaseGearTier();
                     else

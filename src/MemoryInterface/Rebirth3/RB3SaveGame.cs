@@ -2,7 +2,7 @@
 using Nep3ArchipelagoClient.Hooks;
 using Nep3ArchipelagoClient.MemoryInterface;
 using Nep3ArchipelagoClient.Neptunia_3_Data;
-using Nep3ArchipelagoClient.Neptunia_3_Data.ProgressiveGear;
+using Nep3ArchipelagoClient.Neptunia_Data;
 using Reloaded.Memory;
 namespace Nep3ArchipelagoClient
 {

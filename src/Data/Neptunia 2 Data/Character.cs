@@ -72,7 +72,7 @@ namespace Nep3ArchipelagoClient.Neptunia_2_Data
 
         //resistence
         [FieldOffset(128)]
-        public int PhysRes; // or not im not sure
+        public int UnkownRes; // or not im not sure
         [FieldOffset(132)]
         public int FireRes;
         [FieldOffset(136)]

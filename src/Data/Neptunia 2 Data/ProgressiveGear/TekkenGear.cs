@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace Nep3ArchipelagoClient.Neptunia_2_Data.ProgressiveGear
 {
-    internal class TekkenGear : ProgressiveGear
+    internal class TekkenGear : Neptunia_Data.ProgressiveGear
     {
         public TekkenGear()
         {

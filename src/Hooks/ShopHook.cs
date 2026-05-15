@@ -1,6 +1,6 @@
 ﻿using Nep3ArchipelagoClient.Archipelago;
 using Nep3ArchipelagoClient.MemoryInterface;
-using Nep3ArchipelagoClient.Neptunia_3_Data.ProgressiveGear;
+using Nep3ArchipelagoClient.Neptunia_Data;
 using Reloaded.Hooks;
 using Reloaded.Hooks.Definitions;
 using Reloaded.Hooks.Definitions.Enums;

@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace Nep3ArchipelagoClient.Neptunia_2_Data.ProgressiveGear
 {
-    internal class ChikaGear : ProgressiveGear
+    internal class ChikaGear : Neptunia_Data.ProgressiveGear
     {
         public ChikaGear()
         {

@@ -86,6 +86,7 @@ public class Mod : ModBase // <= Do not Remove.
                 APClient.Game = "Hyperdimension Neptunia Re;Birth2 Sisters Generation";
                 SaveGame = new RB2SaveGame();
                 Inventory = new RB2Inventory(SaveGame);
+                ProgressiveGear.InitRB2List();
                 break;
             case "NeptuniaReBirth3.exe":
             default:

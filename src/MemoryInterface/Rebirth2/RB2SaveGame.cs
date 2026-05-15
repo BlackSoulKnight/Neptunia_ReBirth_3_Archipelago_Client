@@ -35,8 +35,11 @@ namespace Nep3ArchipelagoClient
             {
                 //debug stuff
                 memory.Write<byte>(SaveGamePointer + APSaveLocation - 17, 1);
-                for (int i = 1; i < 55; i++)
+                for (int i = 1; i < 10; i++)
                     SetEventFlag(i, false);
+                for (int i = 50; i < 55; i++)
+                    SetEventFlag(i, false);
+                UnlockGameFeatures();
 #if DEBUG
                 Test_CharacterUnlock();
                 Test_DungeonUnlock();
@@ -81,6 +84,17 @@ namespace Nep3ArchipelagoClient
             SetEventFlag(523, true);
             
         }
+
+        private void UnlockGameFeatures()
+        {
+
+            var flagPionter = SaveGamePointer + 3584;
+            for (nuint i = 0; i < 6; i++)
+            {
+                memory.Write<byte>(flagPionter + i, 0xFF);
+                memory.Write<byte>(flagPionter + i + 16, 0xFF);
+            }
+        }
         void Test_VGMRun()
         {
             Inventory.AddItem(1655, 4);
@@ -97,12 +111,12 @@ namespace Nep3ArchipelagoClient
         }
         void Test_CharacterUnlock()
         {
-            for(short i = 1; i < 25; i++)
+            for(short i = 1; i < 26; i++)
             {
                 RemovePartyMember(i);
             }
             Thread.Sleep(5000);
-            for(short i = 1; i < 25; i++)
+            for(short i = 1; i < 26; i++)
             {
                 AddPartyMember(i);
             }

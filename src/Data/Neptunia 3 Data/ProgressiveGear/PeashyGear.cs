@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace Nep3ArchipelagoClient.Neptunia_3_Data.ProgressiveGear
 {
-    internal class PeashyGear:ProgressiveGear
+    internal class PeashyGear: Neptunia_Data.ProgressiveGear
     {
         public PeashyGear()
         {

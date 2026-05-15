@@ -1,6 +1,7 @@
 ﻿using Nep3ArchipelagoClient.Configuration;
 using Nep3ArchipelagoClient.Hooks;
 using Nep3ArchipelagoClient.MemoryInterface;
+using Nep3ArchipelagoClient.Neptunia_Data;
 using Nep3ArchipelagoClient.Template;
 using Reloaded.Hooks.ReloadedII.Interfaces;
 using Reloaded.Mod.Interfaces;
@@ -72,6 +73,7 @@ public class Mod : ModBase // <= Do not Remove.
 #endif
         Module = Process.GetCurrentProcess().MainModule;
         ModuleBase = (UIntPtr)Module.BaseAddress;
+
         switch(Module.ModuleName){
             case "NeptuniaReBirth1.exe":
                 Game = NeptuniaGame.Neptunia_ReBirth_1;
@@ -91,6 +93,7 @@ public class Mod : ModBase // <= Do not Remove.
                 APClient.Game = "Hyperdimension Neptunia Re;Birth3 V GENERATION";
                 SaveGame = new RB3SaveGame();
                 Inventory = new RB3Inventory(SaveGame);
+                ProgressiveGear.InitRB3List();
                 break;
         }
         Console.WriteLine($"Playing: {Game.ToString()}");

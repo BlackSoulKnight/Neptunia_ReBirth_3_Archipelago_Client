@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace Nep3ArchipelagoClient.Neptunia_3_Data.ProgressiveGear
 {
-    internal class RamGear:ProgressiveGear
+    internal class RamGear: Neptunia_Data.ProgressiveGear
     {
         public RamGear()
         {

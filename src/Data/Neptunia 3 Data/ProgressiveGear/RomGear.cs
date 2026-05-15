@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace Nep3ArchipelagoClient.Neptunia_3_Data.ProgressiveGear
 {
-    internal class RomGear:ProgressiveGear
+    internal class RomGear: Neptunia_Data.ProgressiveGear
     {
         public RomGear()
         {

@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace Nep3ArchipelagoClient.Neptunia_3_Data.ProgressiveGear
 {
-    internal class NoireGear:ProgressiveGear
+    internal class NoireGear: Neptunia_Data.ProgressiveGear
     {
         public NoireGear()
         {

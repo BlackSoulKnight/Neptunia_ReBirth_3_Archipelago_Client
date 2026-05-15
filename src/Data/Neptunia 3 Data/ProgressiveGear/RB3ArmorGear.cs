@@ -4,9 +4,10 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
+
 namespace Nep3ArchipelagoClient.Neptunia_3_Data.ProgressiveGear
 {
-    internal class RB3ArmorGear:ProgressiveGear
+    internal class RB3ArmorGear: Neptunia_Data.ProgressiveGear
     {
         public RB3ArmorGear()
         {

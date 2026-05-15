@@ -3,11 +3,12 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Nep3ArchipelagoClient.Neptunia_Data;
 
 namespace Nep3ArchipelagoClient.Neptunia_3_Data.ProgressiveGear
 
 {
-    internal class NeptuneGear :ProgressiveGear
+    internal class NeptuneGear : Neptunia_Data.ProgressiveGear
     {
         public NeptuneGear()
         {

@@ -1,4 +1,5 @@
 ﻿using Nep3ArchipelagoClient.Archipelago;
+using Nep3ArchipelagoClient.Data.Neptunia_2_Data;
 using Nep3ArchipelagoClient.Hooks;
 using Nep3ArchipelagoClient.MemoryInterface;
 using Nep3ArchipelagoClient.Neptunia_2_Data;
@@ -11,7 +12,7 @@ namespace Nep3ArchipelagoClient
     {
         static Memory memory = Memory.Instance;
         Inventory Inventory;
-
+        RB2Options Options => (RB2Options)base.Options;
         public RB2SaveGame()
         {
             SaveGameOffest = 0x443310;
@@ -19,6 +20,7 @@ namespace Nep3ArchipelagoClient
             APSaveLocation = 0x1032c;
             PlanOffset = 0x443310;
             EventFlagOffset = 0x91c;
+            base.Options = new RB2Options();
         }
         public int CurrentItemCount()
         {
@@ -87,8 +89,8 @@ namespace Nep3ArchipelagoClient
         }
         public override void CheckUnlockGoalCondition()
         {
-            bool old_sword = Inventory.FindItem(254, out int _);
-            if (!old_sword) return;
+            bool old_sword = Inventory.FindItem(254, out int position);
+            if (!old_sword && Inventory.GetItemCountAtSlot(position) >= Options.OldSwordCount) return;
             SetEventFlag(522, true);
             SetEventFlag(523, true);
             

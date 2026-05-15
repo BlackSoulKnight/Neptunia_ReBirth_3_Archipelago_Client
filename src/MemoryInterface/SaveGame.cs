@@ -1,4 +1,5 @@
-﻿using Nep3ArchipelagoClient.Hooks;
+﻿using Nep3ArchipelagoClient.Data;
+using Nep3ArchipelagoClient.Hooks;
 using Nep3ArchipelagoClient.Neptunia_3_Data;
 using Nep3ArchipelagoClient.Neptunia_3_Data.ProgressiveGear;
 using Reloaded.Memory;
@@ -14,7 +15,7 @@ namespace Nep3ArchipelagoClient
         public nuint PlanOffset;
         protected uint EventFlagOffset;
         Memory memory => Memory.Instance;
-
+        public APOptions Options;
         protected SaveGame()
         {
         }

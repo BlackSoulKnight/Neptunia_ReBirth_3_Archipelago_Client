@@ -58,6 +58,8 @@ namespace Nep3ArchipelagoClient.Archipelago
             LoginSuccessful success = (LoginSuccessful)loginResult;
             InitalizeItemNameLookup();
             InitSlotData(success.SlotData);
+            if(success.SlotData.ContainsKey("options"))
+                Mod.SaveGame.Options.ParseOptions((JObject)success.SlotData["options"]);
             return true;
         }
         private void InitSlotData(Dictionary<string,object> slotData)

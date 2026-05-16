@@ -69,6 +69,7 @@ public class Mod : ModBase // <= Do not Remove.
 
 #if DEBUG
         // Attaches debugger in debug mode; ignored in release.
+        Console.WriteLine("LAUNCHED IN DEBUG MODEEEEEEEEEEEEEEEEEEEEEEEEEEEEEE");
         Debugger.Launch();
 #endif
         Module = Process.GetCurrentProcess().MainModule;

@@ -39,7 +39,7 @@ namespace Nep3ArchipelagoClient.MemoryInterface
             return false;
         }
 
-        public void AddItem(int itemID, int amount)
+        public virtual void AddItem(int itemID, int amount)
         {
             ItemCollectionHooks._addItemFunction.GetWrapper()((uint)itemID, (uint)amount, (char)1);
             SaveGame.CheckUnlockGoalCondition();

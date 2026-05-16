@@ -31,8 +31,9 @@ namespace Nep3ArchipelagoClient
             return memory.Read<int>(SaveGamePointer - 0x12B6F4);
         }
 
-        public override void SetupSaveFile()
+        protected override void DoSetupSaveFile()
         {
+
             if (!IsInit && IsEventFlagSet(658))
             {
                 //debug stuff
@@ -42,6 +43,7 @@ namespace Nep3ArchipelagoClient
                 for (int i = 50; i < 55; i++)
                     SetEventFlag(i, false);
                 UnlockGameFeatures();
+                InitGear();
                 var startchar = Mod.APClient.GetStartingCharacter();
                 AddPartyMember(startchar);
                 if (startchar != (int)CharacterId.nepgear)
@@ -52,11 +54,11 @@ namespace Nep3ArchipelagoClient
                     RemovePartyMember((int)CharacterId.compa);
 
 #if DEBUG
-                Test_CharacterUnlock();
-                Test_DungeonUnlock();
-                Test_VGMRun();
-                Test_Goal();
-                Test_CharacterManip();
+                //Test_CharacterUnlock();
+                //Test_DungeonUnlock();
+                //Test_VGMRun();
+                //Test_Goal();
+                //Test_CharacterManip();
 #endif
             }
         }
@@ -76,7 +78,7 @@ namespace Nep3ArchipelagoClient
             CharacterHooks._addNewCharacter.GetWrapper()((uint)characterID);
             var character = (Character*)CharacterHooks.GetCharacter(characterID);
             if (character == null) return;
-            character->Armor = 1632;
+            character->Armor = 1627;
         }
         public override void RemovePartyMember(int characterId) => CharacterHooks._removePartyMember.GetWrapper()(characterId);
 
@@ -105,6 +107,7 @@ namespace Nep3ArchipelagoClient
                 memory.Write<byte>(flagPionter + i, 0xFF);
                 memory.Write<byte>(flagPionter + i + 16, 0xFF);
             }
+            SetEventFlag(172, true);
         }
         void Test_VGMRun()
         {

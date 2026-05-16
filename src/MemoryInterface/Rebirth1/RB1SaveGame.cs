@@ -28,7 +28,7 @@ namespace Nep3ArchipelagoClient
             return memory.Read<int>(SaveGamePointer - 0x12B6F4);
         }
 
-        public override void SetupSaveFile()
+        protected override void DoSetupSaveFile()
         {
             if (!IsInit && IsEventFlagSet(658))
             {

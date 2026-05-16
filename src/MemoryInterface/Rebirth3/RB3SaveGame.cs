@@ -28,7 +28,7 @@ namespace Nep3ArchipelagoClient
             return memory.Read<int>(SaveGamePointer - 0x1EA8FA);
         }
 
-        public override void SetupSaveFile()
+        protected override void DoSetupSaveFile()
         {
             if (!IsInit && (memory.Read<byte>(SaveGamePointer + 0x91C) & 1 << 4) > 0)
             {
@@ -72,13 +72,7 @@ namespace Nep3ArchipelagoClient
             AddDungeon(1);
             
         }
-        public void InitGear()
-        {
-            foreach(var character in ProgressiveGear.ProgressiveGears.Values)
-            {
-                character.UnlockTier(0);
-            }
-        }
+
         public override void AddDungeon(short dungeonId)
         {
             if (dungeonId == 66) return;

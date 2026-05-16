@@ -112,6 +112,7 @@ public class Mod : ModBase // <= Do not Remove.
         while (true)
         {
             if (SaveGame.SaveGamePointer == 0) continue;
+            Thread.Sleep(100);
             APClient.update();
             SaveGame.SetupSaveFile();
         }

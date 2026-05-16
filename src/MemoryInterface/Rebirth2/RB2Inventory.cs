@@ -12,5 +12,10 @@ namespace Nep3ArchipelagoClient.MemoryInterface
             InventorySizeOffset = 0xCA4C;
 
         }
+        public override void AddItem(int itemID, int amount)
+        {
+            ItemCollectionHooks._addItemFunction.GetWrapper()((uint)itemID, (uint)amount, (char)1);
+            SaveGame.CheckUnlockGoalCondition();
+        }
     }
 }

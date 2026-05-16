@@ -2,6 +2,7 @@
 using Nep3ArchipelagoClient.Hooks;
 using Nep3ArchipelagoClient.Neptunia_3_Data;
 using Nep3ArchipelagoClient.Neptunia_3_Data.ProgressiveGear;
+using Nep3ArchipelagoClient.Neptunia_Data;
 using Reloaded.Memory;
 
 
@@ -36,7 +37,15 @@ namespace Nep3ArchipelagoClient
                 FlagRegion &= (byte)(0xFF - (1 << (EventID % 8)));
             memory.Write<byte>(SaveGamePointer + EventFlagOffset + (nuint)(EventID / 8), FlagRegion);
         }
-        public abstract void SetupSaveFile();
+        protected abstract void DoSetupSaveFile();
+        public void SetupSaveFile()
+        {
+            if (!!IsInit)
+            {
+                Thread.Sleep(100);
+                DoSetupSaveFile();
+            }
+        }
 
         public abstract void AddDungeon(short dungeonId);
 
@@ -44,7 +53,13 @@ namespace Nep3ArchipelagoClient
         {
             return Memory.Instance.Read<int>(SaveGamePointer + APSaveLocation - 16);
         }
-
+        public void InitGear()
+        {
+            foreach (var character in ProgressiveGear.ProgressiveGears.Values)
+            {
+                character.UnlockTier(0);
+            }
+        }
         public void IncrementCurrentApItemCount()
         {
             var value = Memory.Instance.Read<int>(SaveGamePointer + APSaveLocation - 16) + 1;

@@ -91,7 +91,7 @@ namespace Nep3ArchipelagoClient
         public override void CheckUnlockGoalCondition()
         {
             bool old_sword = Inventory.FindItem(254, out int position);
-            if (!old_sword && Inventory.GetItemCountAtSlot(position) < Options.OldSwordCount) return;
+            if (!old_sword || Inventory.GetItemCountAtSlot(position) < Options.OldSwordCount) return;
             SetEventFlag(522, true);
             SetEventFlag(523, true);
         }

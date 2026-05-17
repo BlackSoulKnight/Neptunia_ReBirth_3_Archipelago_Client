@@ -13,7 +13,7 @@ namespace Nep3ArchipelagoClient
 
         public RB1SaveGame()
         {
-            SaveGameOffest = 0;
+            SaveGameOffest = 0x459248;
             Inventory = new RB3Inventory(this);
             APSaveLocation = 0x1032c;
             PlanOffset = 0x443310;

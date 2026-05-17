@@ -40,7 +40,7 @@ namespace Nep3ArchipelagoClient
         protected abstract void DoSetupSaveFile();
         public void SetupSaveFile()
         {
-            if (!!IsInit)
+            if (!IsInit)
             {
                 Thread.Sleep(100);
                 DoSetupSaveFile();

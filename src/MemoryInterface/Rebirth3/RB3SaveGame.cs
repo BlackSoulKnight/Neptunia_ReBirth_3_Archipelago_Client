@@ -10,7 +10,8 @@ namespace Nep3ArchipelagoClient
     {
         static Memory memory = Memory.Instance;
         Inventory Inventory;
-
+        nuint StellaDungeonBestOffset = 0xBEA3C;
+        nuint StellaDungeonCurrentRunBestOffset = 0xD765C;
         public RB3SaveGame()
         {
             SaveGameOffest = 0x4F6ED8;

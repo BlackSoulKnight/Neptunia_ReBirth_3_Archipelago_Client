@@ -51,7 +51,7 @@ public class Mod : ModBase // <= Do not Remove.
     private readonly IModConfig _modConfig;
 
     public static UIntPtr ModuleBase = 0x400000;
-    public static ProcessModule Module = null;
+    public static ProcessModule Module;
     public static Archipelago.APClient APClient = new();
 
     internal static SaveGame SaveGame;
@@ -102,8 +102,8 @@ public class Mod : ModBase // <= Do not Remove.
         Hooks.Hooks.SetupAllHooks(_hooks);
 
         APClient.ConnectToServer(_configuration.Server, _configuration.Port, _configuration.Player);
-
         _loop = Task.Run(MainLoop);
+
     }
     Task _loop;
 

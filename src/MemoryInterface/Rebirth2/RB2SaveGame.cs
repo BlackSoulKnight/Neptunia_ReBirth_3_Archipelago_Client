@@ -12,7 +12,7 @@ namespace Nep3ArchipelagoClient
     {
         static Memory memory = Memory.Instance;
         Inventory Inventory;
-        RB2Options Options => (RB2Options)base.Options;
+        new RB2Options Options => (RB2Options)base.Options;
         public RB2SaveGame()
         {
             SaveGameOffest = 0x443310;
@@ -93,7 +93,7 @@ namespace Nep3ArchipelagoClient
         public override void CheckUnlockGoalCondition()
         {
             bool old_sword = Inventory.FindItem(254, out int position);
-            if (!old_sword || Inventory.GetItemCountAtSlot(position) < Options.OldSwordCount) return;
+            if (!old_sword || Inventory.GetItemCountAtSlot(position) < 1) return;
             SetEventFlag(522, true);
             SetEventFlag(523, true);
         }

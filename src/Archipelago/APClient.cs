@@ -84,7 +84,6 @@ namespace Nep3ArchipelagoClient.Archipelago
                     return "Location not Found";
                 }
                 var itemName = ItemAtLocation[id].ItemName;
-                int idx = 0;
                 if (String.IsNullOrEmpty(itemName))
                     return "No Itemname Found";
                 else

@@ -81,7 +81,7 @@ namespace Nep3ArchipelagoClient
             var writeInto = SaveGamePointer + (nuint)(0x103b4 + 0x203c * dungeonListLength);
             memory.Write<byte>(writeInto, 0x0F);
             memory.Write<short>(writeInto + 2, dungeonId);
-            var nation = DungeonToNation.GetNation(dungeonId);
+            var nation = ObjectToNation.GetDungeonNation(dungeonId);
             memory.Write<byte>(writeInto + 4, (byte) nation); // 1 needs to replaced soonish for the nation id
             memory.Write<byte>(SaveGamePointer + 0x103b0, ++dungeonListLength);
 
@@ -130,6 +130,9 @@ namespace Nep3ArchipelagoClient
                 memory.Write<byte>(flagPionter + i, 0xFF);
                 memory.Write<byte>(flagPionter + i + 17, 0xFF);
             }
+            for (short i = 1; i < 10; i++)
+                if (i == 6) continue;
+                else UnlockCity(i);
             if (PlanHooks.ReadPlan(53) == 1)
                 PlanHooks.FrocePlan(53, PlanFlags.Build);
             PlanHooks.FrocePlan(9, PlanFlags.Active);
@@ -166,7 +169,7 @@ namespace Nep3ArchipelagoClient
                     continue;
                 AddPartyMember(character);
             }
-            foreach(var dungeon in DungeonToNation.link.Keys)
+            foreach(var dungeon in ObjectToNation.DungeonLink.Keys)
                 AddDungeon(dungeon);
         }
         public unsafe void Test_CharacterStruct()
@@ -195,5 +198,16 @@ namespace Nep3ArchipelagoClient
             }
         }
         public override bool IsGoalAchieved(long APLocation) => APLocation == APClient.EnemyBaseID + 1042;
+
+        public override void UnlockCity(short cityId)
+        {
+            nuint CitySlotsOffset = 0xFEA8;
+            var cityLength = memory.Read<byte>(SaveGamePointer + CitySlotsOffset);
+            var writeInto = SaveGamePointer + CitySlotsOffset + 0x04 + (nuint)(0x8 * cityLength);
+            memory.Write<byte>(writeInto, 0x0F);
+            memory.Write<short>(writeInto + 2, cityId);
+            memory.Write<byte>(writeInto + 4, (byte)ObjectToNation.GetCityNation(cityId));
+            memory.Write<byte>(SaveGamePointer + CitySlotsOffset, ++cityLength);
+        }
     }
 }

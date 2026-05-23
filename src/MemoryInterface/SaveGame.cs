@@ -48,7 +48,7 @@ namespace Nep3ArchipelagoClient
         }
 
         public abstract void AddDungeon(short dungeonId);
-
+        public abstract void UnlockCity(short cityId);
         public int GetCurrentApItemCount()
         {
             return Memory.Instance.Read<int>(SaveGamePointer + APSaveLocation - 16);

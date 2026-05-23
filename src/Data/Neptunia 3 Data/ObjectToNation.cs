@@ -18,9 +18,9 @@ namespace Nep3ArchipelagoClient.Neptunia_3_Data
         HelloContinent,
         Hyperdimension
     }
-    internal static class DungeonToNation
+    internal static class ObjectToNation
     {
-        internal static readonly Dictionary<short,Nation> link = new Dictionary<short, Nation>() {
+        internal static readonly Dictionary<short,Nation> DungeonLink = new Dictionary<short, Nation>() {
             {1, Nation.Hyperdimension},{2,Nation.Hyperdimension},{3,Nation.Planeptun},{4,Nation.Planeptun},{5,Nation.Laststation},{6,Nation.Laststation},{8,Nation.Laststation},{9,Nation.Laststation},{11,Nation.Laststation},
             {12,Nation.Lowee},{13,Nation.Lowee},{16,Nation.Lowee},{17,Nation.Laststation},{19,Nation.Leanbox},{20,Nation.Laststation},{21,Nation.Lowee},{22,Nation.Leanbox},{23,Nation.Planeptun},{25,Nation.Lowee},{27,Nation.Lowee},
             {28,Nation.Planeptun},{29,Nation.Laststation},{31,Nation.Eden},{33,Nation.Eden},{34,Nation.Hyperdimension},{35,Nation.Planeptun},{36,Nation.Planeptun},{37,Nation.Planeptun},{39,Nation.Laststation},{40,Nation.Laststation},
@@ -28,12 +28,25 @@ namespace Nep3ArchipelagoClient.Neptunia_3_Data
             {56,Nation.Hyperdimension},{58,Nation.Hyperdimension},{59,Nation.HelloContinent},{61,Nation.HelloContinent},{62,Nation.HelloContinent},{63,Nation.PCMasterRace},{64,Nation.PCMasterRace},{65,Nation.PCMasterRace},
             {67,Nation.Planeptun},{302,Nation.Planeptun }
         };
-        internal static Nation GetNation(short dungeon)
+        internal static readonly Dictionary<short, Nation> CityLink = new Dictionary<short, Nation>()
         {
-            if (link.ContainsKey(dungeon))
-                return link[dungeon];
+            {6,Nation.Hyperdimension},{7,Nation.Hyperdimension},{8,Nation.Hyperdimension},{9,Nation.Hyperdimension },
+            {1,Nation.Planeptun },{2,Nation.Laststation},{3,Nation.Lowee},{4,Nation.Leanbox},{5,Nation.Eden}
+        
+        };
+        internal static Nation GetDungeonNation(short dungeon)
+        {
+            if (DungeonLink.ContainsKey(dungeon))
+                return DungeonLink[dungeon];
             else
                 return Nation.BlackScreenNation;
+        }
+        internal static Nation GetCityNation(short city)
+        {
+            if (CityLink.ContainsKey(city))
+                return CityLink[city];
+            else
+                return Nation.Hyperdimension;
         }
     }
 }

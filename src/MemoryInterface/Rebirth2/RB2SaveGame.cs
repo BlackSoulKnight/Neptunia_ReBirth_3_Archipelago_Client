@@ -107,6 +107,8 @@ namespace Nep3ArchipelagoClient
                 memory.Write<byte>(flagPionter + i, 0xFF);
                 memory.Write<byte>(flagPionter + i + 16, 0xFF);
             }
+            for(short id = 2; id <6;id++)
+                UnlockCity(id);
             SetEventFlag(172, true);
         }
         void Test_VGMRun()
@@ -155,5 +157,16 @@ namespace Nep3ArchipelagoClient
             return APLocation == APClient.EnemyBaseID + 1055;
         }
 
+        public override void UnlockCity(short cityId)
+        {
+            nuint CitySlotsOffset = 0x10128;
+            var cityLength = memory.Read<byte>(SaveGamePointer + CitySlotsOffset);
+            var writeInto = SaveGamePointer + CitySlotsOffset + 0x04 + (nuint)(0x8 * cityLength);
+            memory.Write<byte>(writeInto, 0x0F);
+            memory.Write<short>(writeInto + 2, cityId);
+            memory.Write<byte>(writeInto + 4, (byte)1);
+            memory.Write<byte>(SaveGamePointer + CitySlotsOffset, ++cityLength);
+
+        }
     }
 }

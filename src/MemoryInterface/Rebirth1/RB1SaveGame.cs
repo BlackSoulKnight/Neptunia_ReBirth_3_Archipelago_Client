@@ -113,5 +113,10 @@ namespace Nep3ArchipelagoClient
         {
             return false;
         }
+
+        public override void UnlockCity(short cityId)
+        {
+            throw new NotImplementedException();
+        }
     }
 }

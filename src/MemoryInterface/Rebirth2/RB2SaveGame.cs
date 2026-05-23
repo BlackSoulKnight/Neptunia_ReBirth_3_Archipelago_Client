@@ -54,11 +54,11 @@ namespace Nep3ArchipelagoClient
                 InitGear();
 
 #if DEBUG
-                //Test_CharacterUnlock();
-                //Test_DungeonUnlock();
-                //Test_VGMRun();
-                //Test_Goal();
-                //Test_CharacterManip();
+                Test_CharacterUnlock();
+                Test_DungeonUnlock();
+                Test_VGMRun();
+                Test_Goal();
+                Test_CharacterManip();
 #endif
             }
         }
@@ -144,13 +144,13 @@ namespace Nep3ArchipelagoClient
         unsafe void Test_CharacterManip()
         {
             var character = (Character*)CharacterHooks.GetCharacter(6);
-            character->BaseStr = 2000;
-            character->BaseAgi = 2000;
-            character->BaseInt = 2000;
-            character->BaseMen = 2000;
-            character->BaseVit = 2000;
+            character->BaseStr = 80000;
+            character->BaseAgi = 80000;
+            character->BaseInt = 80000;
+            character->BaseMen = 80000;
+            character->BaseVit = 80000;
             character->MaxBaseHP = 30000;
-            character->BaseTec = 2000;
+            character->BaseTec = 80000;
         }
         public override bool IsGoalAchieved(long APLocation)
         {

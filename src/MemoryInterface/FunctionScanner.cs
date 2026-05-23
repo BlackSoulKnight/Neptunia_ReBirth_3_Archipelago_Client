@@ -10,7 +10,7 @@ namespace Nep3ArchipelagoClient.MemoryInterface
         private static Int32 exeSize = thisProcess.MainModule.ModuleMemorySize;
         private static Scanner scanner = new Scanner((byte*) baseAddress, exeSize);
 
-        public unsafe static bool FindFunction(string functionName,string pattern, out nuint offset)
+        public unsafe static bool FindFunction(string functionName, string pattern, out nuint offset)
         {
             offset = 0;
             // Search for a given pattern
@@ -22,6 +22,21 @@ namespace Nep3ArchipelagoClient.MemoryInterface
                 return false;
             }
             Console.WriteLine($"Function {functionName} found at Offset:{result.Offset.ToString("X")}");
+            offset = (nuint)result.Offset;
+            return true;
+        }
+        public unsafe static bool JumpTarget(string target,string pattern, out nuint offset)
+        {
+            offset = 0;
+            // Search for a given pattern
+            // Note: If created signature using SigMaker, replace ? with ??.
+            var result = scanner.FindPattern(pattern);
+            if (!result.Found)
+            {
+                Console.WriteLine($"Jump to {target} could not be found");
+                return false;
+            }
+            Console.WriteLine($"Jump to {target} found at Offset:{result.Offset.ToString("X")}");
             offset = (nuint)result.Offset;
             return true;
         }

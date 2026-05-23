@@ -1,7 +1,5 @@
 ﻿using Nep3ArchipelagoClient.Data;
 using Nep3ArchipelagoClient.Hooks;
-using Nep3ArchipelagoClient.Neptunia_3_Data;
-using Nep3ArchipelagoClient.Neptunia_3_Data.ProgressiveGear;
 using Nep3ArchipelagoClient.Neptunia_Data;
 using Reloaded.Memory;
 
@@ -17,6 +15,7 @@ namespace Nep3ArchipelagoClient
         protected uint EventFlagOffset;
         Memory memory => Memory.Instance;
         public APOptions Options;
+        public Events Events;
         protected SaveGame()
         {
         }
@@ -27,6 +26,12 @@ namespace Nep3ArchipelagoClient
 
         
         public bool IsEventFlagSet(int EventID) => (memory.Read<byte>(SaveGamePointer + EventFlagOffset+(nuint)(EventID/8)) & 1 << (EventID % 8)) > 0;
+        public bool AreEventFlagSet(int[] EventID) {
+            foreach (int i in EventID)
+                if (IsEventFlagSet(i) == false) return false;
+            return true;
+
+        }
         public void SetEventFlag(int EventID,bool Active)
         {
             var FlagRegion = memory.Read<byte>(SaveGamePointer + EventFlagOffset + (nuint)(EventID / 8));
@@ -65,10 +70,15 @@ namespace Nep3ArchipelagoClient
             var value = Memory.Instance.Read<int>(SaveGamePointer + APSaveLocation - 16) + 1;
             Memory.Instance.Write<int>(SaveGamePointer + APSaveLocation - 16, value);
         }
-        public abstract void CheckUnlockGoalCondition();
-        public abstract bool IsGoalAchieved(long APLocation);
+        public bool GoMode = false;
+        protected abstract void _CheckUnlockGoalCondition();
+        public void CheckUnlockGoalCondition()
+        {
+            if (!GoMode)
+                _CheckUnlockGoalCondition();
+        }
+        public abstract bool GoalAchieved(long APLocation);
         
-        public void AddPartyMember(CharacterId character) => AddPartyMember((int)character);
         public unsafe abstract void AddPartyMember(int characterID);
 
         public abstract void RemovePartyMember(int characterId);

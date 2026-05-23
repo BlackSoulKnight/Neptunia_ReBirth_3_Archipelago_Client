@@ -70,7 +70,7 @@ namespace Nep3ArchipelagoClient
             currentVal &= 0xff - 0x80;
             memory.Write<byte>(characterPoint, currentVal);
         }
-        public override void CheckUnlockGoalCondition()
+        protected override void _CheckUnlockGoalCondition()
         {
             bool pudding = Inventory.FindItem(203, out int _);
             bool syringe = Inventory.FindItem(204, out int _);
@@ -109,7 +109,7 @@ namespace Nep3ArchipelagoClient
             }
         }
 
-        public override bool IsGoalAchieved(long APLocation)
+        public override bool GoalAchieved(long APLocation)
         {
             return false;
         }

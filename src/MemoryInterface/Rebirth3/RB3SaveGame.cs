@@ -2,7 +2,6 @@
 using Nep3ArchipelagoClient.Hooks;
 using Nep3ArchipelagoClient.MemoryInterface;
 using Nep3ArchipelagoClient.Neptunia_3_Data;
-using Nep3ArchipelagoClient.Neptunia_Data;
 using Reloaded.Memory;
 namespace Nep3ArchipelagoClient
 {
@@ -18,7 +17,7 @@ namespace Nep3ArchipelagoClient
             Inventory = new RB3Inventory(this);
             APSaveLocation = 0x103B0;
             PlanOffset = 0x1e1fc;
-            
+            Events = new Events();
         }
         public int CurrentItemCount()
         {
@@ -164,7 +163,7 @@ namespace Nep3ArchipelagoClient
             foreach(int character in Enum.GetValues(typeof(CharacterId)))
             {
                 for(int i  = 0; i<10;i ++)
-                    ProgressiveGear.ProgressiveGears[character].IncreaseGearTier();
+                    Neptunia_Data.ProgressiveGear.ProgressiveGears[character].IncreaseGearTier();
                 if (character == 11)
                     continue;
                 AddPartyMember(character);
@@ -185,7 +184,7 @@ namespace Nep3ArchipelagoClient
             SetTrueEndFlag();
         }
 
-        public override void CheckUnlockGoalCondition()
+        protected override void _CheckUnlockGoalCondition()
         {
             bool pudding = Inventory.FindItem(254, out int _);
             bool syringe = Inventory.FindItem(204, out int _);
@@ -197,7 +196,7 @@ namespace Nep3ArchipelagoClient
                 SetTrueEndFlag();
             }
         }
-        public override bool IsGoalAchieved(long APLocation) => APLocation == APClient.EnemyBaseID + 1042;
+        public override bool GoalAchieved(long APLocation) => APLocation == APClient.EnemyBaseID + 1042;
 
         public override void UnlockCity(short cityId)
         {

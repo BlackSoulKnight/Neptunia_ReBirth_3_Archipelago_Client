@@ -1,8 +1,6 @@
 ﻿using Archipelago.MultiClient.Net;
 using Archipelago.MultiClient.Net.Enums;
 using Archipelago.MultiClient.Net.Models;
-using Nep3ArchipelagoClient.Hooks;
-using Nep3ArchipelagoClient.Neptunia_3_Data;
 using Nep3ArchipelagoClient.Neptunia_Data;
 using Newtonsoft.Json.Linq;
 
@@ -17,6 +15,7 @@ namespace Nep3ArchipelagoClient.Archipelago
         public const long DungeonBaseID = 2_000_000;
         const long ChracterBaseID = 3_000_000;
         const long ProgressiveGearID = 3_500_000;
+        const long EventBaseID = 4_000_000;
         private ArchipelagoSession? Session;
         private LoginResult? loginResult = null;
         public bool IsConnected => Session != null && Session.Socket.Connected;
@@ -73,6 +72,33 @@ namespace Nep3ArchipelagoClient.Archipelago
             long[] locations = Session.Locations.AllLocations.ToArray();
             ItemAtLocation = new(await Session.Locations.ScoutLocationsAsync(locations));
         }
+        public void SaveEvent(short id)
+        {
+            if (IsConnected)
+            {
+                Session.DataStorage[Scope.Slot, $"Event {id}"] = true;
+                Mod.SaveGame.Events.UnlockedEvents.Add(id);
+            }
+        }
+        public bool CheckEvent(short id)
+        {
+            if (IsConnected)
+            {
+                return (bool)Session.DataStorage[Scope.Slot, $"Event {id}"];
+            }
+            return false;
+        }
+        void UpdateEventStorage()
+        {
+            var evnt = Mod.SaveGame.Events;
+            foreach (var eventId in evnt.GetUnlockableEvents)
+            {
+                if (evnt.UnlockedEvents.Contains(eventId))
+                    continue;
+                if((bool)Session.DataStorage[Scope.Slot, $"Event {eventId}"])
+                    evnt.UnlockedEvents.Add(eventId);
+            }
+        }
 
         internal int GetStartingCharacter() => StartingCharacter;
         public string GetItemName(long id)
@@ -97,7 +123,7 @@ namespace Nep3ArchipelagoClient.Archipelago
         public void CheckIfGoaled(long id)
         {
             //currently only Rei kill
-            if(Mod.SaveGame.IsGoalAchieved(id))
+            if(Mod.SaveGame.GoalAchieved(id))
                 Session.SetGoalAchieved();
                 
         }
@@ -112,10 +138,12 @@ namespace Nep3ArchipelagoClient.Archipelago
             }
             return false;
         }
-        public void update()
+        double _lastUpdate = 0;
+        public void Update(double deltaTime)
         {
             if (IsConnected && Mod.SaveGame.IsInit)
             {
+                _lastUpdate += deltaTime;
                 int currentItemNr = Mod.SaveGame.GetCurrentApItemCount();
                 if (currentItemNr < Session.Items.AllItemsReceived.Count)
                 {
@@ -129,6 +157,11 @@ namespace Nep3ArchipelagoClient.Archipelago
                     else
                         Mod.Inventory.AddItem((int)itemId, 1);
                     Mod.SaveGame.IncrementCurrentApItemCount();
+                }
+                if(_lastUpdate > 1000)
+                {
+                    _lastUpdate = 0;
+                    UpdateEventStorage();
                 }
             }
         }

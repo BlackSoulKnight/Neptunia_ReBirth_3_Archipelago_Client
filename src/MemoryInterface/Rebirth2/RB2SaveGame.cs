@@ -21,6 +21,7 @@ namespace Nep3ArchipelagoClient
             PlanOffset = 0x443310;
             EventFlagOffset = 0x91c;
             base.Options = new RB2Options();
+            Events = new Events();
         }
         public int CurrentItemCount()
         {
@@ -59,9 +60,22 @@ namespace Nep3ArchipelagoClient
                 Test_VGMRun();
                 Test_Goal();
                 Test_CharacterManip();
+                Test_DataStorage();
 #endif
             }
         }
+
+        private void Test_DataStorage()
+        {
+            if (Mod.APClient.IsConnected)
+            {
+                Mod.APClient.SaveEvent(1);
+                Console.WriteLine(Mod.APClient.CheckEvent(1));
+                Console.WriteLine(Mod.APClient.CheckEvent(2));
+
+            }
+        }
+
         public override void AddDungeon(short dungeonId)
         {
             nuint dungeonOffset = 0x10330;
@@ -90,12 +104,13 @@ namespace Nep3ArchipelagoClient
             currentVal &= 0xff - 0x80;
             memory.Write<byte>(characterPoint, currentVal);
         }
-        public override void CheckUnlockGoalCondition()
+        protected override void _CheckUnlockGoalCondition()
         {
             bool old_sword = Inventory.FindItem(254, out int position);
             if (!old_sword || Inventory.GetItemCountAtSlot(position) < 1) return;
-            SetEventFlag(522, true);
-            SetEventFlag(523, true);
+            if (!AreEventFlagSet([513, 516, 519])) return;
+            GoMode = true;
+            Events.UnlockedEvents.AddRange([524, 525, 526]);
         }
 
         private void UnlockGameFeatures()
@@ -139,20 +154,21 @@ namespace Nep3ArchipelagoClient
         }
         void Test_Goal()
         {
+            Events.UnlockedEvents.AddRange(Events.GetUnlockableEvents);
             Inventory.AddItem(254, 1);
         }
         unsafe void Test_CharacterManip()
         {
             var character = (Character*)CharacterHooks.GetCharacter(6);
-            character->BaseStr = 80000;
-            character->BaseAgi = 80000;
-            character->BaseInt = 80000;
-            character->BaseMen = 80000;
-            character->BaseVit = 80000;
-            character->MaxBaseHP = 30000;
-            character->BaseTec = 80000;
+            character->BaseStr = 800000;
+            character->BaseAgi = 800000;
+            character->BaseInt = 800000;
+            character->BaseMen = 800000;
+            character->BaseVit = 800000;
+            character->MaxBaseHP = 300000;
+            character->BaseTec = 800000;
         }
-        public override bool IsGoalAchieved(long APLocation)
+        public override bool GoalAchieved(long APLocation)
         {
             return APLocation == APClient.EnemyBaseID + 1055;
         }

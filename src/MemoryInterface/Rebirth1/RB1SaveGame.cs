@@ -1,6 +1,6 @@
 ﻿using Nep3ArchipelagoClient.Hooks;
 using Nep3ArchipelagoClient.MemoryInterface;
-using Nep3ArchipelagoClient.Neptunia_3_Data;
+using Nep3ArchipelagoClient.Neptunia_1_Data;
 using Reloaded.Memory;
 
 

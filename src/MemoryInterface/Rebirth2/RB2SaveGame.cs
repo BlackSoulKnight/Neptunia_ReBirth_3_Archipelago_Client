@@ -92,7 +92,7 @@ namespace Nep3ArchipelagoClient
             CharacterHooks._addNewCharacter.GetWrapper()((uint)characterID);
             var character = (Character*)CharacterHooks.GetCharacter(characterID);
             if (character == null) return;
-            character->Cha = 0x1;
+            character->CurrentForm = (short)0x104;
             character->Armor = 1627;
         }
         public override void RemovePartyMember(int characterId) => CharacterHooks._removePartyMember.GetWrapper()(characterId);
@@ -161,6 +161,7 @@ namespace Nep3ArchipelagoClient
         unsafe void Test_CharacterManip()
         {
             var character = (Character*)CharacterHooks.GetCharacter(6);
+            if (character == null) return; 
             character->BaseStr = 800000;
             character->BaseAgi = 800000;
             character->BaseInt = 800000;

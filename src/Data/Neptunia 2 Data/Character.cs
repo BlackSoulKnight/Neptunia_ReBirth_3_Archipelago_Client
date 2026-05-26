@@ -28,9 +28,7 @@ namespace Nep3ArchipelagoClient.Neptunia_2_Data
     public unsafe struct Character
     {
         [FieldOffset(0x0)]
-        public byte CurrentForm;
-        [FieldOffset(4)]
-        public byte Cha;
+        public short CurrentForm;
         [FieldOffset(8)]
         public fixed byte CharacterName[32];
         [FieldOffset(40)]

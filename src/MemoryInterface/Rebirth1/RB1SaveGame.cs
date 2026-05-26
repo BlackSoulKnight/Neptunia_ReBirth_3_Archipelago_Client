@@ -40,7 +40,7 @@ namespace Nep3ArchipelagoClient
                     SetEventFlag(i, false);
                 UnlockGameFeatures();
 #if DEBUG
-                //Test_CharacterUnlock();
+                Test_CharacterUnlock();
                 Test_DungeonUnlock();
                 //Test_VGMRun();
 #endif
@@ -115,12 +115,12 @@ namespace Nep3ArchipelagoClient
         }
         void Test_CharacterUnlock()
         {
-            for (short i = 1; i < 25; i++)
+            for (short i = 1; i < 30; i++)
             {
                 RemovePartyMember(i);
             }
             Thread.Sleep(5000);
-            for (short i = 1; i < 25; i++)
+            for (short i = 1; i < 30; i++)
             {
                 AddPartyMember(i);
             }

@@ -15,7 +15,7 @@ namespace Nep3ArchipelagoClient
         {
             SaveGameOffest = 0x459248;
             Inventory = new RB3Inventory(this);
-            APSaveLocation = 0x1032c;
+            APSaveLocation = 0x1062C;
             PlanOffset = 0x443310;
             EventFlagOffset = 0x918;
         }
@@ -30,22 +30,39 @@ namespace Nep3ArchipelagoClient
 
         protected override void DoSetupSaveFile()
         {
-            if (!IsInit && IsEventFlagSet(658))
+            if (!IsInit && IsEventFlagSet(102))
             {
                 //debug stuff
-                //memory.Write<byte>(SaveGamePointer + APSaveLocation - 17, 1);
-
+                memory.Write<byte>(SaveGamePointer + APSaveLocation - 17, 1);
+                for (int i = 1; i < 10; i++)
+                    SetEventFlag(i, false);
+                for (int i = 100; i < 110; i++)
+                    SetEventFlag(i, false);
+                UnlockGameFeatures();
 #if DEBUG
                 //Test_CharacterUnlock();
-                //Test_DungeonUnlock();
+                Test_DungeonUnlock();
                 //Test_VGMRun();
 #endif
             }
         }
+        private void UnlockGameFeatures()
+        {
+
+            var flagPionter = SaveGamePointer + 3580;
+            for (nuint i = 0; i < 6; i++)
+            {
+                memory.Write<byte>(flagPionter + i, 0xFF);
+                memory.Write<byte>(flagPionter + i + 16, 0xFF);
+            }
+            for (short id = 2; id < 6; id++)
+                UnlockCity(id);
+        }
         public override void AddDungeon(short dungeonId)
         {
-            nuint dungeonOffset = 0x10330;
-            nuint dungeonLenghtOffset = 0x1032c;
+            nuint dungeonLenghtOffset = 0x1062C;
+            nuint dungeonOffset = dungeonLenghtOffset+0x4;
+
             var dungeonListLength = memory.Read<byte>(SaveGamePointer + dungeonLenghtOffset);
             var writeInto = SaveGamePointer + dungeonOffset + (nuint)(0x203c * dungeonListLength);
             memory.Write<byte>(writeInto, 0x0F);
@@ -116,7 +133,7 @@ namespace Nep3ArchipelagoClient
 
         public override void UnlockCity(short cityId)
         {
-            throw new NotImplementedException();
+            
         }
     }
 }

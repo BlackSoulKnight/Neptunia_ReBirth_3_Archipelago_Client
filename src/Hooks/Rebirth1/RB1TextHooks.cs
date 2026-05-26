@@ -7,9 +7,9 @@ using Reloaded.Hooks.Definitions.X86;
 using Reloaded.Memory;
 using System.Text;
 
-namespace Nep3ArchipelagoClient.Hooks.Rebirth2
+namespace Nep3ArchipelagoClient.Hooks.Rebirth1
 {
-    internal class RB2TextHooks
+    internal class RB1TextHooks
     {
         public static List<IAsmHook> _asmHooks = new();
         public static byte[] ReplacementText => TextHooks.ReplacementText;
@@ -51,10 +51,9 @@ namespace Nep3ArchipelagoClient.Hooks.Rebirth2
                 "pop ecx",
                 "mov [esp+0x4],eax",
                 "pop eax",
-
                 //=
             };
-            if (FunctionScanner.FindFunction("Gather Item Text", "E8 ?? ?? ?? ?? 50 8D 85 ?? ?? ?? ?? 68 ?? ?? ?? ?? 50 FF 15 ?? ?? ?? ?? 8D 95 ?? ?? ?? ?? 83 C4 10 8B F2 8A 02 42 84 C0 75 ?? 8D BD ?? ?? ?? ?? 2B D6 4F 8A 47 ?? 47 84 C0 75 ?? 8B 9D", out offset))
+            if (FunctionScanner.FindFunction("Gather Item Text", "E8 ?? ?? ?? ?? 50 8D 85 ?? ?? ?? ?? 68 ?? ?? ?? ?? 50 FF 15 ?? ?? ?? ?? 8D 95 ?? ?? ?? ?? 83 C4 10 8B F2 8D 9B 00 00 00 00", out offset))
                 _asmHooks.Add(hooks.CreateAsmHook(testReplacement, (int)(Mod.ModuleBase + offset), AsmHookBehaviour.ExecuteAfter).Activate());
 
 

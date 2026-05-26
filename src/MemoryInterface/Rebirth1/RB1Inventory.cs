@@ -9,7 +9,7 @@ namespace Nep3ArchipelagoClient.MemoryInterface
     {
         public RB1Inventory(SaveGame savegame) : base(savegame)
         {
-            InventorySizeOffset = 0xCA46;
+            InventorySizeOffset = 0xC1EAC;
 
         }
     }

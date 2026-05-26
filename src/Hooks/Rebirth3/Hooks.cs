@@ -1,6 +1,4 @@
-﻿using Nep3ArchipelagoClient.Hooks;
-using Nep3ArchipelagoClient.Hooks.Rebirth2;
-using Reloaded.Hooks.Definitions;
+﻿using Reloaded.Hooks.Definitions;
 
 
 namespace Nep3ArchipelagoClient.Hooks.Rebirth3

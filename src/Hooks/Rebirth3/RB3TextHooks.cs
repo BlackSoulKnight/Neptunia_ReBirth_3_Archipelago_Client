@@ -7,7 +7,7 @@ using Reloaded.Hooks.Definitions.X86;
 using Reloaded.Memory;
 using System.Text;
 
-namespace Nep3ArchipelagoClient.Hooks
+namespace Nep3ArchipelagoClient.Hooks.Rebirth3
 {
     internal class RB3TextHooks
     {

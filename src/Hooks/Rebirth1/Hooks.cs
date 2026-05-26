@@ -8,6 +8,8 @@ namespace Nep3ArchipelagoClient.Hooks.Rebirth1
     {
         public static void SetupHooks(IReloadedHooks hooks)
         {
+            RB1ItemCollectionHooks.SetupHooks(hooks);
+            RB1TextHooks.SetupHooks(hooks);
 #if DEBUG
             RB1DebugTools.SetupHooks(hooks);
 #endif

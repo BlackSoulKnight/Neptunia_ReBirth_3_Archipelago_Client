@@ -6,9 +6,8 @@ using Reloaded.Hooks.Definitions.Enums;
 using Reloaded.Hooks.Definitions.X86;
 using Reloaded.Memory;
 using System.Text;
-using Nep3ArchipelagoClient.Data.Neptunia_2_Data;
 
-namespace Nep3ArchipelagoClient.Hooks
+namespace Nep3ArchipelagoClient.Hooks.Rebirth2
 {
     internal class RB2EventHooks
     {

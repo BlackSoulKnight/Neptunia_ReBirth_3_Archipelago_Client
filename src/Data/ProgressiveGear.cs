@@ -81,18 +81,18 @@ namespace Nep3ArchipelagoClient.Neptunia_Data
             list.Add((int)Neptunia_1_Data.CharacterId.vert,             new Neptunia_1_Data.ProgressiveGear.VertGear());
             list.Add((int)Neptunia_1_Data.CharacterId.rom,              new Neptunia_1_Data.ProgressiveGear.RomGear());
             list.Add((int)Neptunia_1_Data.CharacterId.broccoli,         new Neptunia_1_Data.ProgressiveGear.BroccoliGear());
-            list.Add((int)Neptunia_1_Data.CharacterId.cave,             new Neptunia_1_Data.ProgressiveGear.CaveGear());
+            list.Add((int)Neptunia_1_Data.CharacterId.if_child,             new Neptunia_1_Data.ProgressiveGear.IFChildGear());
             list.Add((int)Neptunia_1_Data.CharacterId.chika,            new Neptunia_1_Data.ProgressiveGear.ChikaGear());
             list.Add((int)Neptunia_1_Data.CharacterId.compa,            new Neptunia_1_Data.ProgressiveGear.CompaGear());
             list.Add((int)Neptunia_1_Data.CharacterId.cyberconnect2,    new Neptunia_1_Data.ProgressiveGear.CyberConnect2Gear());
             list.Add((int)Neptunia_1_Data.CharacterId.falcom,           new Neptunia_1_Data.ProgressiveGear.FalcomGear());
-            list.Add((int)Neptunia_1_Data.CharacterId.fivepb,           new Neptunia_1_Data.ProgressiveGear.FivePbGear());
+            list.Add((int)Neptunia_1_Data.CharacterId.compa_child,           new Neptunia_1_Data.ProgressiveGear.CompaChildGear());
             list.Add((int)Neptunia_1_Data.CharacterId.histoire,         new Neptunia_1_Data.ProgressiveGear.HistoireGear());
             list.Add((int)Neptunia_1_Data.CharacterId.IF,               new Neptunia_1_Data.ProgressiveGear.IFGear());
             list.Add((int)Neptunia_1_Data.CharacterId.kei,              new Neptunia_1_Data.ProgressiveGear.KeiGear());
             list.Add((int)Neptunia_1_Data.CharacterId.marvy,            new Neptunia_1_Data.ProgressiveGear.MarvyGear());
             list.Add((int)Neptunia_1_Data.CharacterId.mina,             new Neptunia_1_Data.ProgressiveGear.MinaGear());
-            list.Add((int)Neptunia_1_Data.CharacterId.red,              new Neptunia_1_Data.ProgressiveGear.RedGear());
+            list.Add((int)Neptunia_1_Data.CharacterId.uzume,              new Neptunia_1_Data.ProgressiveGear.UzumeGear());
             list.Add((int)Neptunia_1_Data.CharacterId.tekken,           new Neptunia_1_Data.ProgressiveGear.TekkenGear());
             list.Add(26, new Neptunia_1_Data.ProgressiveGear.RB2ArmorGear());
             if (UsedItems == null)

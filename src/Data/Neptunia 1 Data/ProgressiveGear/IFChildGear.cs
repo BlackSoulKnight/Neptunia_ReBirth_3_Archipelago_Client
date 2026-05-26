@@ -6,9 +6,9 @@ using System.Threading.Tasks;
 
 namespace Nep3ArchipelagoClient.Neptunia_1_Data.ProgressiveGear
 {
-    internal class CaveGear : Neptunia_Data.ProgressiveGear
+    internal class IFChildGear : Neptunia_Data.ProgressiveGear
     {
-        public CaveGear()
+        public IFChildGear()
         {
             GearList.Add(0, new List<short>() { 1297 });
             GearList.Add(1, new List<short>() { 1300, 1301 });

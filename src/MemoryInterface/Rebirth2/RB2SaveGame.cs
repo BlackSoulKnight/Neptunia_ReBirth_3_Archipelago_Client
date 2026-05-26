@@ -92,6 +92,7 @@ namespace Nep3ArchipelagoClient
             CharacterHooks._addNewCharacter.GetWrapper()((uint)characterID);
             var character = (Character*)CharacterHooks.GetCharacter(characterID);
             if (character == null) return;
+            character->Cha = 0x1;
             character->Armor = 1627;
         }
         public override void RemovePartyMember(int characterId) => CharacterHooks._removePartyMember.GetWrapper()(characterId);

@@ -29,6 +29,8 @@ namespace Nep3ArchipelagoClient.Neptunia_3_Data
     {
         [FieldOffset(0x0)]
         public byte CurrentForm;
+        [FieldOffset(0x4)]
+        public byte CurrentFormOther;
         [FieldOffset(0x8)]
         public byte Cha;
         [FieldOffset(4)]

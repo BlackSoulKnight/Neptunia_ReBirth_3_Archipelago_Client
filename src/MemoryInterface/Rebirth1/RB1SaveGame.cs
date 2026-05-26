@@ -19,10 +19,6 @@ namespace Nep3ArchipelagoClient
             PlanOffset = 0x443310;
             EventFlagOffset = 0x918;
         }
-        public int CurrentItemCount()
-        {
-            return memory.Read<int>(SaveGamePointer + 0x443310);
-        }
         public override int CurrentDungeon()
         {
             return memory.Read<int>(SaveGamePointer - 0x12B6F4);

@@ -104,7 +104,7 @@ namespace Nep3ArchipelagoClient.Neptunia_Data
         }
         public void IncreaseGearTier()
         {
-            int tier = 0;
+            int tier = 1;
             while (tier < GearList.Count && Inventory.FindItem(GearList[tier][0], out int _))
                 tier++;
             if(tier<GearList.Count)

@@ -35,6 +35,13 @@ namespace Nep3ArchipelagoClient
                 for (int i = 100; i < 110; i++)
                     SetEventFlag(i, false);
                 UnlockGameFeatures();
+                var startchar = Mod.APClient.GetStartingCharacter();
+                AddPartyMember(startchar);
+                if (startchar != (int)CharacterId.neptune)
+                    RemovePartyMember((int)CharacterId.neptune);
+                if (startchar != (int)CharacterId.compa)
+                    RemovePartyMember((int)CharacterId.compa);
+                InitGear();
 #if DEBUG
                 Test_CharacterUnlock();
                 Test_DungeonUnlock();

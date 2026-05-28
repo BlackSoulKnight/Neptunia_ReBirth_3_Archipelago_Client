@@ -17,6 +17,7 @@ namespace Nep3ArchipelagoClient
             Inventory = new RB3Inventory(this);
             APSaveLocation = 0x103B0;
             PlanOffset = 0x1e1fc;
+            EventFlagOffset = 0x91C;
             Events = new Events();
         }
         public int CurrentItemCount()
@@ -45,9 +46,9 @@ namespace Nep3ArchipelagoClient
                 //debug stuff
 #if DEBUG
                 Test_Characters();
-                //Test_Unlocks();
+                Test_Unlocks();
                 Test_CharacterStruct();
-                Test_End();
+               Test_End();
 #endif
             }
         }
@@ -98,9 +99,7 @@ namespace Nep3ArchipelagoClient
         }
         public void SetTrueEndFlag()
         {
-            var reiEvent = memory.Read<short>(SaveGamePointer + 0x999);
-            reiEvent |= 0x1FE0;
-            memory.Write<short>(SaveGamePointer + 0x999, reiEvent);
+            Events.UnlockedEvents.Add(1013);
         }
         public unsafe override void AddPartyMember(int characterID)
         {

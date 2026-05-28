@@ -11,8 +11,8 @@ namespace Nep3ArchipelagoClient.Data.Neptunia_1_Data
 
         public Events()
         {
-            PermanentEvents.AddRange([0,1,2,3,4,11,12,51,52,53]);
-            UnlockableEvents.AddRange([513,516,519]);
+            PermanentEvents.AddRange([1,2,3,101,102]);
+            UnlockableEvents.AddRange([]);
         }
     }
 }

@@ -7,9 +7,9 @@ using Reloaded.Memory;
 using System.Text;
 
 
-namespace Nep3ArchipelagoClient.Hooks.Rebirth2
+namespace Nep3ArchipelagoClient.Hooks.Rebirth3
 {
-    internal class RB2DebugTools
+    internal class RB3DebugTools
     {
         public static List<IAsmHook> _asmHooks = new();
 
@@ -37,7 +37,7 @@ namespace Nep3ArchipelagoClient.Hooks.Rebirth2
                 "popfd",
                 "popad",
             };
-            if (FunctionScanner.FindFunction("EventFlags", "E8 ?? ?? ?? ?? 56 68 F4 01 00 00", out offset))
+            if (FunctionScanner.FindFunction("EventFlags", "E8 ?? ?? ?? ?? 83 C4 08 8B 4D ?? 33 C0 39 46", out offset))
                 _asmHooks.Add(hooks.CreateAsmHook(removeDungeonCreation, (int)(Mod.ModuleBase + offset), AsmHookBehaviour.ExecuteFirst).Activate());
         }
 

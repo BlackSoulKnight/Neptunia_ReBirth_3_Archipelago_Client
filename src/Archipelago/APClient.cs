@@ -144,24 +144,25 @@ namespace Nep3ArchipelagoClient.Archipelago
             if (IsConnected && Mod.SaveGame.IsInit)
             {
                 _lastUpdate += deltaTime;
-                int currentItemNr = Mod.SaveGame.GetCurrentApItemCount();
-                if (currentItemNr < Session.Items.AllItemsReceived.Count)
+                if (_lastUpdate > 16)
                 {
-                    var itemId = Session.Items.AllItemsReceived[currentItemNr].ItemId;
-                    if (itemId > DungeonBaseID && itemId < DungeonBaseID + 1_000_000)
-                        Mod.SaveGame.AddDungeon((short)(itemId - DungeonBaseID));
-                    else if (itemId > ChracterBaseID && itemId < ProgressiveGearID)
-                        Mod.SaveGame.AddPartyMember((int)(itemId - ChracterBaseID));
-                    else if (itemId > ProgressiveGearID && itemId < EventBaseID)
-                        ProgressiveGear.ProgressiveGears[(int)(itemId - ProgressiveGearID)].IncreaseGearTier();
-                    else if (itemId > EventBaseID)
-                        SaveEvent((short)(itemId - EventBaseID));
-                    else
-                        Mod.Inventory.AddItem((int)itemId, 1);
-                    Mod.SaveGame.IncrementCurrentApItemCount();
-                }
-                if(_lastUpdate > 1000)
-                {
+                    int currentItemNr = Mod.SaveGame.GetCurrentApItemCount();
+                    if (currentItemNr < Session.Items.AllItemsReceived.Count)
+                    {
+                        var itemId = Session.Items.AllItemsReceived[currentItemNr].ItemId;
+                        if (itemId > DungeonBaseID && itemId < DungeonBaseID + 1_000_000)
+                            Mod.SaveGame.AddDungeon((short)(itemId - DungeonBaseID));
+                        else if (itemId > ChracterBaseID && itemId < ProgressiveGearID)
+                            Mod.SaveGame.AddPartyMember((int)(itemId - ChracterBaseID));
+                        else if (itemId > ProgressiveGearID && itemId < EventBaseID)
+                            ProgressiveGear.ProgressiveGears[(int)(itemId - ProgressiveGearID)].IncreaseGearTier();
+                        else if (itemId > EventBaseID)
+                            SaveEvent((short)(itemId - EventBaseID));
+                        else
+                            Mod.Inventory.AddItem((int)itemId, 1);
+                        Mod.SaveGame.IncrementCurrentApItemCount();
+                    }
+
                     _lastUpdate = 0;
                     UpdateEventStorage();
                 }

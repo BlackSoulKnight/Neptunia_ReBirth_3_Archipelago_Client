@@ -47,7 +47,6 @@ namespace Nep3ArchipelagoClient
         {
             if (!IsInit)
             {
-                Thread.Sleep(100);
                 DoSetupSaveFile();
             }
         }

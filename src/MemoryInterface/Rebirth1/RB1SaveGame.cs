@@ -122,7 +122,6 @@ namespace Nep3ArchipelagoClient
             {
                 RemovePartyMember(i);
             }
-            Thread.Sleep(5000);
             for (short i = 1; i < 30; i++)
             {
                 AddPartyMember(i);

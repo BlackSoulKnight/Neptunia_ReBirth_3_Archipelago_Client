@@ -51,8 +51,16 @@ namespace Nep3ArchipelagoClient.Hooks
                 "popfd",
                 "popad"
             };
-            if (FunctionScanner.FindFunction("MainLoop", "E8 ?? ?? ?? ?? 83 C4 08 E8 ?? ?? ?? ?? 50 E8 ?? ?? ?? ?? 50 6A 00 6A 00 E8 ?? ?? ?? ?? 83 C4 10", out offset))
-                _asmHooks.Add(hooks.CreateAsmHook(mainloop, (int)(Mod.ModuleBase + offset), AsmHookBehaviour.ExecuteFirst).Activate());
+            if (Mod.Game == NeptuniaGame.Neptunia_ReBirth_1)
+            {
+                if (FunctionScanner.FindFunction("MainLoop", "C7 45 ?? 00 00 00 00 C7 45 ?? 00 00 00 00 C7 45 ?? C0 03 00 00 C7 45 ?? 20 02 00 00 C7 45 ?? 00 04 00 00 E8", out offset))
+                    _asmHooks.Add(hooks.CreateAsmHook(mainloop, (int)(Mod.ModuleBase + offset), AsmHookBehaviour.ExecuteFirst).Activate());
+            }
+            else
+            {
+                if (FunctionScanner.FindFunction("MainLoop", "E8 ?? ?? ?? ?? 83 C4 08 E8 ?? ?? ?? ?? 50 E8 ?? ?? ?? ?? 50 6A 00 6A 00 E8 ?? ?? ?? ?? 83 C4 10", out offset))
+                    _asmHooks.Add(hooks.CreateAsmHook(mainloop, (int)(Mod.ModuleBase + offset), AsmHookBehaviour.ExecuteFirst).Activate());
+            }
         }
     }
 }

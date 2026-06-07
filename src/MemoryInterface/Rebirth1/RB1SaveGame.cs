@@ -1,4 +1,5 @@
-﻿using Nep3ArchipelagoClient.Hooks;
+﻿using Nep3ArchipelagoClient.Data.Neptunia_1_Data;
+using Nep3ArchipelagoClient.Hooks;
 using Nep3ArchipelagoClient.MemoryInterface;
 using Nep3ArchipelagoClient.Neptunia_1_Data;
 using Reloaded.Memory;
@@ -18,6 +19,7 @@ namespace Nep3ArchipelagoClient
             APSaveLocation = 0x1062C;
             PlanOffset = 0x443310;
             EventFlagOffset = 0x918;
+            Events = new Events();
         }
         public override int CurrentDungeon()
         {

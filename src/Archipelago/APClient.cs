@@ -91,15 +91,15 @@ namespace Nep3ArchipelagoClient.Archipelago
         async void UpdateEventStorage()
         {
             var evnt = Mod.SaveGame.Events;
-            await Task.Run(() => {
-                foreach (var eventId in evnt.GetUnlockableEvents)
-                {
-                    if (evnt.UnlockedEvents.Contains(eventId))
-                        continue;
-                    if ((bool)Session.DataStorage[Scope.Slot, $"Event {eventId}"])
-                        evnt.UnlockedEvents.Add(eventId);
-                }
-            });
+            foreach (var eventId in evnt.GetUnlockableEvents)
+            {
+                if (evnt.UnlockedEvents.Contains(eventId))
+                    continue;
+                var data = Session.DataStorage[Scope.Slot, $"Event {eventId}"].GetAsync();
+                Console.WriteLine(data);
+                if (data != null)
+                    evnt.UnlockedEvents.Add(eventId);
+            }
         }
 
         internal int GetStartingCharacter() => StartingCharacter;
@@ -147,6 +147,7 @@ namespace Nep3ArchipelagoClient.Archipelago
             {
                 _lastUpdate += deltaTime;
 
+
                     int currentItemNr = Mod.SaveGame.GetCurrentApItemCount();
                     if (currentItemNr < Session.Items.AllItemsReceived.Count)
                     {
@@ -167,7 +168,7 @@ namespace Nep3ArchipelagoClient.Archipelago
                 if (_lastUpdate > 3000)
                 {
                     _lastUpdate = 0;
-                    UpdateEventStorage();
+                    //UpdateEventStorage();
                 }
             }
         }

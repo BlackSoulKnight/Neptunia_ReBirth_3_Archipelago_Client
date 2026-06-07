@@ -15,6 +15,7 @@ namespace Nep3ArchipelagoClient.Hooks
             PlanHooks.SetupHooks(hooks);
             ShopHook.SetupHooks(hooks);
             EventHooks.SetupHooks(hooks);
+            MainLoopHook.SetupHooks(hooks);
             switch (Mod.Game)
             {
                 case NeptuniaGame.Neptunia_ReBirth_1:

@@ -88,16 +88,18 @@ namespace Nep3ArchipelagoClient.Archipelago
             }
             return false;
         }
-        void UpdateEventStorage()
+        async void UpdateEventStorage()
         {
             var evnt = Mod.SaveGame.Events;
-            foreach (var eventId in evnt.GetUnlockableEvents)
-            {
-                if (evnt.UnlockedEvents.Contains(eventId))
-                    continue;
-                if((bool)Session.DataStorage[Scope.Slot, $"Event {eventId}"])
-                    evnt.UnlockedEvents.Add(eventId);
-            }
+            await Task.Run(() => {
+                foreach (var eventId in evnt.GetUnlockableEvents)
+                {
+                    if (evnt.UnlockedEvents.Contains(eventId))
+                        continue;
+                    if ((bool)Session.DataStorage[Scope.Slot, $"Event {eventId}"])
+                        evnt.UnlockedEvents.Add(eventId);
+                }
+            });
         }
 
         internal int GetStartingCharacter() => StartingCharacter;
@@ -138,14 +140,13 @@ namespace Nep3ArchipelagoClient.Archipelago
             }
             return false;
         }
-        double _lastUpdate = 0;
+        double _lastUpdate = 99999999;
         public void Update(double deltaTime)
         {
             if (IsConnected && Mod.SaveGame.IsInit)
             {
                 _lastUpdate += deltaTime;
-                if (_lastUpdate > 16)
-                {
+
                     int currentItemNr = Mod.SaveGame.GetCurrentApItemCount();
                     if (currentItemNr < Session.Items.AllItemsReceived.Count)
                     {
@@ -163,6 +164,8 @@ namespace Nep3ArchipelagoClient.Archipelago
                         Mod.SaveGame.IncrementCurrentApItemCount();
                     }
 
+                if (_lastUpdate > 3000)
+                {
                     _lastUpdate = 0;
                     UpdateEventStorage();
                 }

@@ -107,20 +107,12 @@ public class Mod : ModBase // <= Do not Remove.
 
     }
     Task _loop;
-    static Stopwatch _timer = new();
-    static double deltaTime; // in milliseconds
+
     public static void MainLoop()
     {
         while (true)
         {
 
-            _timer.Restart();
-            if (SaveGame.SaveGamePointer == 0) continue;
-            APClient.Update(deltaTime);
-            SaveGame.SetupSaveFile();
-            SaveGame.CheckUnlockGoalCondition();
-            _timer.Stop();
-            deltaTime = _timer.Elapsed.TotalMilliseconds;
         }
     }
 

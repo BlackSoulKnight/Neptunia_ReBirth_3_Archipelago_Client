@@ -24,7 +24,19 @@ namespace Nep3ArchipelagoClient.Hooks
         public static unsafe int OnCheckSell(nuint eax)
         {
             var mem = Memory.Instance;
-            nuint pointer = mem.Read<nuint>(eax+0x70)+4;
+            nuint pointer = 0;
+            switch (Mod.Game)
+            {
+                case NeptuniaGame.Neptunia_ReBirth_1:
+                case NeptuniaGame.Neptunia_ReBirth_2:
+                    pointer = mem.Read<nuint>(eax + 0x6c) + 4;
+                    break;
+                case NeptuniaGame.Neptunia_ReBirth_3:
+                    pointer = mem.Read<nuint>(eax+0x70)+4;
+                    break;
+                default:
+                    throw new Exception("Missing Game");
+            }
             pointer = mem.Read<nuint>(pointer);
             int itemId = mem.Read<int>(pointer + 4);
             if (ProgressiveGear.UsedItems.Contains((short)itemId))

@@ -95,9 +95,7 @@ namespace Nep3ArchipelagoClient.Archipelago
             {
                 if (evnt.UnlockedEvents.Contains(eventId))
                     continue;
-                var data = Session.DataStorage[Scope.Slot, $"Event {eventId}"].GetAsync();
-                Console.WriteLine(data);
-                if (data != null)
+                if ((bool)Session.DataStorage[Scope.Slot, $"Event {eventId}"])
                     evnt.UnlockedEvents.Add(eventId);
             }
         }
@@ -168,7 +166,7 @@ namespace Nep3ArchipelagoClient.Archipelago
                 if (_lastUpdate > 3000)
                 {
                     _lastUpdate = 0;
-                    //UpdateEventStorage();
+                    Task.Run(UpdateEventStorage);
                 }
             }
         }

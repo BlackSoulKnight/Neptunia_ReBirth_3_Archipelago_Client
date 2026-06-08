@@ -16,6 +16,10 @@ namespace Nep3ArchipelagoClient
         Memory memory => Memory.Instance;
         public APOptions Options;
         public Events Events;
+        protected nuint WorldStateOffset;
+        public UIntPtr WorldStatePointer => Memory.Instance.Read<uint>(Mod.ModuleBase + WorldStateOffset);
+        public abstract bool WorldStateInDungeon();
+        public abstract void SetWorldState(byte state);
         protected SaveGame()
         {
         }

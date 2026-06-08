@@ -103,18 +103,9 @@ public class Mod : ModBase // <= Do not Remove.
         Hooks.Hooks.SetupAllHooks(_hooks);
 
         APClient.ConnectToServer(_configuration.Server, _configuration.Port, _configuration.Player);
-        _loop = Task.Run(MainLoop);
 
     }
-    Task _loop;
 
-    public static void MainLoop()
-    {
-        while (true)
-        {
-
-        }
-    }
 
     #region Standard Overrides
     public override void ConfigurationUpdated(Config configuration)

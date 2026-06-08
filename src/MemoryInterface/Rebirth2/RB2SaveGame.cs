@@ -22,6 +22,7 @@ namespace Nep3ArchipelagoClient
             EventFlagOffset = 0x91c;
             base.Options = new RB2Options();
             Events = new Events();
+            WorldStateOffset = 0x443380;
         }
         public int CurrentItemCount()
         {
@@ -30,6 +31,15 @@ namespace Nep3ArchipelagoClient
         public override int CurrentDungeon()
         {
             return memory.Read<int>(SaveGamePointer - 0x12B6F4);
+        }
+        public override bool WorldStateInDungeon()
+        {
+            return Memory.Instance.Read<byte>(WorldStatePointer + 0x140) == 7;
+        }
+        
+        public override void SetWorldState(byte state)
+        {
+            Memory.Instance.Write<byte>(WorldStatePointer + 0x140,state);
         }
 
         protected override void DoSetupSaveFile()
@@ -185,5 +195,7 @@ namespace Nep3ArchipelagoClient
             memory.Write<byte>(SaveGamePointer + CitySlotsOffset, ++cityLength);
 
         }
+
+
     }
 }

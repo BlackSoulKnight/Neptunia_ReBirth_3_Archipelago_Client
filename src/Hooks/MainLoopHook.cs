@@ -32,7 +32,8 @@ namespace Nep3ArchipelagoClient.Hooks
             _timer.Stop();
             deltaTime = _timer.Elapsed.TotalMilliseconds;
             _timer.Restart();
-            
+            if (Mod.SaveGame.CurrentDungeon() == 0 && Mod.SaveGame.WorldStateInDungeon())
+                Mod.SaveGame.SetWorldState(3);
             Mod.APClient.Update(deltaTime);
             Mod.SaveGame.SetupSaveFile();
             Mod.SaveGame.CheckUnlockGoalCondition();

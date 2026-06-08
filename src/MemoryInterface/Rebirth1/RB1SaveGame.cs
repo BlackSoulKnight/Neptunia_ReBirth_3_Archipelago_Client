@@ -20,12 +20,21 @@ namespace Nep3ArchipelagoClient
             PlanOffset = 0x443310;
             EventFlagOffset = 0x918;
             Events = new Events();
+            WorldStateOffset = 0x4592c0;
+
         }
         public override int CurrentDungeon()
         {
             return memory.Read<int>(SaveGamePointer - 0x12B6F4);
         }
-
+        public override bool WorldStateInDungeon()
+        {
+            return Memory.Instance.Read<byte>(WorldStatePointer + 0x140) == 7;
+        }
+        public override void SetWorldState(byte state)
+        {
+            Memory.Instance.Write<byte>(WorldStatePointer + 0x140, state);
+        }
         protected override void DoSetupSaveFile()
         {
             if (!IsInit && IsEventFlagSet(102))

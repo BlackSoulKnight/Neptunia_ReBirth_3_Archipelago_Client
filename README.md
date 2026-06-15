@@ -9,6 +9,7 @@ Very early prototype for a client to connect to a Ap server
 
 ## Requiremnets
 
++ The english steam version of Neptunia Re:Birth 3
 + Reloaded-II: https://github.com/Reloaded-Project/Reloaded-II
 + this mod
 

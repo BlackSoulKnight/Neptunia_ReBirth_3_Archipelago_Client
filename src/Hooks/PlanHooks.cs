@@ -54,7 +54,7 @@ namespace Nep3ArchipelagoClient.Hooks
             string toggle = "disabled";
             if (active != 0)
                 toggle = "enabled";
-            Console.WriteLine($"Plan ID: {planID} {active}");
+            Console.WriteLine($"Plan ID: {planID} {toggle}");
             return 0;
         }
     }

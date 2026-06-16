@@ -24,7 +24,6 @@ namespace Nep3ArchipelagoClient.Hooks
 
         static Stopwatch _timer = new();
         static double deltaTime; // in milliseconds
-        static double timer = 0;
         [Function(new[] { FunctionAttribute.Register.eax }, FunctionAttribute.Register.eax, FunctionAttribute.StackCleanup.None)]
         public delegate int MainLoop(nuint pointer);
         public static unsafe int OnMainLoop(nuint eax)

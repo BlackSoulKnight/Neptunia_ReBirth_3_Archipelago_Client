@@ -4,7 +4,6 @@ namespace Nep3ArchipelagoClient.Data.Neptunia_1_Data
 {
     internal class RB1Options:APOptions
     {
-        public int OldSwordCount;
         public override void ParseOptions(JObject options)
         {
         }

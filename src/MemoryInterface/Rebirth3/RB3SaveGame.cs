@@ -13,13 +13,11 @@ namespace Nep3ArchipelagoClient
         nuint StellaDungeonCurrentRunBestOffset = 0xD765C;
         public RB3SaveGame()
         {
-            SaveGameOffest = 0x4F6ED8;
             Inventory = new RB3Inventory(this);
             APSaveLocation = 0x103B0;
             PlanOffset = 0x1e1fc;
             EventFlagOffset = 0x91C;
             Events = new Events();
-            WorldStateOffset = 0x4f6f58;
         }
         public int CurrentItemCount()
         {

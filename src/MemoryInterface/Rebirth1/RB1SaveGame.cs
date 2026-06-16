@@ -14,13 +14,11 @@ namespace Nep3ArchipelagoClient
 
         public RB1SaveGame()
         {
-            SaveGameOffest = 0x459248;
             Inventory = new RB3Inventory(this);
             APSaveLocation = 0x1062C;
             PlanOffset = 0x443310;
             EventFlagOffset = 0x918;
             Events = new Events();
-            WorldStateOffset = 0x4592c0;
 
         }
         public override int CurrentDungeon()

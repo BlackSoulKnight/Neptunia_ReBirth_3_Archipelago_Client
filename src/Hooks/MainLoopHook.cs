@@ -15,7 +15,8 @@ namespace Nep3ArchipelagoClient.Hooks
     public class MainLoopHook
     {
         public static List<IAsmHook> _asmHooks = new();
-        public static IReverseWrapper<MainLoop> _onCheckSell;
+        public static IReverseWrapper<MainLoop> _onMainLoop;
+        public static IReverseWrapper<InitSaveGame> _onInitSavegame;
         public static IFunction<SellItem> _sellItem;
 
         [Function(CallingConventions.Stdcall)]
@@ -39,6 +40,16 @@ namespace Nep3ArchipelagoClient.Hooks
             Mod.SaveGame.CheckUnlockGoalCondition();
             return 0;
         }
+        [Function(new[] { FunctionAttribute.Register.ecx, FunctionAttribute.Register.eax }, FunctionAttribute.Register.eax, FunctionAttribute.StackCleanup.None)]
+        public delegate int InitSaveGame(nuint pointer,int eax);
+        public static unsafe int OnInitSageGame(nuint ecx,int eax)
+        {
+            if (eax == 0)
+                Mod.SaveGame.SaveGamePointer = ecx;
+            else
+                Mod.SaveGame.WorldStatePointer = ecx;
+            return 0;
+        }
 
         public static void SetupHooks(IReloadedHooks hooks)
         {
@@ -48,7 +59,7 @@ namespace Nep3ArchipelagoClient.Hooks
                 "use32",
                 "pushad",
                 "pushfd",
-                $"{hooks.Utilities.GetAbsoluteCallMnemonics(OnMainLoop, out _onCheckSell)}",
+                $"{hooks.Utilities.GetAbsoluteCallMnemonics(OnMainLoop, out _onMainLoop)}",
                 "popfd",
                 "popad"
             };
@@ -62,6 +73,36 @@ namespace Nep3ArchipelagoClient.Hooks
                 if (FunctionScanner.FindFunction("MainLoop", "E8 ?? ?? ?? ?? 83 C4 08 E8 ?? ?? ?? ?? 50 E8 ?? ?? ?? ?? 50 6A 00 6A 00 E8 ?? ?? ?? ?? 83 C4 10", out offset))
                     _asmHooks.Add(hooks.CreateAsmHook(mainloop, (int)(Mod.ModuleBase + offset), AsmHookBehaviour.ExecuteFirst).Activate());
             }
+            string[] saveGame =
+            {
+                "use32",
+                "pushad",
+                "pushfd",
+                "mov eax,0",
+                $"{hooks.Utilities.GetAbsoluteCallMnemonics(OnInitSageGame, out _onInitSavegame)}",
+                "popfd",
+                "popad"
+            };
+            switch (Mod.Game)
+            {
+                case NeptuniaGame.Neptunia_ReBirth_1:
+                    if (FunctionScanner.FindFunction("Init Savegame", "89 0D ?? ?? ?? ?? 85 C9 0F 84 ?? ?? ?? ?? 68 88 64 0C 00", out offset))
+                        _asmHooks.Add(hooks.CreateAsmHook(saveGame, (int)(Mod.ModuleBase + offset), AsmHookBehaviour.ExecuteFirst).Activate());
+                    break;
+                case NeptuniaGame.Neptunia_ReBirth_2:
+                    if (FunctionScanner.FindFunction("Init Savegame", "89 0D ?? ?? ?? ?? 85 C9 0F 84 ?? ?? ?? ?? 68 98 F3 0C 00", out offset))
+                        _asmHooks.Add(hooks.CreateAsmHook(saveGame, (int)(Mod.ModuleBase + offset), AsmHookBehaviour.ExecuteFirst).Activate());
+                    break;
+                case NeptuniaGame.Neptunia_ReBirth_3:
+                    if (FunctionScanner.FindFunction("Init Savegame", "89 0D ?? ?? ?? ?? 85 C9 0F 84 ?? ?? ?? ?? 68 28 BD 0F 00", out offset))
+                        _asmHooks.Add(hooks.CreateAsmHook(saveGame, (int)(Mod.ModuleBase + offset), AsmHookBehaviour.ExecuteFirst).Activate());
+                    break;
+            }
+
+
+            saveGame[3] = "mov eax,1";
+            if (FunctionScanner.FindFunction("Init Worldstate", "89 0D ?? ?? ?? ?? 85 C9 0F 84 ?? ?? ?? ?? C7 81 ?? ?? ?? ?? 00 00 00 00", out offset))
+                _asmHooks.Add(hooks.CreateAsmHook(saveGame, (int)(Mod.ModuleBase + offset), AsmHookBehaviour.ExecuteFirst).Activate());
         }
     }
 }

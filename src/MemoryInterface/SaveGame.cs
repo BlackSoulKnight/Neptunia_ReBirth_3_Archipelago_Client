@@ -8,16 +8,14 @@ namespace Nep3ArchipelagoClient
 {
     internal abstract class SaveGame
     {
-        protected nuint SaveGameOffest;
-        public UIntPtr SaveGamePointer => Memory.Instance.Read<uint>(Mod.ModuleBase + SaveGameOffest);
+        public UIntPtr SaveGamePointer = 0;
+        public UIntPtr WorldStatePointer = 0;
         protected uint APSaveLocation;
         public nuint PlanOffset;
         protected uint EventFlagOffset;
         Memory memory => Memory.Instance;
         public APOptions Options;
         public Events Events;
-        protected nuint WorldStateOffset;
-        public UIntPtr WorldStatePointer => Memory.Instance.Read<uint>(Mod.ModuleBase + WorldStateOffset);
         public abstract bool WorldStateInDungeon();
         public abstract void SetWorldState(byte state);
         protected SaveGame()

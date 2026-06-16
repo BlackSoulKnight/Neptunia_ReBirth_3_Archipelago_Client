@@ -15,14 +15,12 @@ namespace Nep3ArchipelagoClient
         new RB2Options Options => (RB2Options)base.Options;
         public RB2SaveGame()
         {
-            SaveGameOffest = 0x443310;
             Inventory = new RB2Inventory(this);
             APSaveLocation = 0x1032c;
             PlanOffset = 0x443310;
             EventFlagOffset = 0x91c;
             base.Options = new RB2Options();
             Events = new Events();
-            WorldStateOffset = 0x443380;
         }
         public int CurrentItemCount()
         {

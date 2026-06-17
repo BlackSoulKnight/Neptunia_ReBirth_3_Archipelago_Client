@@ -17,6 +17,7 @@ namespace Nep3ArchipelagoClient
             APSaveLocation = 0x103B0;
             PlanOffset = 0x1e1fc;
             EventFlagOffset = 0x91C;
+            base.Options = new RB3Options();
             Events = new Events();
         }
         public int CurrentItemCount()
@@ -56,7 +57,7 @@ namespace Nep3ArchipelagoClient
                 Test_Characters();
                 Test_Unlocks();
                 Test_CharacterStruct();
-               Test_End();
+                Test_End();
 #endif
             }
         }
@@ -107,7 +108,7 @@ namespace Nep3ArchipelagoClient
         }
         public void SetTrueEndFlag()
         {
-            Events.UnlockedEvents.Add(1013);
+            Events.AddEvent(1013);
         }
         public unsafe override void AddPartyMember(int characterID)
         {
@@ -193,7 +194,7 @@ namespace Nep3ArchipelagoClient
 
         protected override void _CheckUnlockGoalCondition()
         {
-            bool pudding = Inventory.FindItem(254, out int _);
+            bool pudding = Inventory.FindItem(203, out int _);
             bool syringe = Inventory.FindItem(204, out int _);
             bool notebook = Inventory.FindItem(205, out int _);
             bool doll = Inventory.FindItem(206, out int _);

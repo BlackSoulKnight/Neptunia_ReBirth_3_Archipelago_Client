@@ -26,7 +26,7 @@ namespace Nep3ArchipelagoClient.Archipelago
         public string Game = "Hyperdimension Neptunia Re;Birth3 V GENERATION";
         public bool ConnectToServer(string destination,int port,string user, string password = "")
         {
-            if (Session != null && Session.Socket.Connected)
+            if (Session != null && Session.Socket != null && Session.Socket.Connected)
             {
                 Session.Socket.DisconnectAsync().Wait();
             }
@@ -57,9 +57,20 @@ namespace Nep3ArchipelagoClient.Archipelago
             LoginSuccessful success = (LoginSuccessful)loginResult;
             InitalizeItemNameLookup();
             InitSlotData(success.SlotData);
-            if(success.SlotData.ContainsKey("options"))
+            InitDataStorage();
+            if (success.SlotData.ContainsKey("options"))
                 Mod.SaveGame.Options.ParseOptions((JObject)success.SlotData["options"]);
+
+
             return true;
+        }
+        private void InitDataStorage()
+        {
+            var evnt = Mod.SaveGame.Events;
+            foreach (var eventId in evnt.GetUnlockableEvents)
+            {
+                Session.DataStorage[Scope.Slot, $"Event {eventId}"].Initialize(false);
+            }
         }
         private void InitSlotData(Dictionary<string,object> slotData)
         {
@@ -77,14 +88,21 @@ namespace Nep3ArchipelagoClient.Archipelago
             if (IsConnected)
             {
                 Session.DataStorage[Scope.Slot, $"Event {id}"] = true;
-                Mod.SaveGame.Events.UnlockedEvents.Add(id);
             }
         }
         public bool CheckEvent(short id)
         {
             if (IsConnected)
             {
-                return (bool)Session.DataStorage[Scope.Slot, $"Event {id}"];
+                try
+                {
+                    bool result = Session.DataStorage[Scope.Slot, $"Event {id}"];
+                    return result;
+                }
+                catch (Exception ex)
+                {
+                    Console.WriteLine(ex.ToString());
+                }
             }
             return false;
         }
@@ -93,10 +111,10 @@ namespace Nep3ArchipelagoClient.Archipelago
             var evnt = Mod.SaveGame.Events;
             foreach (var eventId in evnt.GetUnlockableEvents)
             {
-                if (evnt.UnlockedEvents.Contains(eventId))
+                if (evnt.EventUnlocked(eventId))
                     continue;
-                if ((bool)Session.DataStorage[Scope.Slot, $"Event {eventId}"])
-                    evnt.UnlockedEvents.Add(eventId);
+                if (CheckEvent(eventId))
+                    evnt.AddEvent(eventId);
             }
         }
 
@@ -167,6 +185,7 @@ namespace Nep3ArchipelagoClient.Archipelago
                 {
                     _lastUpdate = 0;
                     Task.Run(UpdateEventStorage);
+                    //when this is fixed i can make a release
                 }
             }
         }

@@ -10,7 +10,19 @@ namespace Nep3ArchipelagoClient.Data
     {
         protected List<short> PermanentEvents = new();
         protected List<short> UnlockableEvents = new();
-        public List<short> UnlockedEvents = new();
+        protected List<short> UnlockedEvents = new();
+        public void AddEvent(short eventID)
+        {
+            Mod.APClient.SaveEvent(eventID);
+            UnlockedEvents.Add(eventID);
+        }
+        public void AddEvent(short[] eventID)
+        {
+            foreach(var evnt in eventID)
+                AddEvent(evnt);
+        }
+
+        public bool EventUnlocked(short eventID) => UnlockedEvents.Contains(eventID) || PermanentEvents.Contains(eventID);
         protected Events() { }
         public bool IsEventAvailable(short id)
         {

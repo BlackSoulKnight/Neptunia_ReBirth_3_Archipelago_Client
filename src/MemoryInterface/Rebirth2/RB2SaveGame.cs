@@ -119,7 +119,7 @@ namespace Nep3ArchipelagoClient
             if (!old_sword || Inventory.GetItemCountAtSlot(position) < 1) return;
             if (!AreEventFlagSet([513, 516, 519])) return;
             GoMode = true;
-            Events.UnlockedEvents.AddRange([524, 525, 526]);
+            Events.AddEvent([524, 525, 526]);
         }
 
         private void UnlockGameFeatures()
@@ -162,7 +162,7 @@ namespace Nep3ArchipelagoClient
         }
         void Test_Goal()
         {
-            Events.UnlockedEvents.AddRange(Events.GetUnlockableEvents);
+            Events.AddEvent(Events.GetUnlockableEvents);
             Inventory.AddItem(254, 1);
         }
         unsafe void Test_CharacterManip()

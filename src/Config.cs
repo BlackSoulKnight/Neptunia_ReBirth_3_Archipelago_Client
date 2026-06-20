@@ -41,6 +41,11 @@ public class Config : Configurable<Config>
     [Description("Player Name")]
     [DefaultValue("Player1")]
     public string Player { get; set; } = "Player1";
+
+    [DisplayName("Password")]
+    [Description("[Optional] Password")]
+    [DefaultValue("")]
+    public string Password { get; set; } = "";
 }
 
 /// <summary>

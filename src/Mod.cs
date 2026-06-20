@@ -102,7 +102,7 @@ public class Mod : ModBase // <= Do not Remove.
         Console.WriteLine($"Playing: {Game.ToString()}");
         Hooks.Hooks.SetupAllHooks(_hooks);
 
-        APClient.ConnectToServer(_configuration.Server, _configuration.Port, _configuration.Player);
+        APClient.ConnectToServer(_configuration.Server, _configuration.Port, _configuration.Player,_configuration.Password);
 
     }
 

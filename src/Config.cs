@@ -46,6 +46,11 @@ public class Config : Configurable<Config>
     [Description("[Optional] Password")]
     [DefaultValue("")]
     public string Password { get; set; } = "";
+
+    [DisplayName("Skip Rei CG")]
+    [Description("Skip the entire dialog for the Rei fight")]
+    [DefaultValue(false)]
+    public bool SkipRei { get; set; } = false;
 }
 
 /// <summary>

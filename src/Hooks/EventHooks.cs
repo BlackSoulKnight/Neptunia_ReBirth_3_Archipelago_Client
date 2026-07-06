@@ -24,7 +24,7 @@ namespace Nep3ArchipelagoClient.Hooks
             var currEvent = Memory.Instance.Read<int>(edi + 0xC + 0x4);
             //Console.WriteLine($"Something with event {currEvent}");
             bool self = Mod.SaveGame.IsEventFlagSet(currEvent);
-            if (self || !Mod.SaveGame.Events.IsEventAvailable((short)currEvent))
+            if (self) //|| !Mod.SaveGame.Events.IsEventAvailable((short)currEvent)
                 return 0;
             return 1;
         }

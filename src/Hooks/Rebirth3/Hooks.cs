@@ -9,9 +9,9 @@ namespace Nep3ArchipelagoClient.Hooks.Rebirth3
         {
             RB3ItemCollectionHooks.SetupHooks(hooks);
             RB3TextHooks.SetupHooks(hooks);
-#if DEBUG
+            RB3EventHooks.SetupHooks(hooks);
+
             RB3DebugTools.SetupHooks(hooks);
-#endif
         }
     }
 }

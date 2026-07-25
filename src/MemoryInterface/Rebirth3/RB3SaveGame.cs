@@ -51,16 +51,33 @@ namespace Nep3ArchipelagoClient
                 if(startchar != (int)CharacterId.nepgear)
                     RemovePartyMember((int)CharacterId.nepgear);
                 RemovePartyMember((int)CharacterId.neptune);
-                DeleteChap0Flags();
+                //DeleteChap0Flags();
                 //debug stuff
 #if DEBUG
                 Test_Characters();
                 Test_Unlocks();
                 Test_CharacterStruct();
                 Test_End();
+                Test_Quest();
 #endif
             }
         }
+
+        private void Test_Quest()
+        {
+            nuint questPointer = SaveGamePointer + 0xb1674;
+            short numberOfQuest = 1000;
+            memory.Write<short>(questPointer, numberOfQuest);
+            for(short i = 2; i< numberOfQuest; i++)
+            {
+                nuint currentslot = (nuint)((i-1) * 0xc)+ questPointer+0x8;
+                memory.Write<short>(currentslot, i);
+                memory.Write<short>(currentslot+0x2, 3);
+                memory.Write<byte>(currentslot + 0x8, 0x1);
+                memory.Write<byte>(currentslot + 0xB, 0x40);
+            }
+        }
+
         public void SetupAllNations()
         {
             var worldMapThing = memory.Read<byte>(SaveGamePointer + 0xE04);

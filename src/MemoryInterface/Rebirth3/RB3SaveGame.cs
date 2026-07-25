@@ -66,7 +66,7 @@ namespace Nep3ArchipelagoClient
         private void Test_Quest()
         {
             nuint questPointer = SaveGamePointer + 0xb1674;
-            short numberOfQuest = 1000;
+            short numberOfQuest = 200;
             memory.Write<short>(questPointer, numberOfQuest);
             for(short i = 2; i< numberOfQuest; i++)
             {

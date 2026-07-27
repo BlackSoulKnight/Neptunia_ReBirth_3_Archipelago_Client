@@ -13,9 +13,10 @@ namespace Nep3ArchipelagoClient.Archipelago
         public const long EnemyBaseID = 2_000_000;
         //items
         public const long DungeonBaseID = 2_000_000;
-        const long ChracterBaseID = 3_000_000;
-        const long ProgressiveGearID = 3_500_000;
-        const long EventBaseID = 4_000_000;
+        public const long ChracterBaseID = 3_000_000;
+        public const long ProgressiveGearID = 3_500_000;
+        public const long EventBaseID = 4_000_000;
+        public const long QuestBaseID = 4_500_000;
         private ArchipelagoSession? Session;
         private LoginResult? loginResult = null;
         public bool IsConnected => Session != null && Session.Socket.Connected;

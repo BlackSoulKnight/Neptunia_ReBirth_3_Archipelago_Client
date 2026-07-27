@@ -1,5 +1,6 @@
 ﻿using Nep3ArchipelagoClient.Archipelago;
 using Nep3ArchipelagoClient.Hooks;
+using Nep3ArchipelagoClient.Hooks.Rebirth3;
 using Nep3ArchipelagoClient.MemoryInterface;
 using Nep3ArchipelagoClient.Neptunia_3_Data;
 using Reloaded.Memory;
@@ -67,14 +68,9 @@ namespace Nep3ArchipelagoClient
         {
             nuint questPointer = SaveGamePointer + 0xb1674;
             short numberOfQuest = 200;
-            memory.Write<short>(questPointer, numberOfQuest);
             for(short i = 2; i< numberOfQuest; i++)
             {
-                nuint currentslot = (nuint)((i-1) * 0xc)+ questPointer+0x8;
-                memory.Write<short>(currentslot, i);
-                memory.Write<short>(currentslot+0x2, 3);
-                memory.Write<byte>(currentslot + 0x8, 0x1);
-                memory.Write<byte>(currentslot + 0xB, 0x40);
+                RB3QuestHooks._addNewQuest.GetWrapper()(i);
             }
         }
 

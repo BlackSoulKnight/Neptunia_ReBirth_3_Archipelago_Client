@@ -1,6 +1,7 @@
 ﻿using Nep3ArchipelagoClient.Archipelago;
 using Nep3ArchipelagoClient.Data.Neptunia_2_Data;
 using Nep3ArchipelagoClient.Hooks;
+using Nep3ArchipelagoClient.Hooks.Rebirth2;
 using Nep3ArchipelagoClient.MemoryInterface;
 using Nep3ArchipelagoClient.Neptunia_2_Data;
 using Reloaded.Memory;
@@ -69,7 +70,17 @@ namespace Nep3ArchipelagoClient
                 Test_Goal();
                 Test_CharacterManip();
                 Test_DataStorage();
+                Test_Quest();
 #endif
+            }
+        }
+        private void Test_Quest()
+        {
+            nuint questPointer = SaveGamePointer + 0xb1674;
+            short numberOfQuest = 200;
+            for (short i = 2; i < numberOfQuest; i++)
+            {
+                RB2QuestHooks._addNewQuest.GetWrapper()(i);
             }
         }
 
@@ -134,6 +145,7 @@ namespace Nep3ArchipelagoClient
             for(short id = 2; id <6;id++)
                 UnlockCity(id);
             SetEventFlag(172, true);
+            SetEventFlag(59, true);
         }
         void Test_VGMRun()
         {

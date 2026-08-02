@@ -39,8 +39,11 @@ namespace Nep3ArchipelagoClient.Hooks.Rebirth3
             switch (eventId)
             {
                 case 1013:
-                    if(Mod._configuration.SkipRei)
+                    if (Mod._configuration.SkipRei)
+                    {
                         eventId = 3013;
+                        Mod.SaveGame.SetEventFlag(1013, true);
+                    }
                     break;
                 case 1014:
                     if(Mod._configuration.SkipRei)

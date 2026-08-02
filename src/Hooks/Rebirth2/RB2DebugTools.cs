@@ -39,6 +39,16 @@ namespace Nep3ArchipelagoClient.Hooks.Rebirth2
             };
             if (FunctionScanner.FindFunction("EventFlags", "E8 ?? ?? ?? ?? 56 68 F4 01 00 00", out offset))
                 _asmHooks.Add(hooks.CreateAsmHook(removeDungeonCreation, (int)(Mod.ModuleBase + offset), AsmHookBehaviour.ExecuteFirst).Activate());
+            if (FunctionScanner.FindFunction("Nep Level Progression", "8B 7D ?? 8D 47 ?? 50 68", out offset))
+            {
+                string[] code =
+                {
+                    "use32",
+                    "mov eax,1",
+                    "push eax",
+                };
+                _asmHooks.Add(hooks.CreateAsmHook(code, (int)(Mod.ModuleBase + offset), AsmHookBehaviour.DoNotExecuteOriginal).Activate());
+            }
         }
 
     }

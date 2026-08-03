@@ -6,10 +6,10 @@ using System.Runtime.InteropServices;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Nep3ArchipelagoClient.Neptunia_2_Data
+namespace Nep3ArchipelagoClient.Neptunia_Data
 {
     [StructLayout(LayoutKind.Explicit,Size = 0x58)]
-    public unsafe struct CharacterLevelUp
+    public unsafe struct LevelProgression
     {
         [FieldOffset(0x0)]
         public int NextLevelRequirement;

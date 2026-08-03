@@ -11,6 +11,8 @@ namespace Nep3ArchipelagoClient.Data
         protected List<short> PermanentEvents = new();
         protected List<short> UnlockableEvents = new();
         protected List<short> UnlockedEvents = new();
+        protected Dictionary<short,List<short>> PrequisiteEvents = new();
+
         public void AddEvent(short eventID)
         {
             Mod.APClient.SaveEvent(eventID);
@@ -26,6 +28,10 @@ namespace Nep3ArchipelagoClient.Data
         protected Events() { }
         public bool IsEventAvailable(short id)
         {
+            if(PrequisiteEvents.ContainsKey(id))
+                foreach(short eventID in PrequisiteEvents[id])
+                    if(!Mod.SaveGame.IsEventFlagSet(eventID))
+                        return false;
             if (PermanentEvents.Contains(id))
                 return true;
             if (UnlockedEvents.Contains(id))
@@ -33,5 +39,17 @@ namespace Nep3ArchipelagoClient.Data
             return false;
         }
         public short[] GetUnlockableEvents => UnlockableEvents.ToArray();
+        protected void AddPrequisiteEvent(short eventID,short prequisiteEventID)
+        {
+            if (!PrequisiteEvents.ContainsKey(eventID))
+                PrequisiteEvents[eventID] = new List<short>();
+            PrequisiteEvents[eventID].Add(prequisiteEventID);
+        }
+        protected void AddPrequisiteEvent(short eventID,short[] prequisiteEventID)
+        {
+            if (!PrequisiteEvents.ContainsKey(eventID))
+                PrequisiteEvents[eventID] = new List<short>();
+            PrequisiteEvents[eventID].AddRange(prequisiteEventID);
+        }
     }
 }

@@ -62,7 +62,7 @@ namespace Nep3ArchipelagoClient.Neptunia_2_Data
         [FieldOffset(112)]
         public int BaseTec;
         [FieldOffset(116)]
-        public int Unkown2; // not sure what this stat does
+        public int CritChance; // not sure what this stat does
         [FieldOffset(120)]
         public int BaseLuc;
         [FieldOffset(124)]
@@ -70,16 +70,26 @@ namespace Nep3ArchipelagoClient.Neptunia_2_Data
 
         //resistence
         [FieldOffset(128)]
-        public int UnkownRes; // or not im not sure
+        public int UnkownResX; // or not im not sure
         [FieldOffset(132)]
         public int FireRes;
         [FieldOffset(136)]
         public int IceRes;
-        [FieldOffset(136)]
+        [FieldOffset(140)]
         public int WindRes;
-        [FieldOffset(136)]
+        [FieldOffset(144)]
         public int LightRes;
         // 20 bytes of nothing? maybe other res might be phy and magic and not in 128
+        [FieldOffset(148)]
+        public int UnkownRes1;
+        [FieldOffset(152)]
+        public int UnkownRes2;
+        [FieldOffset(156)]
+        public int UnkownRes3;
+        [FieldOffset(160)]
+        public int PoisonRes;
+        [FieldOffset(164)]
+        public int ParalizeRes;
 
         [FieldOffset(168)]
         public int Unkown3;

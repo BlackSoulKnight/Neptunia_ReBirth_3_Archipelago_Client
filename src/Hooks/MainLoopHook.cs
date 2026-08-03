@@ -102,6 +102,21 @@ namespace Nep3ArchipelagoClient.Hooks
             saveGame[3] = "mov eax,1";
             if (FunctionScanner.FindFunction("Init Worldstate", "89 0D ?? ?? ?? ?? 85 C9 0F 84 ?? ?? ?? ?? C7 81 ?? ?? ?? ?? 00 00 00 00", out offset))
                 _asmHooks.Add(hooks.CreateAsmHook(saveGame, (int)(Mod.ModuleBase + offset), AsmHookBehaviour.ExecuteFirst).Activate());
+
+
+
+            string[] unfreeze = {
+                "use32",
+            };
+            if (FunctionScanner.FindFunction("FreeWindow", "C7 80 ?? ?? ?? ?? 01 00 00 00 E8 ?? ?? ?? ?? 83 C4 04", out offset))
+                _asmHooks.Add(hooks.CreateAsmHook(unfreeze, (int)(Mod.ModuleBase + offset), AsmHookBehaviour.DoNotExecuteOriginal).Activate());
+
+            if (FunctionScanner.FindFunction("FreeWindow", "C7 80 ?? ?? ?? ?? 01 00 00 00 E8 ?? ?? ?? ?? 68 ?? ?? ?? ?? E8 ?? ?? ?? ?? 6A 00", out offset))
+                _asmHooks.Add(hooks.CreateAsmHook(unfreeze, (int)(Mod.ModuleBase + offset), AsmHookBehaviour.DoNotExecuteOriginal).Activate());
+
+            if (FunctionScanner.FindFunction("FreeWindow", "C7 80 ?? ?? ?? ?? 01 00 00 00 E8 ?? ?? ?? ?? 68 ?? ?? ?? ?? E8 ?? ?? ?? ?? 83 C4 10", out offset))
+                _asmHooks.Add(hooks.CreateAsmHook(unfreeze, (int)(Mod.ModuleBase + offset), AsmHookBehaviour.DoNotExecuteOriginal).Activate());
+
         }
     }
 }

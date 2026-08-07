@@ -54,12 +54,12 @@ namespace Nep3ArchipelagoClient
                 RemovePartyMember((int)CharacterId.neptune);
                 //DeleteChap0Flags();
                 //debug stuff
+                Test_Quest();
 #if DEBUG
                 Test_Characters();
                 Test_Unlocks();
                 Test_CharacterStruct();
                 Test_End();
-                Test_Quest();
 #endif
             }
         }

@@ -62,6 +62,7 @@ namespace Nep3ArchipelagoClient
                 if(startchar != (int)CharacterId.compa)
                     RemovePartyMember((int)CharacterId.compa);
                 InitGear();
+                Test_Quest();
 
 #if DEBUG
                 Test_CharacterUnlock();
@@ -70,7 +71,6 @@ namespace Nep3ArchipelagoClient
                 Test_Goal();
                 Test_CharacterManip();
                 Test_DataStorage();
-                Test_Quest();
 #endif
             }
         }

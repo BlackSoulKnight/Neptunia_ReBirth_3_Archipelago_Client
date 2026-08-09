@@ -29,14 +29,14 @@ namespace Nep3ArchipelagoClient.Neptunia_2_Data
     {
         [FieldOffset(0x0)]
         public short CurrentForm;
-        [FieldOffset(8)]
+        [FieldOffset(0x8)]
         public fixed byte CharacterName[32];
-        [FieldOffset(40)]
+        [FieldOffset(0x28)]
         public int Exp;
-        [FieldOffset(44)]
+        [FieldOffset(0x2C)]
         public short Unkown; //maybe what you get per level up, looks similar to charater id?
 
-        [FieldOffset(46)]
+        [FieldOffset(0x2E)]
         public short Level;
         [FieldOffset(64)]
         public int CurrentHP;
@@ -62,34 +62,34 @@ namespace Nep3ArchipelagoClient.Neptunia_2_Data
         [FieldOffset(112)]
         public int BaseTec;
         [FieldOffset(116)]
-        public int CritChance; // not sure what this stat does
+        public int AVD; // unused
         [FieldOffset(120)]
         public int BaseLuc;
         [FieldOffset(124)]
         public int BaseMov;
 
         //resistence
-        [FieldOffset(128)]
-        public int UnkownResX; // or not im not sure
-        [FieldOffset(132)]
+        [FieldOffset(0x80)]
+        public int PhysRes; // blank icon
+        [FieldOffset(0x84)]
         public int FireRes;
-        [FieldOffset(136)]
+        [FieldOffset(0x88)]
         public int IceRes;
-        [FieldOffset(140)]
+        [FieldOffset(0x8C)]
         public int WindRes;
-        [FieldOffset(144)]
+        [FieldOffset(0x90)]
         public int LightRes;
         // 20 bytes of nothing? maybe other res might be phy and magic and not in 128
-        [FieldOffset(148)]
-        public int UnkownRes1;
-        [FieldOffset(152)]
-        public int UnkownRes2;
-        [FieldOffset(156)]
-        public int UnkownRes3;
-        [FieldOffset(160)]
-        public int PoisonRes;
-        [FieldOffset(164)]
-        public int ParalizeRes;
+        [FieldOffset(0x94)]
+        public int NormalPhysRes;
+        [FieldOffset(0x98)]
+        public int NormalFireRes;
+        [FieldOffset(0x9C)]
+        public int NormalIceRes;
+        [FieldOffset(0xA0)]
+        public int NormalWindRes;
+        [FieldOffset(0xA4)]
+        public int NormalLightRes;
 
         [FieldOffset(168)]
         public int Unkown3;

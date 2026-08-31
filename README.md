@@ -17,6 +17,7 @@ Very early prototype for a client to connect to a Ap server
 + add Nep Re:birth 3 path to Reloaded II
 + click on Nep3 icon
 + drag and drop the 7z file into the launcher
++ make sure that the mod is active (Red) ![screenshot](./doc/IsModActive.png)
 
 ## Connetion to Ap
 + Open Reloaded-II
